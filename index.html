@@ -68,7 +68,10 @@ footer{
  text-align:center;
  font-size:.75rem;
  color:#777;
+ line-height:1.5;
 }
+footer a{color:#999;text-decoration:none}
+footer a:hover{color:var(--gold)}
 </style>
 </head>
 
@@ -76,17 +79,37 @@ footer{
 
 <header>
 <h1>SCENTIFY <span>WORLD</span></h1>
-<p>Encuentra tu fragancia ideal</p>
+<p>Encuentra tu fragancia ideal según tu estilo</p>
 </header>
 
 <main>
 <section class="card" id="step"></section>
 <section class="card hidden" id="result"></section>
+
+<section class="card">
+<h3>Aviso legal y política de privacidad</h3>
+<p>
+Scentify World es una plataforma de recomendación orientativa basada en preferencias generales de uso, estilo y popularidad de fragancias.
+Las recomendaciones mostradas no constituyen asesoramiento profesional, médico, dermatológico ni comercial.
+</p>
+<p>
+Todas las marcas, nombres comerciales y fragancias mencionadas pertenecen a sus respectivos propietarios.
+Scentify World no está afiliado, patrocinado ni asociado oficialmente con ninguna marca.
+</p>
+<p>
+Los enlaces externos redirigen a sitios de terceros (como Fragrantica) y Scentify World no se responsabiliza por el contenido, disponibilidad o exactitud de dichos sitios.
+</p>
+<p>
+No recopilamos, almacenamos ni procesamos datos personales. No se utilizan cookies, bases de datos ni sistemas de seguimiento.
+El uso del sitio implica la aceptación de estos términos.
+</p>
+</section>
 </main>
 
 <footer>
 © 2026 SCENTIFY WORLD · Created by Emiliano Domínguez  
-<br>Uso informativo · No afiliado a marcas
+<br>Plataforma independiente de recomendación olfativa  
+<br>Todos los derechos reservados
 </footer>
 
 <script>
@@ -155,9 +178,7 @@ function alt(){
 
 function reset(){step=0;answers={};renderStep();}
 
-function stars(n){
- return "★".repeat(n)+"☆".repeat(5-n);
-}
+function stars(n){return "★".repeat(n)+"☆".repeat(5-n);}
 
 function perfume(name,rank,rate){
  return `<div class="perfume">
@@ -170,51 +191,28 @@ function perfume(name,rank,rate){
 
 function main(){
  return [
- ["Baccarat Rouge 540",5],
- ["Stronger With You Intensely",5],
- ["Dior Sauvage Elixir",5],
- ["Bleu de Chanel Parfum",5],
- ["YSL Y EDP",4],
- ["Tom Ford Oud Wood",4],
- ["Arabians Tonka",4],
- ["Khamrah",4],
- ["Acqua di Giò Profumo",4],
- ["Black Opium",4],
- ["Erba Pura",4],
- ["Layton",5],
- ["Ombre Nomade",4],
- ["Le Male Elixir",4],
- ["Delina",5],
- ["Libre Intense",4],
- ["Asad",4],
- ["Invictus Victory",3],
- ["Good Girl",4],
- ["9PM",3]
+ ["Baccarat Rouge 540",5],["Stronger With You Intensely",5],
+ ["Dior Sauvage Elixir",5],["Bleu de Chanel Parfum",5],
+ ["Layton",5],["Delina",5],["Naxos",5],["Angel’s Share",5],
+ ["Musk Therapy",5],["Aventus",5],
+ ["Tom Ford Oud Wood",4],["Arabians Tonka",4],
+ ["Khamrah",4],["Erba Pura",4],["Libre Intense",4],
+ ["Black Opium",4],["Asad",4],["Good Girl",4],
+ ["Invictus Victory",3],["9PM",3]
  ].map((p,i)=>perfume(p[0],i+1,p[1]));
 }
 
 function alternative(){
  return [
- ["Aventus",5],
- ["Hawas",4],
- ["Naxos",5],
- ["Red Tobacco",4],
- ["Ani",5],
- ["Pegasus",4],
- ["Club de Nuit Intense",4],
- ["My Way",4],
- ["Light Blue Intense",3],
- ["Ultra Male",4],
- ["Burberry Her",4],
- ["Fahrenheit",3],
- ["Gentleman Reserve Privée",4],
- ["Lamar",4],
- ["Musk Therapy",5],
- ["Angel’s Share",5],
- ["Eros Flame",4],
- ["Scandal",3],
- ["Valentino Uomo Intense",4],
- ["La Vie Est Belle",4]
+ ["Hawas",4],["Red Tobacco",4],["Pegasus",4],
+ ["Ultra Male",4],["Club de Nuit Intense",4],
+ ["Burberry Her",4],["Gentleman Reserve Privée",4],
+ ["Lamar",4],["Eros Flame",4],["Valentino Uomo Intense",4],
+ ["My Way",3],["Light Blue Intense",3],
+ ["Fahrenheit",3],["Scandal",3],
+ ["La Vie Est Belle",4],["Y EDP",4],
+ ["Acqua di Giò Profumo",4],["Ombre Nomade",4],
+ ["Le Male Elixir",4],["Ani",5]
  ].map((p,i)=>perfume(p[0],i+1,p[1]));
 }
 </script>
