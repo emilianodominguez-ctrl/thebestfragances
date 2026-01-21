@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,86 +8,60 @@
 <style>
 :root{
  --gold:#d6b25e;
- --dark:#0a0a0a;
+ --bg:#070707;
  --card:#141414;
- --line:#2b2b2b;
+ --line:#2a2a2a;
+ --text:#f1f1f1;
  --soft:#bdbdbd;
 }
 *{box-sizing:border-box}
 body{
  margin:0;
+ background:linear-gradient(180deg,#050505,#0c0c0c);
+ color:var(--text);
  font-family:Inter,system-ui,Arial;
- background:linear-gradient(180deg,#050505,#0d0d0d);
- color:#f2f2f2;
 }
 header{
  padding:50px 20px;
  text-align:center;
  background:radial-gradient(circle at top,#1c1c1c,#000);
 }
-header h1{
- font-size:2.8rem;
- margin:0;
- letter-spacing:1px;
-}
+header h1{margin:0;font-size:2.8rem}
 header span{color:var(--gold)}
 header p{color:var(--soft)}
-main{
- max-width:1000px;
- margin:auto;
- padding:20px;
-}
+main{max-width:1100px;margin:auto;padding:20px}
 .card{
  background:var(--card);
  border:1px solid var(--line);
  border-radius:22px;
  padding:30px;
  margin-bottom:22px;
- box-shadow:0 20px 40px rgba(0,0,0,.6);
-}
-select{
- width:100%;
- padding:14px;
- border-radius:14px;
- background:#1f1f1f;
- color:#fff;
- border:1px solid var(--line);
- margin-bottom:20px;
 }
 .option{
- padding:15px;
+ padding:14px;
  border-radius:14px;
  border:1px solid var(--line);
- margin-bottom:12px;
+ margin-bottom:10px;
  cursor:pointer;
- transition:.3s;
 }
 .option:hover{border-color:var(--gold)}
-.option.active{
- border-color:var(--gold);
- background:#1d1d1d;
-}
+.option.active{border-color:var(--gold);background:#1d1d1d}
+.buttons{display:flex;gap:12px;margin-top:20px}
 button{
- width:100%;
- padding:16px;
- border-radius:16px;
+ flex:1;
+ padding:14px;
+ border-radius:14px;
  border:1px solid var(--line);
  background:#1c1c1c;
  color:#fff;
- font-size:1rem;
  cursor:pointer;
 }
 button:hover{border-color:var(--gold)}
 .hidden{display:none}
-.perfume{
- padding:15px 0;
- border-bottom:1px solid var(--line);
-}
+.perfume{padding:10px 0;border-bottom:1px solid var(--line)}
 .rank{color:var(--gold);font-weight:700}
-.perfume a{
- color:#fff;
- text-decoration:none;
-}
+.stars{color:var(--gold);margin-left:8px;font-size:.9rem}
+.perfume a{color:#fff;text-decoration:none}
 .perfume a:hover{color:var(--gold)}
 footer{
  padding:30px;
@@ -102,134 +76,146 @@ footer{
 
 <header>
 <h1>SCENTIFY <span>WORLD</span></h1>
-<p id="subtitle"></p>
+<p>Encuentra tu fragancia ideal</p>
 </header>
 
 <main>
-
-<section class="card">
-<select onchange="setLang(this.value)">
-<option value="es">Español</option>
-<option value="en">English</option>
-<option value="fr">Français</option>
-<option value="it">Italiano</option>
-<option value="de">Deutsch</option>
-<option value="pt">Português</option>
-<option value="ar">العربية</option>
-<option value="ja">日本語</option>
-</select>
-</section>
-
-<section class="card" id="step1"></section>
-<section class="card hidden" id="step2"></section>
-<section class="card hidden" id="step3"></section>
-<section class="card hidden" id="step4"></section>
+<section class="card" id="step"></section>
 <section class="card hidden" id="result"></section>
-
 </main>
 
 <footer>
 © 2026 SCENTIFY WORLD · Created by Emiliano Domínguez  
-<br>Aviso legal · Privacidad · Sin afiliación a marcas
+<br>Uso informativo · No afiliado a marcas
 </footer>
 
 <script>
-const text={
- es:{
-  sub:"Encuentra tu fragancia ideal según tu estilo",
-  q:[
-   ["¿Para quién es el perfume?",["Hombre","Mujer","Unisex"]],
-   ["¿Cuándo lo usarás?",["Fiesta","Citas","Diario","Noche"]],
-   ["Nivel de intensidad",["Suave","Media","Fuerte"]],
-   ["Tipo de fragancia",["Dulce","Fresca","Amaderada","Ámbar","Especiada","Oud"]]
-  ],
-  next:"Continuar",
-  res:"Ver ranking"
- },
- en:{
-  sub:"Discover your ideal fragrance",
-  q:[
-   ["Who is it for?",["Men","Women","Unisex"]],
-   ["When will you wear it?",["Party","Dates","Daily","Night"]],
-   ["Intensity level",["Soft","Medium","Strong"]],
-   ["Fragrance type",["Sweet","Fresh","Woody","Amber","Spicy","Oud"]]
-  ],
-  next:"Next",
-  res:"See ranking"
- }
-};
+let step=0;
+let answers={};
 
-let lang="es";
-const user={};
+const steps=[
+ ["¿Para quién es el perfume?",["Hombre","Mujer","Unisex"]],
+ ["¿Cuándo lo usarás?",["Fiesta","Citas","Diario","Noche","Formal","Clima frío","Verano"]],
+ ["¿Qué vibe buscas?",["Sexy","Elegante","Fresco","Intenso","Dulce","Oscuro"]],
+ ["Tipo de fragancia",["Dulce","Ámbar","Amaderada","Especiada","Fresca","Oud","Vainilla","Cuero"]],
+ ["Idioma / Language",["Español","English","Français","Italiano","Deutsch","Português","العربية","日本語","한국어"]]
+];
 
-setLang("es");
+renderStep();
 
-function setLang(l){
- lang=l;
- subtitle.textContent=text[l].sub;
- render();
+function renderStep(){
+ const s=document.getElementById("step");
+ s.innerHTML=`<h3>${steps[step][0]}</h3>`+
+ steps[step][1].map(o=>`
+ <div class="option" onclick="pick('${o}',this)">${o}</div>`).join("")+
+ `<div class="buttons">
+ ${step>0?'<button onclick="back()">Regresar</button>':''}
+ <button onclick="next()">Continuar</button>
+ </div>`;
+ document.getElementById("result").classList.add("hidden");
+ s.classList.remove("hidden");
 }
 
-function render(){
- for(let i=1;i<=4;i++){
-  const s=document.getElementById("step"+i);
-  s.classList.add("hidden");
-  s.innerHTML="";
- }
- text[lang].q.forEach((q,i)=>{
-  const s=document.getElementById("step"+(i+1));
-  s.innerHTML=`<h3>${q[0]}</h3>`+
-   q[1].map(o=>`<div class="option" onclick="pick(${i},'${o}',this)">${o}</div>`).join("")+
-   `<button onclick="${i<3?'next('+(i+2)+')':'show()'}">${i<3?text[lang].next:text[lang].res}</button>`;
- });
- step1.classList.remove("hidden");
-}
-
-function pick(i,v,e){
- user[i]=v;
- [...e.parentNode.children].forEach(c=>c.classList.remove("active"));
+function pick(v,e){
+ answers[step]=v;
+ [...e.parentNode.children].forEach(c=>c.classList?.remove("active"));
  e.classList.add("active");
 }
 
-function next(n){
- document.querySelectorAll(".card").forEach(c=>c.classList.add("hidden"));
- document.getElementById("step"+n).classList.remove("hidden");
+function next(){
+ if(!answers[step])return;
+ if(step<steps.length-1){step++;renderStep();}
+ else showResults();
 }
 
-function show(){
- document.querySelectorAll(".card").forEach(c=>c.classList.add("hidden"));
- result.classList.remove("hidden");
+function back(){step--;renderStep();}
 
- result.innerHTML=`
- <h2>🏆 Ranking Premium</h2>
+function showResults(){
+ document.getElementById("step").classList.add("hidden");
+ const r=document.getElementById("result");
+ r.classList.remove("hidden");
+ r.innerHTML=`
+ <h2>🏆 Recomendaciones principales</h2>
+ ${main().join("")}
+ <div class="buttons">
+ <button onclick="reset()">Inicio</button>
+ <button onclick="alt()">Más opciones</button>
+ </div>`;
+}
 
- <div class="perfume"><span class="rank">#1</span>
- <a href="https://www.fragrantica.com/perfume/Maison-Francis-Kurkdjian/Baccarat-Rouge-540-33519.html" target="_blank">
- Baccarat Rouge 540 · Ámbar Dulce
- </a></div>
+function alt(){
+ const r=document.getElementById("result");
+ r.innerHTML=`
+ <h2>✨ Otras recomendaciones</h2>
+ ${alternative().join("")}
+ <div class="buttons">
+ <button onclick="showResults()">Regresar</button>
+ </div>`;
+}
 
- <div class="perfume"><span class="rank">#2</span>
- <a href="https://www.fragrantica.com/perfume/Giorgio-Armani/Stronger-With-You-Intensely-55843.html" target="_blank">
- Stronger With You Intensely · Dulce Especiado
- </a></div>
+function reset(){step=0;answers={};renderStep();}
 
- <div class="perfume"><span class="rank">#3</span>
- <a href="https://www.fragrantica.com/perfume/Tom-Ford/Oud-Wood-1826.html" target="_blank">
- Tom Ford Oud Wood · Amaderado Oud
- </a></div>
+function stars(n){
+ return "★".repeat(n)+"☆".repeat(5-n);
+}
 
- <div class="perfume"><span class="rank">#4</span>
- <a href="https://www.fragrantica.com/perfume/Yves-Saint-Laurent/Black-Opium-25324.html" target="_blank">
- Black Opium · Dulce Vainilla
- </a></div>
+function perfume(name,rank,rate){
+ return `<div class="perfume">
+ <span class="rank">#${rank}</span>
+ <span class="stars">${stars(rate)}</span><br>
+ <a href="https://www.fragrantica.com/search/?query=${encodeURIComponent(name)}" target="_blank">
+ ${name}
+ </a></div>`;
+}
 
- <div class="perfume"><span class="rank">#5</span>
- <a href="https://www.fragrantica.com/perfume/Lattafa-Perfumes/Khamrah-75812.html" target="_blank">
- Khamrah · Árabe Gourmand
- </a></div>
+function main(){
+ return [
+ ["Baccarat Rouge 540",5],
+ ["Stronger With You Intensely",5],
+ ["Dior Sauvage Elixir",5],
+ ["Bleu de Chanel Parfum",5],
+ ["YSL Y EDP",4],
+ ["Tom Ford Oud Wood",4],
+ ["Arabians Tonka",4],
+ ["Khamrah",4],
+ ["Acqua di Giò Profumo",4],
+ ["Black Opium",4],
+ ["Erba Pura",4],
+ ["Layton",5],
+ ["Ombre Nomade",4],
+ ["Le Male Elixir",4],
+ ["Delina",5],
+ ["Libre Intense",4],
+ ["Asad",4],
+ ["Invictus Victory",3],
+ ["Good Girl",4],
+ ["9PM",3]
+ ].map((p,i)=>perfume(p[0],i+1,p[1]));
+}
 
- <p><b>Consejo experto:</b> aplica en cuello y muñecas, 3–5 sprays máximo.</p>
- `;
+function alternative(){
+ return [
+ ["Aventus",5],
+ ["Hawas",4],
+ ["Naxos",5],
+ ["Red Tobacco",4],
+ ["Ani",5],
+ ["Pegasus",4],
+ ["Club de Nuit Intense",4],
+ ["My Way",4],
+ ["Light Blue Intense",3],
+ ["Ultra Male",4],
+ ["Burberry Her",4],
+ ["Fahrenheit",3],
+ ["Gentleman Reserve Privée",4],
+ ["Lamar",4],
+ ["Musk Therapy",5],
+ ["Angel’s Share",5],
+ ["Eros Flame",4],
+ ["Scandal",3],
+ ["Valentino Uomo Intense",4],
+ ["La Vie Est Belle",4]
+ ].map((p,i)=>perfume(p[0],i+1,p[1]));
 }
 </script>
 
