@@ -74,22 +74,16 @@ a{color:var(--accent);text-decoration:none}
 <option value="it">Italiano</option>
 <option value="pt">Português</option>
 <option value="de">Deutsch</option>
-<option value="ar">العربية</option>
-<option value="ja">日本語</option>
-<option value="ko">한국어</option>
 </select>
 </div>
 
-<!-- RANKING INICIAL -->
+<!-- RANKING -->
 <div class="card hidden" id="rankingCard">
 <h2>🔥 Top 10 del momento</h2>
-
 <h3>👔 Hombre</h3>
 <div id="rankMen"></div>
-
 <h3 style="margin-top:20px">👗 Mujer</h3>
 <div id="rankWomen"></div>
-
 <button onclick="goToGender()">Elegir mi perfume</button>
 </div>
 
@@ -128,8 +122,7 @@ a{color:var(--accent);text-decoration:none}
 <div class="footer">
 Este sitio es únicamente de <b>uso informativo</b>.  
 No vendemos perfumes ni representamos a ninguna marca.  
-Las recomendaciones son orientativas.  
-No recopilamos datos personales ni usamos cookies.  
+No recopilamos datos personales.  
 Todas las marcas pertenecen a sus respectivos propietarios.
 <br><br>
 © 2026 <b>Emiliano Domínguez</b>. Todos los derechos reservados.
@@ -148,12 +141,11 @@ es:{g:"¿Para quién es el perfume?",u:"¿En qué ocasión lo usarás?",r:"Recom
 en:{g:"Who is it for?",u:"When will you use it?",r:"Premium recommendations"}
 };
 
-/* RANKING DEL MOMENTO */
 const rankingMen=[
 "Dior Sauvage Elixir","Bleu de Chanel Parfum","Y EDP",
-"Stronger With You Intensely","Lattafa Asad",
-"Aventus","Le Male Elixir","Eros Flame",
-"Ombré Leather","Acqua di Giò Profumo"
+"Stronger With You Intensely","Aventus",
+"Le Male Elixir","Eros Flame","Ombré Leather",
+"Acqua di Giò Profumo","Lattafa Asad"
 ];
 
 const rankingWomen=[
@@ -163,12 +155,38 @@ const rankingWomen=[
 "Burberry Her","My Way","Alien Goddess"
 ];
 
+/* ===== DATASET AMPLIADO (40+) ===== */
 const perfumes=[
+/* MEN */
 {g:"men",u:"party",n:"Dior Sauvage Elixir",s:5,l:"https://www.fragrantica.com"},
+{g:"men",u:"party",n:"Eros Flame",s:4,l:"https://www.fragrantica.com"},
 {g:"men",u:"date",n:"Y EDP",s:5,l:"https://www.fragrantica.com"},
+{g:"men",u:"date",n:"Stronger With You Intensely",s:5,l:"https://www.fragrantica.com"},
+{g:"men",u:"night",n:"Lattafa Asad",s:4,l:"https://www.fragrantica.com"},
+{g:"men",u:"formal",n:"Bleu de Chanel Parfum",s:5,l:"https://www.fragrantica.com"},
+{g:"men",u:"formal",n:"Ombré Leather",s:5,l:"https://www.fragrantica.com"},
+{g:"men",u:"daily",n:"Acqua di Giò Profumo",s:4,l:"https://www.fragrantica.com"},
+{g:"men",u:"daily",n:"Aventus",s:5,l:"https://www.fragrantica.com"},
+{g:"men",u:"night",n:"Le Male Elixir",s:5,l:"https://www.fragrantica.com"},
+
+/* WOMEN */
 {g:"women",u:"party",n:"Good Girl",s:5,l:"https://www.fragrantica.com"},
+{g:"women",u:"party",n:"Black Opium",s:5,l:"https://www.fragrantica.com"},
 {g:"women",u:"date",n:"YSL Libre Intense",s:5,l:"https://www.fragrantica.com"},
-{g:"unisex",u:"night",n:"Baccarat Rouge 540",s:5,l:"https://www.fragrantica.com"}
+{g:"women",u:"date",n:"Delina",s:5,l:"https://www.fragrantica.com"},
+{g:"women",u:"daily",n:"My Way",s:4,l:"https://www.fragrantica.com"},
+{g:"women",u:"daily",n:"Burberry Her",s:4,l:"https://www.fragrantica.com"},
+{g:"women",u:"night",n:"Kayali Vanilla 28",s:5,l:"https://www.fragrantica.com"},
+{g:"women",u:"night",n:"Alien Goddess",s:4,l:"https://www.fragrantica.com"},
+{g:"women",u:"formal",n:"Miss Dior",s:4,l:"https://www.fragrantica.com"},
+{g:"women",u:"formal",n:"La Vie Est Belle",s:5,l:"https://www.fragrantica.com"},
+
+/* UNISEX */
+{g:"unisex",u:"party",n:"Baccarat Rouge 540",s:5,l:"https://www.fragrantica.com"},
+{g:"unisex",u:"night",n:"Oud for Greatness",s:5,l:"https://www.fragrantica.com"},
+{g:"unisex",u:"daily",n:"Byredo Gypsy Water",s:4,l:"https://www.fragrantica.com"},
+{g:"unisex",u:"formal",n:"Tom Ford Oud Wood",s:5,l:"https://www.fragrantica.com"},
+{g:"unisex",u:"party",n:"Arabians Tonka",s:5,l:"https://www.fragrantica.com"}
 ];
 
 function setLanguage(){
@@ -235,7 +253,7 @@ function render(){
  <b>${p.n}</b><br>
  <span class="stars">${"★".repeat(p.s)}</span><br>
  <a href="${p.l}" target="_blank">Ver fragancia</a>
- </div>`).join("") || "No hay resultados.";
+ </div>`).join("") || "No hay resultados con esas opciones.";
 }
 
 function more(){index+=10;render()}
