@@ -24,7 +24,6 @@ body{margin:0;background:var(--bg);color:var(--text)}
  box-shadow:0 15px 40px rgba(0,0,0,.5)
 }
 .hidden{display:none}
-h1,h2,h3{margin:0 0 12px}
 button{
  background:var(--accent);
  border:none;
@@ -46,223 +45,141 @@ button.secondary{background:#262633;color:#fff}
  border-color:var(--accent);
  background:#1d1d28;
 }
-.stars{color:#f5c542}
 .perfume{
  border-bottom:1px solid #2a2a35;
  padding:12px 0;
 }
+.stars{color:#f5c542}
 a{color:var(--accent);text-decoration:none}
-.footer{
- font-size:13px;
- color:var(--muted);
- line-height:1.6;
-}
+.footer{font-size:13px;color:var(--muted);line-height:1.6}
 </style>
 </head>
 
 <body>
 <div class="container">
 
-<!-- IDIOMA -->
 <div class="card" id="langCard">
-<h1>🌍 Select language</h1>
+<h2>🌍 Idioma</h2>
 <select id="language" onchange="setLanguage()" style="width:100%;padding:12px;border-radius:10px">
-<option value="">— Choose —</option>
+<option value="">Selecciona</option>
 <option value="es">Español</option>
 <option value="en">English</option>
-<option value="fr">Français</option>
-<option value="it">Italiano</option>
-<option value="pt">Português</option>
-<option value="de">Deutsch</option>
 </select>
 </div>
 
-<!-- RANKING -->
-<div class="card hidden" id="rankingCard">
-<h2>🔥 Top 10 del momento</h2>
-<h3>👔 Hombre</h3>
-<div id="rankMen"></div>
-<h3 style="margin-top:20px">👗 Mujer</h3>
-<div id="rankWomen"></div>
-<button onclick="goToGender()">Elegir mi perfume</button>
-</div>
-
-<!-- GENERO -->
 <div class="card hidden" id="genderCard">
-<h2 id="tGender"></h2>
+<h2>¿Para quién es?</h2>
 <div class="option" onclick="pickGender('men',this)">👔 Hombre</div>
 <div class="option" onclick="pickGender('women',this)">👗 Mujer</div>
 <div class="option" onclick="pickGender('unisex',this)">⚧ Unisex</div>
-<button class="secondary" onclick="restart()">Regresar</button>
 </div>
 
-<!-- USO -->
 <div class="card hidden" id="useCard">
-<h2 id="tUse"></h2>
+<h2>¿Cuándo lo usarás?</h2>
 <div class="option" onclick="toggleUse('daily',this)">🌞 Diario</div>
 <div class="option" onclick="toggleUse('party',this)">🎉 Fiesta</div>
 <div class="option" onclick="toggleUse('date',this)">❤️ Cita</div>
-<div class="option" onclick="toggleUse('formal',this)">🕴 Formal</div>
 <div class="option" onclick="toggleUse('night',this)">🌙 Noche</div>
 <button onclick="showResults()">Ver resultados</button>
-<button class="secondary" onclick="backToGender()">Regresar</button>
 </div>
 
-<!-- RESULTADOS -->
 <div class="card hidden" id="resultCard">
-<h2 id="tResult"></h2>
+<h2>✨ Recomendaciones</h2>
 <div id="results"></div>
-<button onclick="more()">Otras 10 opciones</button>
-<button class="secondary" onclick="restart()">Inicio</button>
+<button id="moreBtn" onclick="more()">Otras 10 opciones</button>
+<button class="secondary" onclick="location.reload()">Inicio</button>
 </div>
 
-<!-- LEGAL -->
 <div class="card">
-<h3>⚠️ Aviso legal y privacidad</h3>
+<h3>⚠️ Aviso legal</h3>
 <div class="footer">
-Este sitio es únicamente de <b>uso informativo</b>.  
-No vendemos perfumes ni representamos a ninguna marca.  
-No recopilamos datos personales.  
-Todas las marcas pertenecen a sus respectivos propietarios.
-<br><br>
-© 2026 <b>Emiliano Domínguez</b>. Todos los derechos reservados.
+Sitio de uso informativo. No vendemos perfumes ni recopilamos datos.
 </div>
 </div>
 
 </div>
 
 <script>
-let lang="", gender="";
-let selectedUses=[];
+let gender="";
+let uses=[];
 let index=0;
+let filtered=[];
 
-const text={
-es:{g:"¿Para quién es el perfume?",u:"¿En qué ocasión lo usarás?",r:"Recomendaciones premium"},
-en:{g:"Who is it for?",u:"When will you use it?",r:"Premium recommendations"}
-};
-
-const rankingMen=[
-"Dior Sauvage Elixir","Bleu de Chanel Parfum","Y EDP",
-"Stronger With You Intensely","Aventus",
-"Le Male Elixir","Eros Flame","Ombré Leather",
-"Acqua di Giò Profumo","Lattafa Asad"
-];
-
-const rankingWomen=[
-"YSL Libre Intense","Good Girl","Delina",
-"Black Opium","La Vie Est Belle",
-"Kayali Vanilla 28","Miss Dior",
-"Burberry Her","My Way","Alien Goddess"
-];
-
-/* ===== DATASET AMPLIADO (40+) ===== */
+/* DATASET (puedes meter 200+ aquí sin tocar lógica) */
 const perfumes=[
-/* MEN */
-{g:"men",u:"party",n:"Dior Sauvage Elixir",s:5,l:"https://www.fragrantica.com"},
-{g:"men",u:"party",n:"Eros Flame",s:4,l:"https://www.fragrantica.com"},
-{g:"men",u:"date",n:"Y EDP",s:5,l:"https://www.fragrantica.com"},
-{g:"men",u:"date",n:"Stronger With You Intensely",s:5,l:"https://www.fragrantica.com"},
-{g:"men",u:"night",n:"Lattafa Asad",s:4,l:"https://www.fragrantica.com"},
-{g:"men",u:"formal",n:"Bleu de Chanel Parfum",s:5,l:"https://www.fragrantica.com"},
-{g:"men",u:"formal",n:"Ombré Leather",s:5,l:"https://www.fragrantica.com"},
-{g:"men",u:"daily",n:"Acqua di Giò Profumo",s:4,l:"https://www.fragrantica.com"},
-{g:"men",u:"daily",n:"Aventus",s:5,l:"https://www.fragrantica.com"},
-{g:"men",u:"night",n:"Le Male Elixir",s:5,l:"https://www.fragrantica.com"},
-
-/* WOMEN */
-{g:"women",u:"party",n:"Good Girl",s:5,l:"https://www.fragrantica.com"},
-{g:"women",u:"party",n:"Black Opium",s:5,l:"https://www.fragrantica.com"},
-{g:"women",u:"date",n:"YSL Libre Intense",s:5,l:"https://www.fragrantica.com"},
-{g:"women",u:"date",n:"Delina",s:5,l:"https://www.fragrantica.com"},
-{g:"women",u:"daily",n:"My Way",s:4,l:"https://www.fragrantica.com"},
-{g:"women",u:"daily",n:"Burberry Her",s:4,l:"https://www.fragrantica.com"},
-{g:"women",u:"night",n:"Kayali Vanilla 28",s:5,l:"https://www.fragrantica.com"},
-{g:"women",u:"night",n:"Alien Goddess",s:4,l:"https://www.fragrantica.com"},
-{g:"women",u:"formal",n:"Miss Dior",s:4,l:"https://www.fragrantica.com"},
-{g:"women",u:"formal",n:"La Vie Est Belle",s:5,l:"https://www.fragrantica.com"},
-
-/* UNISEX */
-{g:"unisex",u:"party",n:"Baccarat Rouge 540",s:5,l:"https://www.fragrantica.com"},
-{g:"unisex",u:"night",n:"Oud for Greatness",s:5,l:"https://www.fragrantica.com"},
-{g:"unisex",u:"daily",n:"Byredo Gypsy Water",s:4,l:"https://www.fragrantica.com"},
-{g:"unisex",u:"formal",n:"Tom Ford Oud Wood",s:5,l:"https://www.fragrantica.com"},
-{g:"unisex",u:"party",n:"Arabians Tonka",s:5,l:"https://www.fragrantica.com"}
+{g:"men",u:"party",n:"Dior Sauvage Elixir",s:5},
+{g:"men",u:"party",n:"Eros Flame",s:4},
+{g:"men",u:"date",n:"Y EDP",s:5},
+{g:"men",u:"date",n:"Stronger With You Intensely",s:5},
+{g:"men",u:"night",n:"Lattafa Asad",s:4},
+{g:"men",u:"daily",n:"Acqua di Giò Profumo",s:4},
+{g:"men",u:"formal",n:"Bleu de Chanel Parfum",s:5},
+{g:"men",u:"night",n:"Le Male Elixir",s:5},
+{g:"women",u:"party",n:"Good Girl",s:5},
+{g:"women",u:"party",n:"Black Opium",s:5},
+{g:"women",u:"date",n:"YSL Libre Intense",s:5},
+{g:"women",u:"date",n:"Delina",s:5},
+{g:"women",u:"daily",n:"My Way",s:4},
+{g:"women",u:"night",n:"Kayali Vanilla 28",s:5},
+{g:"unisex",u:"party",n:"Baccarat Rouge 540",s:5},
+{g:"unisex",u:"night",n:"Oud for Greatness",s:5},
+{g:"unisex",u:"daily",n:"Gypsy Water",s:4},
+{g:"unisex",u:"formal",n:"Oud Wood",s:5}
 ];
 
 function setLanguage(){
- lang=document.getElementById("language").value;
- if(!lang)return;
  document.getElementById("langCard").classList.add("hidden");
- document.getElementById("rankingCard").classList.remove("hidden");
- renderRanking();
-}
-
-function renderRanking(){
- document.getElementById("rankMen").innerHTML =
- rankingMen.map((p,i)=>`<div class="perfume">#${i+1} ${p}</div>`).join("");
- document.getElementById("rankWomen").innerHTML =
- rankingWomen.map((p,i)=>`<div class="perfume">#${i+1} ${p}</div>`).join("");
-}
-
-function goToGender(){
- document.getElementById("rankingCard").classList.add("hidden");
  document.getElementById("genderCard").classList.remove("hidden");
- document.getElementById("tGender").innerText=text[lang]?.g||text.es.g;
 }
 
 function pickGender(g,el){
  gender=g;
- [...el.parentNode.children].forEach(o=>o.classList?.remove("active"));
- el.classList.add("active");
  document.getElementById("genderCard").classList.add("hidden");
  document.getElementById("useCard").classList.remove("hidden");
- document.getElementById("tUse").innerText=text[lang]?.u||text.es.u;
 }
 
 function toggleUse(u,el){
- if(selectedUses.includes(u)){
-  selectedUses=selectedUses.filter(x=>x!==u);
+ if(uses.includes(u)){
+  uses=uses.filter(x=>x!==u);
   el.classList.remove("active");
  }else{
-  selectedUses.push(u);
+  uses.push(u);
   el.classList.add("active");
  }
 }
 
-function filterPerfumes(){
- return perfumes.filter(p=>{
-  if(gender==="women") return (p.g==="women"||p.g==="unisex") && selectedUses.includes(p.u);
-  if(gender==="men") return (p.g==="men"||p.g==="unisex") && selectedUses.includes(p.u);
-  if(gender==="unisex") return p.g==="unisex" && selectedUses.includes(p.u);
- });
-}
-
 function showResults(){
+ filtered = perfumes.filter(p=>{
+  if(gender==="men") return (p.g==="men"||p.g==="unisex") && uses.includes(p.u);
+  if(gender==="women") return (p.g==="women"||p.g==="unisex") && uses.includes(p.u);
+  if(gender==="unisex") return p.g==="unisex" && uses.includes(p.u);
+ });
  index=0;
  document.getElementById("useCard").classList.add("hidden");
  document.getElementById("resultCard").classList.remove("hidden");
- document.getElementById("tResult").innerText=text[lang]?.r||text.es.r;
+ document.getElementById("results").innerHTML="";
  render();
 }
 
 function render(){
- let list=filterPerfumes();
- document.getElementById("results").innerHTML =
- list.slice(index,index+10).map(p=>`
- <div class="perfume">
- <b>${p.n}</b><br>
- <span class="stars">${"★".repeat(p.s)}</span><br>
- <a href="${p.l}" target="_blank">Ver fragancia</a>
- </div>`).join("") || "No hay resultados con esas opciones.";
+ let slice = filtered.slice(index,index+10);
+ slice.forEach(p=>{
+  document.getElementById("results").innerHTML+=`
+  <div class="perfume">
+   <b>${p.n}</b><br>
+   <span class="stars">${"★".repeat(p.s)}</span>
+  </div>`;
+ });
+ if(index+10 >= filtered.length){
+  document.getElementById("moreBtn").style.display="none";
+ }
 }
 
-function more(){index+=10;render()}
-function restart(){location.reload()}
-function backToGender(){
- document.getElementById("useCard").classList.add("hidden");
- document.getElementById("genderCard").classList.remove("hidden");
- selectedUses=[];
+function more(){
+ index+=10;
+ render();
 }
 </script>
+
 </body>
 </html>
