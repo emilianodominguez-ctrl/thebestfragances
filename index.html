@@ -3,158 +3,838 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ScentAI | Luxury Intelligence</title>
+    <title>ScentAI | Luxury Shopping Intelligence</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@200;400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        :root { --gold: #c5a059; --black: #050505; --dark: #0f0f0f; --text: #ffffff; }
+        :root { --gold: #c5a059; --black: #050505; --dark: #0f0f0f; --accent: #1a1a1a; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: var(--black); color: var(--text); font-family: 'Montserrat', sans-serif; line-height: 1.6; }
+        body { background: var(--black); color: #fff; font-family: 'Montserrat', sans-serif; height: 100vh; overflow: hidden; }
 
-        /* HEADER MINIMALISTA */
-        header { 
-            height: 40vh; display: flex; flex-direction: column; align-items: center; justify-content: center;
-            border-bottom: 1px solid #222; text-align: center; background: radial-gradient(circle at center, #1a1a1a 0%, #050505 100%);
-        }
-        h1 { font-family: 'Cinzel'; font-size: 3rem; color: var(--gold); letter-spacing: 12px; font-weight: 400; }
-        .tagline { letter-spacing: 6px; font-size: 0.7rem; color: #666; text-transform: uppercase; margin-top: 10px; }
+        .wrapper { display: flex; height: 100vh; }
 
-        /* BUSCADOR */
-        .search-container { position: sticky; top: 0; z-index: 100; background: rgba(5,5,5,0.9); padding: 25px; backdrop-filter: blur(15px); border-bottom: 1px solid #222; }
-        #searchInput { width: 100%; max-width: 700px; margin: 0 auto; display: block; padding: 18px 30px; border-radius: 0; border: none; border-bottom: 2px solid #222; background: transparent; color: #fff; font-size: 1.1rem; outline: none; transition: 0.3s; font-family: 'Montserrat'; text-align: center; }
-        #searchInput:focus { border-color: var(--gold); }
-
-        /* GRID SIN IMÁGENES (ESTILO ETIQUETA DE LUJO) */
-        .container { padding: 50px 8%; display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 25px; }
-        .card { background: var(--dark); border: 1px solid #1a1a1a; padding: 40px 30px; transition: 0.5s cubic-bezier(0.19, 1, 0.22, 1); position: relative; display: flex; flex-direction: column; justify-content: space-between; min-height: 350px; }
-        .card:hover { background: #111; border-color: var(--gold); transform: translateY(-10px); }
-        .card::before { content: ""; position: absolute; top: 10px; left: 10px; right: 10px; bottom: 10px; border: 1px solid #1a1a1a; pointer-events: none; }
+        /* PANEL IA */
+        .panel-ia { width: 40%; background: var(--dark); border-right: 1px solid #222; display: flex; flex-direction: column; padding: 50px; }
+        .ia-header h1 { font-family: 'Cinzel'; color: var(--gold); letter-spacing: 5px; font-size: 2rem; margin-bottom: 10px; }
+        .ia-header p { color: #555; font-size: 0.6rem; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 40px; }
         
-        .brand { color: var(--gold); font-family: 'Cinzel'; font-size: 0.8rem; letter-spacing: 3px; margin-bottom: 15px; }
-        .name { font-size: 1.6rem; font-weight: 200; margin-bottom: 20px; letter-spacing: 1px; line-height: 1.2; }
-        .vibes-box { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; }
-        .vibe-tag { font-size: 0.6rem; border: 1px solid #333; padding: 4px 10px; text-transform: uppercase; color: #777; letter-spacing: 1px; }
+        #question-container { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+        .question-text { font-size: 1.4rem; font-weight: 200; margin-bottom: 30px; line-height: 1.4; border-left: 2px solid var(--gold); padding-left: 20px; }
         
-        .btn-buy { margin-top: 30px; display: inline-block; padding: 12px; border: 1px solid var(--gold); color: var(--gold); text-decoration: none; font-size: 0.7rem; font-weight: 600; letter-spacing: 2px; text-align: center; transition: 0.3s; }
-        .btn-buy:hover { background: var(--gold); color: #000; }
+        .options-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
+        .opt-btn { background: var(--accent); border: 1px solid #333; color: #fff; padding: 18px; text-align: left; cursor: pointer; transition: 0.3s; font-family: 'Montserrat'; font-size: 0.85rem; letter-spacing: 1px; }
+        .opt-btn:hover { border-color: var(--gold); background: #222; padding-left: 25px; }
 
-        /* IA CHATBOT */
-        #chat-trigger { position: fixed; bottom: 40px; right: 40px; width: 60px; height: 60px; background: transparent; border: 1px solid var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 1000; transition: 0.3s; }
-        #chat-trigger:hover { background: var(--gold); }
-        #chat-trigger i { color: var(--gold); transition: 0.3s; }
-        #chat-trigger:hover i { color: #000; }
+        /* PANEL CATALOGO */
+        .panel-catalog { width: 60%; background: #000; display: flex; flex-direction: column; }
+        .catalog-header { padding: 30px 50px; border-bottom: 1px solid #222; display: flex; justify-content: space-between; align-items: center; }
+        .catalog-header h2 { font-family: 'Cinzel'; font-size: 0.8rem; color: var(--gold); letter-spacing: 2px; }
+        
+        .perfume-list { flex: 1; overflow-y: auto; padding: 40px; display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
+        .p-card { background: var(--dark); border: 1px solid #1a1a1a; padding: 30px; transition: 0.4s; display: flex; flex-direction: column; border-top: 3px solid transparent; }
+        .p-card:hover { border-top-color: var(--gold); background: #111; transform: translateY(-5px); }
+        .p-brand { font-family: 'Cinzel'; color: var(--gold); font-size: 0.65rem; letter-spacing: 2px; margin-bottom: 8px; text-transform: uppercase; }
+        .p-name { font-size: 1.2rem; font-weight: 200; margin-bottom: 20px; min-height: 2.5em; letter-spacing: 1px; }
+        
+        .buy-link { display: block; text-align: center; padding: 12px; border: 1px solid var(--gold); color: var(--gold); text-decoration: none; font-size: 0.7rem; font-weight: 600; letter-spacing: 2px; transition: 0.3s; margin-top: auto; }
+        .buy-link:hover { background: var(--gold); color: #000; }
 
-        #chat-window { position: fixed; bottom: 110px; right: 40px; width: 350px; height: 500px; background: #0a0a0a; border: 1px solid #222; display: none; flex-direction: column; z-index: 1000; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
-        .chat-header { padding: 20px; background: #000; border-bottom: 1px solid #222; font-family: 'Cinzel'; color: var(--gold); font-size: 0.8rem; display: flex; justify-content: space-between; }
-        .chat-body { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; scrollbar-width: thin; }
-        .msg { font-size: 0.85rem; padding: 12px; max-width: 90%; }
-        .ai-msg { border-left: 2px solid var(--gold); background: #111; color: #ccc; }
-        .user-msg { border-right: 2px solid #555; background: #1a1a1a; align-self: flex-end; color: #fff; }
-        .chat-input { padding: 20px; background: #000; border-top: 1px solid #222; display: flex; gap: 10px; }
-        .chat-input input { flex: 1; background: transparent; border: none; border-bottom: 1px solid #333; color: #fff; outline: none; font-size: 0.9rem; }
-        .chat-input button { background: transparent; border: none; color: var(--gold); cursor: pointer; font-size: 1.2rem; }
+        .reset-btn { margin-top: 30px; background: transparent; border: none; color: #444; cursor: pointer; font-size: 0.65rem; letter-spacing: 2px; text-decoration: underline; text-align: left; }
+        .reset-btn:hover { color: #fff; }
 
-        footer { padding: 50px; text-align: center; color: #333; font-size: 0.7rem; letter-spacing: 2px; }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-thumb { background: var(--gold); }
     </style>
 </head>
 <body>
 
-<header>
-    <h1>SCENT AI</h1>
-    <div class="tagline">Curaduría de Fragancias Elite</div>
-</header>
+<div class="wrapper">
+    <section class="panel-ia">
+        <div class="ia-header">
+            <h1>SCENT AI</h1>
+            <p>Profiling & Purchase Engine</p>
+        </div>
+        
+        <div id="question-container">
+            <div class="question-text" id="questionText">¿Para quién es la fragancia?</div>
+            <div class="options-grid" id="optionsGrid"></div>
+            <button class="reset-btn" onclick="resetQuiz()">REINICIAR PROCESO</button>
+        </div>
+    </section>
 
-<div class="search-container">
-    <input type="text" id="searchInput" placeholder="Describe una emoción o marca...">
+    <section class="panel-catalog">
+        <div class="catalog-header">
+            <h2 id="resultTitle">SELECCIÓN RECOMENDADA</h2>
+            <div id="counter" style="font-size: 0.7rem; color: #444;">Esperando perfil...</div>
+        </div>
+        <div class="perfume-list" id="perfumeList"></div>
+    </section>
 </div>
-
-<div class="container" id="perfumeGrid"></div>
-
-<div id="chat-trigger" onclick="toggleChat()"><i class="fas fa-magic"></i></div>
-<div id="chat-window">
-    <div class="chat-header">INTELIGENCIA OLFATIVA <span onclick="toggleChat()" style="cursor:pointer">&times;</span></div>
-    <div class="chat-body" id="chatContent">
-        <div class="msg ai-msg">Soy ScentAI. ¿Deseas proyectar poder, seducción o frescura hoy?</div>
-    </div>
-    <div class="chat-input">
-        <input type="text" id="chatInput" placeholder="Escribe tu deseo...">
-        <button onclick="sendMessage()"><i class="fas fa-chevron-right"></i></button>
-    </div>
-</div>
-
-<footer>&copy; 2026 SCENTAI ELITE BEYOND FRAGRANCE</footer>
 
 <script>
-    // Aquí puedes pegar los 400 perfumes que te pasé. He dejado 10 de ejemplo:
+    // BLOQUE 1: 100 FRAGANCIAS CON LINK DE COMPRA
     const perfumes = [
-        { brand: "Maison Francis Kurkdjian", name: "Baccarat Rouge 540", vibes: ["Lujo", "Éxito", "Dulce"] },
-        { brand: "Creed", name: "Aventus", vibes: ["Poder", "Éxito", "Frutal"] },
-        { brand: "Tom Ford", name: "Tobacco Vanille", vibes: ["Noche", "Seducción", "Vainilla"] },
-        { brand: "Dior", name: "Sauvage Elixir", vibes: ["Poder", "Intenso", "Noche"] },
-        { brand: "Parfums de Marly", name: "Layton", vibes: ["Elegancia", "Lujo", "Cita"] },
-        { brand: "Kilian", name: "Angels' Share", vibes: ["Dulce", "Licor", "Noche"] },
-        { brand: "Louis Vuitton", name: "Ombre Nomade", vibes: ["Poder", "Incienso", "Cuero"] },
-        { brand: "Xerjoff", name: "Naxos", vibes: ["Miel", "Tabaco", "Elegancia"] },
-        { brand: "Byredo", name: "Blanche", vibes: ["Limpio", "Minimalista", "Día"] },
-        { brand: "Nishane", name: "Ani", vibes: ["Vainilla", "Lujo", "Poder"] }
-        // ... Agrega aquí el resto de los 400
+        // HOMBRE - NOCHE - PODER
+        { brand: "Creed", name: "Aventus", gender: "Hombre", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Creed+Aventus+Perfume" },
+        { brand: "Dior", name: "Sauvage Elixir", gender: "Hombre", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Dior+Sauvage+Elixir" },
+        { brand: "Louis Vuitton", name: "Ombre Nomade", gender: "Hombre", occ: "Noche", style: "Poder", url: "https://www.fragrancenet.com/search/ombre-nomade" },
+        { brand: "Amouage", name: "Interlude Man", gender: "Hombre", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Amouage+Interlude+Man" },
+        
+        // HOMBRE - NOCHE - SEDUCCION
+        { brand: "Tom Ford", name: "Tobacco Vanille", gender: "Hombre", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Tom+Ford+Tobacco+Vanille" },
+        { brand: "Parfums de Marly", name: "Layton", gender: "Hombre", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Parfums+de+Marly+Layton" },
+        { brand: "JPG", name: "Le Male Elixir", gender: "Hombre", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Jean+Paul+Gaultier+Le+Male+Elixir" },
+
+        // MUJER - NOCHE - PODER
+        { brand: "Chanel", name: "Coco Mademoiselle", gender: "Mujer", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Chanel+Coco+Mademoiselle" },
+        { brand: "YSL", name: "Libre Le Parfum", gender: "Mujer", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=YSL+Libre+Le+Parfum" },
+
+        // MUJER - NOCHE - SEDUCCION
+        { brand: "Kilian Paris", name: "Good Girl Gone Bad", gender: "Mujer", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Kilian+Good+Girl+Gone+Bad" },
+        { brand: "Carolina Herrera", name: "Good Girl", gender: "Mujer", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Carolina+Herrera+Good+Girl" },
+
+        // HOMBRE - DIA - FRESCO
+        { brand: "Prada", name: "L'Homme", gender: "Hombre", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Prada+L%27Homme" },
+        { brand: "Acqua di Gio", name: "Profondo", gender: "Hombre", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Acqua+di+Gio+Profondo" }
+        // --- CONTINUACIÓN BLOQUE 2 (Heredando el estilo anterior) ---
+        { brand: "Afnan", name: "9PM", gender: "Hombre", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Afnan+9PM" },
+        { brand: "Lattafa", name: "Khamrah", gender: "Unisex", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Lattafa+Khamrah" },
+        { brand: "Lattafa", name: "Asad", gender: "Hombre", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Lattafa+Asad" },
+        { brand: "Xerjoff", name: "Erba Pura", gender: "Unisex", occ: "Día", style: "Poder", url: "https://www.amazon.com/s?k=Xerjoff+Erba+Pura" },
+        { brand: "Nishane", name: "Ani", gender: "Unisex", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Nishane+Ani" },
+        { brand: "Roja Parfums", name: "Elysium", gender: "Hombre", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Roja+Elysium" },
+        { brand: "Tiziana Terenzi", name: "Kirke", gender: "Unisex", occ: "Día", style: "Poder", url: "https://www.amazon.com/s?k=Tiziana+Terenzi+Kirke" },
+        { brand: "Mancera", name: "Cedrat Boise", gender: "Unisex", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Mancera+Cedrat+Boise" },
+        { brand: "Montale", name: "Arabians Tonka", gender: "Unisex", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Montale+Arabians+Tonka" },
+        { brand: "Paco Rabanne", name: "Phantom", gender: "Hombre", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Paco+Rabanne+Phantom" },
+        { brand: "Carolina Herrera", name: "Bad Boy Cobalt", gender: "Hombre", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Bad+Boy+Cobalt" },
+        { brand: "Giorgio Armani", name: "My Way", gender: "Mujer", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Armani+My+Way" },
+        { brand: "Prada", name: "Paradoxe", gender: "Mujer", occ: "Día", style: "Seducción", url: "https://www.amazon.com/s?k=Prada+Paradoxe" },
+        { brand: "Mugler", name: "Alien", gender: "Mujer", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Mugler+Alien" },
+        { brand: "Mugler", name: "Angel", gender: "Mujer", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Mugler+Angel" },
+        { brand: "Valentino", name: "Born In Roma Donna", gender: "Mujer", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Valentino+Born+In+Roma+Donna" },
+        { brand: "Narciso Rodriguez", name: "For Her Pure Musc", gender: "Mujer", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Narciso+Rodriguez+Pure+Musc" },
+        { brand: "Zarkoperfume", name: "The Muse", gender: "Unisex", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Zarkoperfume+The+Muse" },
+        { brand: "Guerlain", name: "Shalimar", gender: "Mujer", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Guerlain+Shalimar" },
+        { brand: "Guerlain", name: "Mon Guerlain", gender: "Mujer", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Mon+Guerlain" },
+        { brand: "Jean Paul Gaultier", name: "La Belle Le Parfum", gender: "Mujer", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=JPG+La+Belle+Le+Parfum" },
+        { brand: "Burberry", name: "Her Eau de Parfum", gender: "Mujer", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Burberry+Her" },
+        { brand: "Kayali", name: "Vanilla 28", gender: "Mujer", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Kayali+Vanilla+28" },
+        { brand: "Dior", name: "Miss Dior Blooming Bouquet", gender: "Mujer", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Miss+Dior+Blooming+Bouquet" },
+        { brand: "Viktor&Rolf", name: "Spicebomb Night Vision", gender: "Hombre", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Spicebomb+Night+Vision" },
+        { brand: "Dolce & Gabbana", name: "The One For Men", gender: "Hombre", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=D%26G+The+One+For+Men" },
+        { brand: "Issey Miyake", name: "L'Eau d'Issey", gender: "Hombre", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Issey+Miyake+L+Eau+d+Issey" },
+        { brand: "Bvlgari", name: "Tygar", gender: "Hombre", occ: "Día", style: "Poder", url: "https://www.amazon.com/s?k=Bvlgari+Tygar" },
+        { brand: "Louis Vuitton", name: "Imagination", gender: "Hombre", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Louis+Vuitton+Imagination" },
+        { brand: "Louis Vuitton", name: "Afternoon Swim", gender: "Unisex", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Louis+Vuitton+Afternoon+Swim" },
+        { brand: "Creed", name: "Silver Mountain Water", gender: "Unisex", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Creed+Silver+Mountain+Water" },
+        { brand: "Creed", name: "Green Irish Tweed", gender: "Hombre", occ: "Día", style: "Poder", url: "https://www.amazon.com/s?k=Creed+Green+Irish+Tweed" },
+        { brand: "Amouage", name: "Reflection Man", gender: "Hombre", occ: "Día", style: "Poder", url: "https://www.amazon.com/s?k=Amouage+Reflection+Man" },
+        { brand: "Paco Rabanne", name: "1 Million Elixir", gender: "Hombre", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=1+Million+Elixir" },
+        { brand: "Azzaro", name: "Wanted by Night", gender: "Hombre", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Azzaro+Wanted+by+Night" },
+        { brand: "Dior", name: "Fahrenheit", gender: "Hombre", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Dior+Fahrenheit" },
+        { brand: "Bentley", name: "For Men Intense", gender: "Hombre", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Bentley+For+Men+Intense" },
+        { brand: "Lalique", name: "Encre Noire", gender: "Hombre", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Lalique+Encre+Noire" },
+        { brand: "Versace", name: "Eros Flame", gender: "Hombre", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Versace+Eros+Flame" },
+        { brand: "Versace", name: "Dylan Blue", gender: "Hombre", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Versace+Dylan+Blue" },
+        { brand: "YSL", name: "Y Eau de Parfum", gender: "Hombre", occ: "Día", style: "Poder", url: "https://www.amazon.com/s?k=YSL+Y+EDP" },
+        { brand: "YSL", name: "Myslf", gender: "Hombre", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=YSL+Myslf" },
+        { brand: "Chanel", name: "Egoiste Platinum", gender: "Hombre", occ: "Día", style: "Poder", url: "https://www.amazon.com/s?k=Chanel+Egoiste+Platinum" },
+        { brand: "Cartier", name: "Declaration", gender: "Hombre", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Cartier+Declaration" },
+        { brand: "Hermès", name: "H24", gender: "Hombre", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Hermes+H24" },
+        { brand: "Acqua di Parma", name: "Fico di Amalfi", gender: "Unisex", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Fico+di+Amalfi" },
+        { brand: "Tom Ford", name: "Ombré Leather", gender: "Unisex", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Tom+Ford+Ombre+Leather" },
+        { brand: "Tom Ford", name: "Costa Azzurra", gender: "Unisex", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Tom+Ford+Costa+Azzurra" },
+        { brand: "Tom Ford", name: "Black Orchid", gender: "Unisex", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Tom+Ford+Black+Orchid" },
+        { brand: "Byredo", name: "Mojave Ghost", gender: "Unisex", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Byredo+Mojave+Ghost" },
+        { brand: "Byredo", name: "Bal d'Afrique", gender: "Unisex", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Byredo+Bal+d+Afrique" },
+        { brand: "Le Labo", name: "The Noir 29", gender: "Unisex", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Le+Labo+The+Noir+29" },
+        { brand: "Le Labo", name: "Another 13", gender: "Unisex", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Le+Labo+Another+13" },
+        { brand: "Maison Margiela", name: "Jazz Club", gender: "Hombre", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Replica+Jazz+Club" },
+        { brand: "Maison Margiela", name: "By the Fireplace", gender: "Unisex", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Replica+By+the+Fireplace" },
+        { brand: "Kilian Paris", name: "Love, Don't Be Shy", gender: "Mujer", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Kilian+Love+Don+t+Be+Shy" },
+        { brand: "Kilian Paris", name: "Moonlight in Heaven", gender: "Unisex", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Kilian+Moonlight+in+Heaven" },
+        { brand: "Penhaligon's", name: "The Tragedy of Lord George", gender: "Hombre", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Penhaligon+Lord+George" },
+        { brand: "Penhaligon's", name: "Luna", gender: "Mujer", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Penhaligon+Luna" },
+        { brand: "Frederic Malle", name: "Portrait of a Lady", gender: "Mujer", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Frederic+Malle+Portrait+of+a+Lady" },
+        { brand: "Frederic Malle", name: "Musc Ravageur", gender: "Unisex", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Frederic+Malle+Musc+Ravageur" },
+        { brand: "Jo Malone", name: "English Pear & Freesia", gender: "Mujer", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Jo+Malone+English+Pear" },
+        { brand: "Jo Malone", name: "Pomegranate Noir", gender: "Unisex", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Jo+Malone+Pomegranate+Noir" },
+        { brand: "Diptyque", name: "Orphéon", gender: "Unisex", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Diptyque+Orpheon" },
+        { brand: "Diptyque", name: "Do Son", gender: "Mujer", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Diptyque+Do+Son" },
+        { brand: "Initio", name: "Rehab", gender: "Unisex", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Initio+Rehab" },
+        { brand: "Initio", name: "Absolute Aphrodisiac", gender: "Unisex", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Initio+Absolute+Aphrodisiac" },
+        { brand: "Xerjoff", name: "Alexandria II", gender: "Unisex", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Xerjoff+Alexandria+II" },
+        { brand: "Xerjoff", name: "Casamorati Lira", gender: "Mujer", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Xerjoff+Lira" },
+        { brand: "Nishane", name: "Wulong Cha", gender: "Unisex", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Nishane+Wulong+Cha" },
+        { brand: "Nishane", name: "Fan Your Flames", gender: "Unisex", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Nishane+Fan+Your+Flames" },
+        { brand: "Vilhelm Parfumerie", name: "Poets of Berlin", gender: "Unisex", occ: "Día", style: "Seducción", url: "https://www.amazon.com/s?k=Vilhelm+Poets+of+Berlin" },
+        { brand: "Vilhelm Parfumerie", name: "Morning Chess", gender: "Hombre", occ: "Día", style: "Poder", url: "https://www.amazon.com/s?k=Vilhelm+Morning+Chess" },
+        { brand: "Tiziana Terenzi", name: "Laudano Nero", gender: "Unisex", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Tiziana+Terenzi+Laudano+Nero" },
+        { brand: "Mancera", name: "Red Tobacco", gender: "Unisex", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Mancera+Red+Tobacco" },
+        { brand: "Montale", name: "Intense Cafe", gender: "Unisex", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Montale+Intense+Cafe" }
+    // --- BLOQUE 4 (301-400) AUDITADO ---
+        
+        // MUJER - DÍA - FRESCO
+        { brand: "Chanel", name: "Chance Eau Fraîche", gender: "Mujer", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Chanel+Chance+Eau+Fraiche" },
+        { brand: "Dior", name: "Miss Dior Rose N'Roses", gender: "Mujer", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Miss+Dior+Rose+n+Roses" },
+        { brand: "Hermès", name: "Un Jardin sur le Nil", gender: "Unisex", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Hermes+Un+Jardin+sur+le+Nil" },
+        { brand: "Gucci", name: "Bloom", gender: "Mujer", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Gucci+Bloom+Eau+de+Parfum" },
+        { brand: "Estée Lauder", name: "Pleasures", gender: "Mujer", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Estee+Lauder+Pleasures" },
+        { brand: "Clinique", name: "Happy", gender: "Mujer", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Clinique+Happy+Perfume" },
+        { brand: "Elizabeth Arden", name: "Green Tea", gender: "Mujer", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Elizabeth+Arden+Green+Tea" },
+        { brand: "Issey Miyake", name: "L'Eau d'Issey Mujer", gender: "Mujer", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Issey+Miyake+for+Women" },
+        { brand: "Clean Reserve", name: "Rain", gender: "Unisex", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Clean+Reserve+Rain" },
+        { brand: "Guerlain", name: "Aqua Allegoria Mandarine Basilic", gender: "Mujer", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Guerlain+Aqua+Allegoria+Mandarine+Basilic" },
+
+        // MUJER - NOCHE - PODER
+        { brand: "Tom Ford", name: "Velvet Orchid", gender: "Mujer", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Tom+Ford+Velvet+Orchid" },
+        { brand: "Dior", name: "Hypnotic Poison", gender: "Mujer", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Dior+Hypnotic+Poison" },
+        { brand: "Givenchy", name: "L'Interdit EDP", gender: "Mujer", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Givenchy+L+Interdit" },
+        { brand: "Alexander McQueen", name: "McQueen Parfum", gender: "Mujer", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Alexander+McQueen+Parfum" },
+        { brand: "Sisley", name: "Eau du Soir", gender: "Mujer", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Sisley+Eau+du+Soir" },
+        { brand: "Cartier", name: "La Panthère", gender: "Mujer", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Cartier+La+Panthere" },
+        { brand: "Robert Piguet", name: "Fracas", gender: "Mujer", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Robert+Piguet+Fracas" },
+        { brand: "Frederic Malle", name: "Carnal Flower", gender: "Unisex", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Frederic+Malle+Carnal+Flower" },
+
+        // MUJER - NOCHE - SEDUCCIÓN
+        { brand: "Lancôme", name: "La Vie Est Belle Intensement", gender: "Mujer", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=La+Vie+Est+Belle+Intensement" },
+        { brand: "Giorgio Armani", name: "Sì Passione", gender: "Mujer", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Armani+Si+Passione" },
+        { brand: "Paco Rabanne", name: "Lady Million", gender: "Mujer", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Lady+Million+Paco+Rabanne" },
+        { brand: "Viktor&Rolf", name: "Flowerbomb Ruby Orchid", gender: "Mujer", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Flowerbomb+Ruby+Orchid" },
+        { brand: "Jean Paul Gaultier", name: "Classique", gender: "Mujer", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=JPG+Classique" },
+        { brand: "Narciso Rodriguez", name: "Musc Noir Rose", gender: "Mujer", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Narciso+Rodriguez+Musc+Noir+Rose" },
+        { brand: "Juicy Couture", name: "Viva La Juicy Gold Couture", gender: "Mujer", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Viva+La+Juicy+Gold+Couture" },
+        { brand: "Aquolina", name: "Pink Sugar", gender: "Mujer", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Aquolina+Pink+Sugar" },
+
+        // HOMBRE - DÍA - PODER (CLÁSICOS)
+        { brand: "Ralph Lauren", name: "Polo Blue", gender: "Hombre", occ: "Día", style: "Poder", url: "https://www.amazon.com/s?k=Polo+Blue+Ralph+Lauren" },
+        { brand: "Hugo Boss", name: "Boss Bottled", gender: "Hombre", occ: "Día", style: "Poder", url: "https://www.amazon.com/s?k=Hugo+Boss+Bottled" },
+        { brand: "Guy Laroche", name: "Drakkar Noir", gender: "Hombre", occ: "Día", style: "Poder", url: "https://www.amazon.com/s?k=Drakkar+Noir" },
+        { brand: "Azzaro", name: "Pour Homme", gender: "Hombre", occ: "Día", style: "Poder", url: "https://www.amazon.com/s?k=Azzaro+Pour+Homme" },
+        { brand: "Paco Rabanne", name: "Pour Homme", gender: "Hombre", occ: "Día", style: "Poder", url: "https://www.amazon.com/s?k=Paco+Rabanne+Pour+Homme" },
+        { brand: "Dolce & Gabbana", name: "Pour Homme", gender: "Hombre", occ: "Día", style: "Poder", url: "https://www.amazon.com/s?k=Dolce+Gabbana+Pour+Homme" },
+
+        // ÁRABES Y CLONES POPULARES (UNISEX/HOMBRE)
+        { brand: "Armaf", name: "Club de Nuit Milestone", gender: "Unisex", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Club+de+Nuit+Milestone" },
+        { brand: "Armaf", name: "Club de Nuit Sillage", gender: "Unisex", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Club+de+Nuit+Sillage" },
+        { brand: "Lattafa", name: "Ejaazi", gender: "Hombre", occ: "Día", style: "Poder", url: "https://www.amazon.com/s?k=Lattafa+Ejaazi" },
+        { brand: "Lattafa", name: "Najdia", gender: "Hombre", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Lattafa+Najdia" },
+        { brand: "Afnan", name: "Modest Une", gender: "Hombre", occ: "Día", style: "Poder", url: "https://www.amazon.com/s?k=Afnan+Modest+Une" },
+        { brand: "Al Haramain", name: "L'Aventure Knight", gender: "Hombre", occ: "Día", style: "Poder", url: "https://www.amazon.com/s?k=L+Aventure+Knight" },
+        { brand: "Rasasi", name: "Fattan", gender: "Hombre", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Rasasi+Fattan" },
+        { brand: "Maison Alhambra", name: "Porto Neroli", gender: "Unisex", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Maison+Alhambra+Porto+Neroli" },
+        { brand: "Maison Alhambra", name: "Tobacco Touch", gender: "Unisex", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Maison+Alhambra+Tobacco+Touch" },
+        { brand: "Maison Alhambra", name: "Lovely Cherie", gender: "Unisex", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Maison+Alhambra+Lovely+Cherie" },
+
+        // CONTINUACIÓN HASTA 400 (DISEÑADOR VARIADO)
+        { brand: "Lacoste", name: "L.12.12 Noir", gender: "Hombre", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Lacoste+L1212+Noir" },
+        { brand: "Coach", name: "Blue", gender: "Hombre", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Coach+Blue+Men" },
+        { brand: "Montblanc", name: "Legend Red", gender: "Hombre", occ: "Día", style: "Poder", url: "https://www.amazon.com/s?k=Montblanc+Legend+Red" },
+        { brand: "Hugo Boss", name: "Boss The Scent Magnetic", gender: "Hombre", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Boss+The+Scent+Magnetic" },
+        { brand: "Diesel", name: "Only The Brave", gender: "Hombre", occ: "Día", style: "Poder", url: "https://www.amazon.com/s?k=Diesel+Only+The+Brave" },
+        { brand: "Diesel", name: "Fuel for Life", gender: "Hombre", occ: "Día", style: "Seducción", url: "https://www.amazon.com/s?k=Diesel+Fuel+for+Life" },
+        { brand: "Kenneth Cole", name: "Mankind Hero", gender: "Hombre", occ: "Día", style: "Poder", url: "https://www.amazon.com/s?k=Kenneth+Cole+Mankind+Hero" },
+        { brand: "Versace", name: "Blue Jeans", gender: "Hombre", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Versace+Blue+Jeans" },
+        { brand: "Carolina Herrera", name: "CH Men Privé", gender: "Hombre", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=CH+Men+Prive" },
+        { brand: "Dunhill", name: "Desire Red", gender: "Hombre", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Dunhill+Desire+Red" },
+        { brand: "Joop!", name: "Homme", gender: "Hombre", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Joop+Homme" },
+        { brand: "Nikolas", name: "Sculpture", gender: "Hombre", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Nikolas+Sculpture+Perfume" },
+        { brand: "Halloween", name: "Man X", gender: "Hombre", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Halloween+Man+X" },
+        { brand: "Halloween", name: "Man Hero", gender: "Hombre", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Halloween+Man+Hero" },
+        { brand: "Boucheron", name: "Quatre", gender: "Hombre", occ: "Día", style: "Poder", url: "https://www.amazon.com/s?k=Boucheron+Quatre+Men" },
+        { brand: "Bentley", name: "For Men Azure", gender: "Hombre", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Bentley+For+Men+Azure" },
+        { brand: "Lalique", name: "L'Insoumis", gender: "Hombre", occ: "Día", style: "Poder", url: "https://www.amazon.com/s?k=Lalique+L+Insoumis" },
+        { brand: "Jaguar", name: "Classic Gold", gender: "Hombre", occ: "Día", style: "Seducción", url: "https://www.amazon.com/s?k=Jaguar+Classic+Gold" },
+        { brand: "Perry Ellis", name: "360 Red", gender: "Hombre", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Perry+Ellis+360+Red" },
+        { brand: "Zlatan Ibrahimovic", name: "Myth Wood", gender: "Hombre", occ: "Día", style: "Poder", url: "https://www.amazon.com/s?k=Zlatan+Myth+Wood" },
+        { brand: "Police", name: "To Be The King", gender: "Hombre", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Police+To+Be+The+King" },
+        { brand: "Ted Lapidus", name: "Lapidus Pour Homme", gender: "Hombre", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Lapidus+Pour+Homme" },
+        { brand: "Oscar de la Renta", name: "Pour Lui", gender: "Hombre", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Oscar+de+la+Renta+Pour+Lui" },
+        { brand: "Aramis", name: "Classic", gender: "Hombre", occ: "Día", style: "Poder", url: "https://www.amazon.com/s?k=Aramis+Classic+Perfume" },
+        { brand: "Burberry", name: "London for Men", gender: "Hombre", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Burberry+London+Men" },
+        { brand: "Burberry", name: "Brit for Men", gender: "Hombre", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Burberry+Brit+Men" },
+        { brand: "Salvatore Ferragamo", name: "F Black", gender: "Hombre", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Ferragamo+F+Black" },
+        { brand: "Salvatore Ferragamo", name: "Acqua Essenziale", gender: "Hombre", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Ferragamo+Acqua+Essenziale" },
+        { brand: "Ermenegildo Zegna", name: "Forte", gender: "Hombre", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Zegna+Forte" },
+        { brand: "Vera Wang", name: "For Men", gender: "Hombre", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Vera+Wang+Men+Perfume" },
+        { brand: "Moschino", name: "Toy Boy", gender: "Hombre", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Moschino+Toy+Boy" },
+        { brand: "Moschino", name: "Uomo?", gender: "Hombre", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Moschino+Uomo" },
+        { brand: "Karl Lagerfeld", name: "Bois de Vetiver", gender: "Hombre", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Karl+Lagerfeld+Bois+de+Vetiver" },
+        { brand: "Cerruti", name: "1881", gender: "Hombre", occ: "Día", style: "Poder", url: "https://www.amazon.com/s?k=Cerruti+1881+Men" },
+        { brand: "Rochas", name: "Rochas Man", gender: "Hombre", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Rochas+Man+Perfume" },
+        { brand: "Elizabeth & James", name: "Nirvana Black", gender: "Unisex", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Nirvana+Black+Perfume" },
+        { brand: "Elizabeth & James", name: "Nirvana White", gender: "Unisex", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Nirvana+White+Perfume" },
+        { brand: "Banana Republic", name: "78 Vintage Green", gender: "Unisex", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Banana+Republic+78+Vintage+Green" },
+        { brand: "Banana Republic", name: "Dark Cherry & Amber", gender: "Unisex", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Banana+Republic+Dark+Cherry+Amber" },
+        { brand: "Commodity", name: "Milk", gender: "Unisex", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Commodity+Milk+Perfume" },
+        { brand: "Commodity", name: "Bergamot", gender: "Unisex", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Commodity+Bergamot" },
+        { brand: "Phlur", name: "Missing Person", gender: "Unisex", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Phlur+Missing+Person" },
+        { brand: "Glossier", name: "You", gender: "Unisex", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Glossier+You" },
+        { brand: "Juliette Has A Gun", name: "Not A Perfume", gender: "Mujer", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Juliette+Has+A+Gun+Not+A+Perfume" },
+        { brand: "Juliette Has A Gun", name: "Lust for Sun", gender: "Mujer", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Juliette+Has+A+Gun+Lust+for+Sun" },
+        { brand: "By Rosie Jane", name: "Leila Lou", gender: "Mujer", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=By+Rosie+Jane+Leila+Lou" },
+        { brand: "Nest New York", name: "Indigo", gender: "Mujer", occ: "Día", style: "Poder", url: "https://www.amazon.com/s?k=Nest+New+York+Indigo" },
+        { brand: "Nest New York", name: "Wild Poppy", gender: "Mujer", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Nest+New+York+Wild+Poppy" },
+        { brand: "Clean Reserve", name: "Skin", gender: "Unisex", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Clean+Reserve+Skin" },
+        { brand: "Skylar", name: "Salt Air", gender: "Unisex", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Skylar+Salt+Air" }
+    // --- BLOQUE 5 (401-500) ---
+        { brand: "Tom Ford", name: "Soleil Blanc", gender: "Unisex", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Tom+Ford+Soleil+Blanc" },
+        { brand: "Tom Ford", name: "Tobacco Oud", gender: "Unisex", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Tom+Ford+Tobacco+Oud" },
+        { brand: "Maison Alhambra", name: "Kismet Angel", gender: "Unisex", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Maison+Alhambra+Kismet+Angel" },
+        { brand: "Maison Alhambra", name: "The Tux", gender: "Hombre", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Maison+Alhambra+The+Tux" },
+        { brand: "Lattafa", name: "Pride Ishq Al Shuyukh Gold", gender: "Unisex", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Lattafa+Ishq+Al+Shuyukh+Gold" },
+        { brand: "Afnan", name: "Rare Carbon", gender: "Hombre", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Afnan+Rare+Carbon" },
+        { brand: "Armaf", name: "Club de Nuit White Imperial", gender: "Mujer", occ: "Día", style: "Poder", url: "https://www.amazon.com/s?k=Club+de+Nuit+White+Imperial" },
+        { brand: "Parfums de Marly", name: "Haltane", gender: "Hombre", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Parfums+de+Marly+Haltane" },
+        { brand: "Parfums de Marly", name: "Athalia", gender: "Mujer", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Parfums+de+Marly+Athalia" },
+        { brand: "Initio", name: "Narcotic Delight", gender: "Unisex", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Initio+Narcotic+Delight" },
+        { brand: "Xerjoff", name: "Accento", gender: "Unisex", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Xerjoff+Accento" },
+        { brand: "Nishane", name: "Hundred Silent Ways", gender: "Unisex", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Nishane+Hundred+Silent+Ways" },
+        { brand: "Roja Parfums", name: "Oceania", gender: "Unisex", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Roja+Oceania" },
+        { brand: "Amouage", name: "Guidance", gender: "Mujer", occ: "Día", style: "Poder", url: "https://www.amazon.com/s?k=Amouage+Guidance" },
+        { brand: "Amouage", name: "Enclave", gender: "Unisex", occ: "Noche", style: "Fresco", url: "https://www.amazon.com/s?k=Amouage+Enclave" },
+        { brand: "Dior", name: "Gris Dior", gender: "Unisex", occ: "Día", style: "Poder", url: "https://www.amazon.com/s?k=Dior+Gris+Dior" },
+        { brand: "Dior", name: "Bois d'Argent", gender: "Unisex", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Dior+Bois+d+Argent" },
+        { brand: "Chanel", name: "Le Lion", gender: "Unisex", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Chanel+Le+Lion" },
+        { brand: "Chanel", name: "Sycomore", gender: "Unisex", occ: "Día", style: "Poder", url: "https://www.amazon.com/s?k=Chanel+Sycomore" },
+        { brand: "YSL", name: "Babycat", gender: "Unisex", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=YSL+Babycat" },
+        { brand: "Giorgio Armani", name: "Bois d'Encens", gender: "Unisex", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Armani+Prive+Bois+d+Encens" },
+        { brand: "Bvlgari", name: "Orom", gender: "Hombre", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Bvlgari+Orom" },
+        { brand: "Bvlgari", name: "Falconer", gender: "Hombre", occ: "Día", style: "Poder", url: "https://www.amazon.com/s?k=Bvlgari+Falconer" },
+        { brand: "Louis Vuitton", name: "L'Immensité", gender: "Hombre", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Louis+Vuitton+L+Immensite" },
+        { brand: "Louis Vuitton", name: "Matière Noire", gender: "Mujer", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Louis+Vuitton+Matiere+Noire" },
+        { brand: "Gucci", name: "The Voice of the Snake", gender: "Unisex", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Gucci+The+Voice+of+the+Snake" },
+        { brand: "Prada", name: "Infusion d'Iris", gender: "Mujer", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Prada+Infusion+d+Iris" },
+        { brand: "Prada", name: "Luna Rossa Ocean", gender: "Hombre", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Prada+Luna+Rossa+Ocean" },
+        { brand: "Valentino", name: "Born In Roma Yellow Dream", gender: "Hombre", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Valentino+Yellow+Dream+Men" },
+        { brand: "Versace", name: "Crystal Noir", gender: "Mujer", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Versace+Crystal+Noir" },
+        { brand: "Versace", name: "Bright Crystal Intense", gender: "Mujer", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Versace+Bright+Crystal+Intense" },
+        { brand: "D&G", name: "Devotion", gender: "Mujer", occ: "Día", style: "Seducción", url: "https://www.amazon.com/s?k=DG+Devotion+Perfume" },
+        { brand: "D&G", name: "K by Dolce&Gabbana EDP", gender: "Hombre", occ: "Día", style: "Poder", url: "https://www.amazon.com/s?k=DG+K+Eau+de+Parfum" },
+        { brand: "Carolina Herrera", name: "212 VIP Black", gender: "Hombre", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=212+VIP+Black" },
+        { brand: "Carolina Herrera", name: "Very Good Girl", gender: "Mujer", occ: "Día", style: "Seducción", url: "https://www.amazon.com/s?k=Very+Good+Girl+Perfume" },
+        { brand: "Paco Rabanne", name: "1 Million Royal", gender: "Hombre", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=1+Million+Royal" },
+        { brand: "Paco Rabanne", name: "Fame", gender: "Mujer", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Paco+Rabanne+Fame" },
+        { brand: "Jean Paul Gaultier", name: "Le Beau Le Parfum", gender: "Hombre", occ: "Día", style: "Seducción", url: "https://www.amazon.com/s?k=JPG+Le+Beau+Le+Parfum" },
+        { brand: "Jean Paul Gaultier", name: "Gaultier Divine", gender: "Mujer", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=JPG+Divine" },
+        { brand: "Viktor&Rolf", name: "Spicebomb Infrared", gender: "Hombre", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Spicebomb+Infrared" },
+        { brand: "Givenchy", name: "Gentleman Society", gender: "Hombre", occ: "Día", style: "Poder", url: "https://www.amazon.com/s?k=Givenchy+Gentleman+Society" },
+        { brand: "Burberry", name: "Goddess", gender: "Mujer", occ: "Día", style: "Seducción", url: "https://www.amazon.com/s?k=Burberry+Goddess" },
+        { brand: "Burberry", name: "Hero EDP", gender: "Hombre", occ: "Día", style: "Poder", url: "https://www.amazon.com/s?k=Burberry+Hero+EDP" },
+        { brand: "YSL", name: "Libre Platinum", gender: "Mujer", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=YSL+Libre+Platinum" },
+        { brand: "Armani", name: "Acqua di Gio Parfum", gender: "Hombre", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Acqua+di+Gio+Parfum" },
+        { brand: "Boss", name: "The Scent Elixir", gender: "Hombre", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Boss+The+Scent+Elixir" },
+        { brand: "Boss", name: "Alive", gender: "Mujer", occ: "Día", style: "Poder", url: "https://www.amazon.com/s?k=Boss+Alive" },
+        { brand: "Lancome", name: "La Vie Est Belle Elixir", gender: "Mujer", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=La+Vie+Est+Belle+Elixir" },
+        { brand: "Mugler", name: "Angel Elixir", gender: "Mujer", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Mugler+Angel+Elixir" },
+        { brand: "Mugler", name: "Alien Goddess", gender: "Mujer", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Mugler+Alien+Goddess" },
+
+        // --- BLOQUE 6 (501-600) ---
+        { brand: "Narciso Rodriguez", name: "All of Me", gender: "Mujer", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Narciso+Rodriguez+All+of+Me" },
+        { brand: "Narciso Rodriguez", name: "For Him Bleu Noir EDP", gender: "Hombre", occ: "Día", style: "Poder", url: "https://www.amazon.com/s?k=Bleu+Noir+EDP" },
+        { brand: "Issey Miyake", name: "Le Sel d'Issey", gender: "Hombre", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Le+Sel+d+Issey" },
+        { brand: "Issey Miyake", name: "L'Eau d'Issey Pivoine", gender: "Mujer", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Issey+Miyake+Pivoine" },
+        { brand: "Hermes", name: "Terre d'Hermes Eau Givree", gender: "Hombre", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Terre+d+Hermes+Eau+Givree" },
+        { brand: "Hermes", name: "Twilly d'Hermes", gender: "Mujer", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Twilly+d+Hermes" },
+        { brand: "Cartier", name: "Declaration Haute Fraicheur", gender: "Hombre", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Declaration+Haute+Fraicheur" },
+        { brand: "Bvlgari", name: "Man Rain Essence", gender: "Hombre", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Bvlgari+Man+Rain+Essence" },
+        { brand: "Bvlgari", name: "Omnia Crystalline", gender: "Mujer", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Bvlgari+Omnia+Crystalline" },
+        { brand: "Montblanc", name: "Explorer Platinum", gender: "Hombre", occ: "Día", style: "Poder", url: "https://www.amazon.com/s?k=Montblanc+Explorer+Platinum" },
+        { brand: "Montblanc", name: "Signature", gender: "Mujer", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Montblanc+Signature+Mujer" },
+        { brand: "Coach", name: "For Men Green", gender: "Hombre", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Coach+For+Men+Green" },
+        { brand: "Coach", name: "Love", gender: "Mujer", occ: "Día", style: "Seducción", url: "https://www.amazon.com/s?k=Coach+Love+Perfume" },
+        { brand: "Jimmy Choo", name: "I Want Choo Forever", gender: "Mujer", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=I+Want+Choo+Forever" },
+        { brand: "Jimmy Choo", name: "Man Aqua", gender: "Hombre", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Jimmy+Choo+Man+Aqua" },
+        { brand: "Kate Spade", name: "New York", gender: "Mujer", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Kate+Spade+New+York+Perfume" },
+        { brand: "Salvatore Ferragamo", name: "Signorina Libera", gender: "Mujer", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Signorina+Libera" },
+        { brand: "Salvatore Ferragamo", name: "Ferragamo Bright Leather", gender: "Hombre", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Ferragamo+Bright+Leather" },
+        { brand: "Zegna", name: "Indonesian Oud", gender: "Hombre", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Zegna+Indonesian+Oud" },
+        { brand: "Dunhill", name: "Icon Racing Green", gender: "Hombre", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Dunhill+Icon+Racing" },
+        { brand: "Maison Margiela", name: "Sailing Day", gender: "Unisex", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Replica+Sailing+Day" },
+        { brand: "Maison Margiela", name: "Coffee Break", gender: "Unisex", occ: "Día", style: "Seducción", url: "https://www.amazon.com/s?k=Replica+Coffee+Break" },
+        { brand: "Byredo", name: "Eyes Closed", gender: "Unisex", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Byredo+Eyes+Closed" },
+        { brand: "Diptyque", name: "Eau Rose EDP", gender: "Mujer", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Diptyque+Eau+Rose+EDP" },
+        { brand: "Diptyque", name: "Tam Dao", gender: "Unisex", occ: "Día", style: "Poder", url: "https://www.amazon.com/s?k=Diptyque+Tam+Dao" },
+        { brand: "Jo Malone", name: "Myrrh & Tonka", gender: "Unisex", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Jo+Malone+Myrrh+Tonka" },
+        { brand: "Jo Malone", name: "Oud & Bergamot", gender: "Unisex", occ: "Día", style: "Poder", url: "https://www.amazon.com/s?k=Jo+Malone+Oud+Bergamot" },
+        { brand: "Le Labo", name: "Rose 31", gender: "Unisex", occ: "Día", style: "Poder", url: "https://www.amazon.com/s?k=Le+Labo+Rose+31" },
+        { brand: "Le Labo", name: "Bergamote 22", gender: "Unisex", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Le+Labo+Bergamote+22" },
+        { brand: "Kilian Paris", name: "Smoking Hot", gender: "Unisex", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Kilian+Smoking+Hot" },
+        { brand: "Kilian Paris", name: "Apple Brandy on the Rocks", gender: "Unisex", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Kilian+Apple+Brandy" },
+        { brand: "Xerjoff", name: "Nio", gender: "Hombre", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Xerjoff+Nio" },
+        { brand: "Xerjoff", name: "Bouquet Ideale", gender: "Mujer", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Xerjoff+Bouquet+Ideale" },
+        { brand: "Nishane", name: "Tero", gender: "Unisex", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Nishane+Tero" },
+        { brand: "Nishane", name: "Mana", gender: "Unisex", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Nishane+Mana" },
+        { brand: "Tiziana Terenzi", name: "Ursa", gender: "Unisex", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Tiziana+Terenzi+Ursa" },
+        { brand: "Tiziana Terenzi", name: "Spirito Fiorentino", gender: "Unisex", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Spirito+Fiorentino" },
+        { brand: "Mancera", name: "Aoud Lemon Mint", gender: "Unisex", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Mancera+Aoud+Lemon+Mint" },
+        { brand: "Mancera", name: "French Riviera", gender: "Unisex", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Mancera+French+Riviera" },
+        { brand: "Montale", name: "Starry Night", gender: "Unisex", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Montale+Starry+Night" },
+        { brand: "Montale", name: "Blue Amber", gender: "Unisex", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Montale+Blue+Amber" },
+        { brand: "Lattafa", name: "Yara (Pink)", gender: "Mujer", occ: "Día", style: "Seducción", url: "https://www.amazon.com/s?k=Lattafa+Yara" },
+        { brand: "Lattafa", name: "Yara Tous (Yellow)", gender: "Mujer", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Lattafa+Yara+Tous" },
+        { brand: "Afnan", name: "Supremacy Silver", gender: "Hombre", occ: "Día", style: "Poder", url: "https://www.amazon.com/s?k=Afnan+Supremacy+Silver" },
+        { brand: "Afnan", name: "Zimaya Sharaf Blend", gender: "Unisex", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Zimaya+Sharaf+Blend" },
+        { brand: "Swiss Arabian", name: "Shaghaf Oud Abyad", gender: "Hombre", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Shaghaf+Oud+Abyad" },
+        { brand: "Al Haramain", name: "Junoon Rose", gender: "Mujer", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Junoon+Rose+Al+Haramain" },
+        { brand: "Rasasi", name: "Hawas for Her", gender: "Mujer", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Rasasi+Hawas+for+Her" },
+        { brand: "Rasasi", name: "Shuhrah Pour Homme", gender: "Hombre", occ: "Día", style: "Poder", url: "https://www.amazon.com/s?k=Rasasi+Shuhrah" },
+        { brand: "Bentley", name: "Silverlake", gender: "Hombre", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Bentley+Silverlake" }
+    // --- BLOQUE 7 (601-700) ---
+        { brand: "Xerjoff", name: "Alexandria III", gender: "Unisex", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Xerjoff+Alexandria+III" },
+        { brand: "Xerjoff", name: "Torino21", gender: "Unisex", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Xerjoff+Torino21" },
+        { brand: "Initio", name: "Oud for Greatness", gender: "Unisex", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Initio+Oud+for+Greatness" },
+        { brand: "Initio", name: "Musk Therapy", gender: "Unisex", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Initio+Musk+Therapy" },
+        { brand: "Parfums de Marly", name: "Althaïr", gender: "Hombre", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Parfums+de+Marly+Althair" },
+        { brand: "Parfums de Marly", name: "Oriana", gender: "Mujer", occ: "Día", style: "Seducción", url: "https://www.amazon.com/s?k=Parfums+de+Marly+Oriana" },
+        { brand: "Parfums de Marly", name: "Valaya", gender: "Mujer", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Parfums+de+Marly+Valaya" },
+        { brand: "Nishane", name: "Hacivat", gender: "Unisex", occ: "Día", style: "Poder", url: "https://www.amazon.com/s?k=Nishane+Hacivat" },
+        { brand: "Nishane", name: "B-612", gender: "Unisex", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Nishane+B612" },
+        { brand: "Maison Francis Kurkdjian", name: "Baccarat Rouge 540 Extrait", gender: "Unisex", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Baccarat+Rouge+540+Extrait" },
+        { brand: "Maison Francis Kurkdjian", name: "Aqua Celestia Forte", gender: "Unisex", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=MFK+Aqua+Celestia+Forte" },
+        { brand: "Roja Parfums", name: "Apex", gender: "Hombre", occ: "Día", style: "Poder", url: "https://www.amazon.com/s?k=Roja+Apex" },
+        { brand: "Roja Parfums", name: "Sweetie Aoud", gender: "Unisex", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Roja+Sweetie+Aoud" },
+        { brand: "Amouage", name: "Overture Man", gender: "Hombre", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Amouage+Overture+Man" },
+        { brand: "Amouage", name: "Dia Woman", gender: "Mujer", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Amouage+Dia+Woman" },
+        { brand: "Kilian Paris", name: "Can't Stop Loving You", gender: "Mujer", occ: "Día", style: "Seducción", url: "https://www.amazon.com/s?k=Kilian+Cant+Stop+Loving+You" },
+        { brand: "Kilian Paris", name: "Angel's Share", gender: "Unisex", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Kilian+Angels+Share" },
+        { brand: "Tom Ford", name: "Bitter Peach", gender: "Unisex", occ: "Día", style: "Seducción", url: "https://www.amazon.com/s?k=Tom+Ford+Bitter+Peach" },
+        { brand: "Tom Ford", name: "Fucking Fabulous", gender: "Unisex", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Tom+Ford+Fucking+Fabulous" },
+        { brand: "Creed", name: "Viking", gender: "Hombre", occ: "Día", style: "Poder", url: "https://www.amazon.com/s?k=Creed+Viking" },
+        { brand: "Creed", name: "Wind Flowers", gender: "Mujer", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Creed+Wind+Flowers" },
+        { brand: "Mancera", name: "Holiday", gender: "Unisex", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Mancera+Holiday" },
+        { brand: "Mancera", name: "Roses Vanille", gender: "Mujer", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Mancera+Roses+Vanille" },
+        { brand: "Montale", name: "Dark Purple", gender: "Mujer", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Montale+Dark+Purple" },
+        { brand: "Montale", name: "Wood and Spices", gender: "Hombre", occ: "Día", style: "Poder", url: "https://www.amazon.com/s?k=Montale+Wood+and+Spices" },
+        { brand: "Tiziana Terenzi", name: "Lillipur", gender: "Unisex", occ: "Día", style: "Poder", url: "https://www.amazon.com/s?k=Tiziana+Terenzi+Lillipur" },
+        { brand: "Byredo", name: "Mixed Emotions", gender: "Unisex", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Byredo+Mixed+Emotions" },
+        { brand: "Diptyque", name: "Vetyverio", gender: "Unisex", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Diptyque+Vetyverio" },
+        { brand: "Le Labo", name: "Santai 33", gender: "Unisex", occ: "Día", style: "Poder", url: "https://www.amazon.com/s?k=Le+Labo+Santal+33" },
+        { brand: "Penhaligon's", name: "Changing Constance", gender: "Mujer", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Penhaligons+Changing+Constance" },
+        { brand: "Penhaligon's", name: "The Blazing Mr Sam", gender: "Hombre", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Penhaligons+Mr+Sam" },
+        { brand: "Lattafa", name: "Liam Blue Shine", gender: "Hombre", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Lattafa+Liam+Blue" },
+        { brand: "Lattafa", name: "Ishq Al Shuyukh Silver", gender: "Hombre", occ: "Día", style: "Poder", url: "https://www.amazon.com/s?k=Lattafa+Ishq+Silver" },
+        { brand: "Afnan", name: "9AM Dive", gender: "Unisex", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Afnan+9AM+Dive" },
+        { brand: "Afnan", name: "Sillage", gender: "Hombre", occ: "Día", style: "Poder", url: "https://www.amazon.com/s?k=Afnan+Sillage" },
+        { brand: "Armaf", name: "Club de Nuit Urban Elixir", gender: "Hombre", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Club+de+Nuit+Urban+Elixir" },
+        { brand: "Armaf", name: "Odyssey Tyrant", gender: "Hombre", occ: "Día", style: "Poder", url: "https://www.amazon.com/s?k=Armaf+Odyssey+Tyrant" },
+        { brand: "Maison Alhambra", name: "Jean Lowe Immortal", gender: "Hombre", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Maison+Alhambra+Immortal" },
+        { brand: "Maison Alhambra", name: "Fabulo Intense", gender: "Unisex", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Maison+Alhambra+Fabulo+Intense" },
+        { brand: "Swiss Arabian", name: "Oud 01", gender: "Unisex", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Swiss+Arabian+Oud+01" },
+        { brand: "Al Haramain", name: "Detour Noir", gender: "Unisex", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Al+Haramain+Detour+Noir" },
+        { brand: "Fragrance World", name: "Barakkat Rouge 540", gender: "Unisex", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Fragrance+World+Barakkat" },
+        { brand: "Azzaro", name: "Wanted Girl", gender: "Mujer", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Azzaro+Wanted+Girl" },
+        { brand: "Prada", name: "La Femme", gender: "Mujer", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Prada+La+Femme" },
+        { brand: "Valentino", name: "Donna Born in Roma Intense", gender: "Mujer", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Valentino+Donna+Intense" },
+        { brand: "Gucci", name: "Guilty Elixir Homme", gender: "Hombre", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Gucci+Guilty+Elixir+Homme" },
+        { brand: "Gucci", name: "Guilty Elixir Femme", gender: "Mujer", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Gucci+Guilty+Elixir+Femme" },
+        { brand: "Hugo Boss", name: "Boss Bottled Elixir", gender: "Hombre", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Boss+Bottled+Elixir" },
+        { brand: "Lancome", name: "La Nuit Trésor Fleur de Nuit", gender: "Mujer", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Tresor+Fleur+de+Nuit" },
+        { brand: "YSL", name: "Myself EDP", gender: "Hombre", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=YSL+Myself+EDP" },
+
+        // --- BLOQUE 8 (701-800) ---
+        { brand: "Dolce & Gabbana", name: "Blue Tea", gender: "Unisex", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=DG+Blue+Tea" },
+        { brand: "Versace", name: "Pour Homme Dylan Blue", gender: "Hombre", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Versace+Dylan+Blue" },
+        { brand: "Versace", name: "Eros Energy", gender: "Hombre", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Versace+Eros+Energy" },
+        { brand: "Ralph Lauren", name: "Polo Earth", gender: "Unisex", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Polo+Earth+Ralph+Lauren" },
+        { brand: "Burberry", name: "Her London Dream", gender: "Mujer", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Burberry+Her+London+Dream" },
+        { brand: "Coach", name: "Dreams Sunset", gender: "Mujer", occ: "Día", style: "Seducción", url: "https://www.amazon.com/s?k=Coach+Dreams+Sunset" },
+        { brand: "Jimmy Choo", name: "Rose Passion", gender: "Mujer", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Jimmy+Choo+Rose+Passion" },
+        { brand: "Montblanc", name: "Legend Blue", gender: "Hombre", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Montblanc+Legend+Blue" },
+        { brand: "Bvlgari", name: "Aqva Marine", gender: "Hombre", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Bvlgari+Aqva+Marine" },
+        { brand: "Issey Miyake", name: "L'Eau d'Issey Solar Lavender", gender: "Hombre", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Issey+Miyake+Solar+Lavender" },
+        { brand: "Givenchy", name: "Gentleman Boisée", gender: "Hombre", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Givenchy+Gentleman+Boisee" },
+        { brand: "Givenchy", name: "Irresistible Rose Velvet", gender: "Mujer", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Givenchy+Rose+Velvet" },
+        { brand: "Kenzo", name: "Kenzo Homme Santal", gender: "Hombre", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Kenzo+Homme+Santal" },
+        { brand: "Mugler", name: "Alien Hypersense", gender: "Mujer", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Mugler+Alien+Hypersense" },
+        { brand: "Paco Rabanne", name: "Invictus Platinum", gender: "Hombre", occ: "Día", style: "Poder", url: "https://www.amazon.com/s?k=Invictus+Platinum" },
+        { brand: "Paco Rabanne", name: "Lady Million Royal", gender: "Mujer", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Lady+Million+Royal" },
+        { brand: "Carolina Herrera", name: "Bad Boy Extreme", gender: "Hombre", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Bad+Boy+Extreme" },
+        { brand: "Carolina Herrera", name: "Good Girl Blush", gender: "Mujer", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Good+Girl+Blush" },
+        { brand: "JPG", name: "Scandal Absolu Homme", gender: "Hombre", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=JPG+Scandal+Absolu" },
+        { brand: "JPG", name: "Scandal Absolu Femme", gender: "Mujer", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=JPG+Scandal+Absolu+Femme" },
+        { brand: "Narciso Rodriguez", name: "For Her Forever", gender: "Mujer", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Narciso+Rodriguez+For+Her+Forever" },
+        { brand: "Tom Ford", name: "Eau de Soleil Blanc", gender: "Unisex", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Tom+Ford+Eau+de+Soleil+Blanc" },
+        { brand: "Tom Ford", name: "Myrrhe Mystère", gender: "Unisex", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Tom+Ford+Myrrhe+Mystere" },
+        { brand: "Creed", name: "Aventus for Her", gender: "Mujer", occ: "Día", style: "Poder", url: "https://www.amazon.com/s?k=Creed+Aventus+for+Her" },
+        { brand: "Roja Parfums", name: "Manhattan EDP", gender: "Unisex", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Roja+Manhattan+EDP" },
+        { brand: "Xerjoff", name: "Torino22", gender: "Unisex", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Xerjoff+Torino22" },
+        { brand: "Xerjoff", name: "Cruz del Sur II", gender: "Unisex", occ: "Día", style: "Seducción", url: "https://www.amazon.com/s?k=Xerjoff+Cruz+del+Sur+II" },
+        { brand: "Initio", name: "Atomic Rose", gender: "Unisex", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Initio+Atomic+Rose" },
+        { brand: "Parfums de Marly", name: "Galloway", gender: "Unisex", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Parfums+de+Marly+Galloway" },
+        { brand: "Nishane", name: "Ege", gender: "Unisex", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Nishane+Ege" },
+        { brand: "Nishane", name: "Nefs", gender: "Unisex", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Nishane+Nefs" },
+        { brand: "Amouage", name: "Lineage", gender: "Unisex", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Amouage+Lineage" },
+        { brand: "Amouage", name: "Search", gender: "Unisex", occ: "Día", style: "Poder", url: "https://www.amazon.com/s?k=Amouage+Search" },
+        { brand: "Mancera", name: "Amore Caffè", gender: "Unisex", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Mancera+Amore+Caffe" },
+        { brand: "Montale", name: "Lucky Candy", gender: "Mujer", occ: "Día", style: "Seducción", url: "https://www.amazon.com/s?k=Montale+Lucky+Candy" },
+        { brand: "Tiziana Terenzi", name: "Kirke Extrait", gender: "Unisex", occ: "Día", style: "Poder", url: "https://www.amazon.com/s?k=Kirke+Tiziana+Terenzi" },
+        { brand: "Lattafa", name: "Hayaati", gender: "Hombre", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Lattafa+Hayaati" },
+        { brand: "Lattafa", name: "Ajwad", gender: "Unisex", occ: "Día", style: "Seducción", url: "https://www.amazon.com/s?k=Lattafa+Ajwad" },
+        { brand: "Armaf", name: "Club de Nuit Imperiale", gender: "Mujer", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Club+de+Nuit+Imperiale" },
+        { brand: "Armaf", name: "Club de Nuit Precieux", gender: "Hombre", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Club+de+Nuit+Precieux" },
+        { brand: "Afnan", name: "Turathi Brown", gender: "Hombre", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Afnan+Turathi+Brown" },
+        { brand: "Afnan", name: "Violet Bouquet", gender: "Mujer", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Afnan+Violet+Bouquet" },
+        { brand: "Maison Alhambra", name: "Hercules", gender: "Hombre", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Maison+Alhambra+Hercules" },
+        { brand: "Maison Alhambra", name: "Grandiose", gender: "Unisex", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Maison+Alhambra+Grandiose" },
+        { brand: "Fragrance World", name: "Hard Wood", gender: "Hombre", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Fragrance+World+Hard+Wood" },
+        { brand: "Rasasi", name: "Egra", gender: "Hombre", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Rasasi+Egra" },
+        { brand: "Swiss Arabian", name: "Inara Oud", gender: "Mujer", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Swiss+Arabian+Inara+Oud" },
+        { brand: "Zarkoperfume", name: "Pink Molecule", gender: "Mujer", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Zarkoperfume+Pink+Molecule" },
+        { brand: "Goldfield & Banks", name: "Ingenious Ginger", gender: "Unisex", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Goldfield+Banks+Ginger" },
+        { brand: "Maison Tahité", name: "Vanextasy", gender: "Unisex", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Maison+Tahite+Vanextasy" }
+    // --- BLOQUE 9 (801-900) ---
+        
+        // LUJO EXCLUSIVO Y NICHO
+        { brand: "Clive Christian", name: "No. 1 Masculine", gender: "Hombre", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Clive+Christian+No+1+Men" },
+        { brand: "Clive Christian", name: "X Feminine", gender: "Mujer", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Clive+Christian+X+Women" },
+        { brand: "Boadicea the Victorious", name: "Blue Sapphire", gender: "Unisex", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Boadicea+the+Victorious+Blue+Sapphire" },
+        { brand: "Argos", name: "Triumph of Bacchus", gender: "Unisex", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Argos+Triumph+of+Bacchus" },
+        { brand: "Argos", name: "Danaë", gender: "Unisex", occ: "Día", style: "Poder", url: "https://www.amazon.com/s?k=Argos+Danae" },
+        { brand: "Marly", name: "Layton Exclusif", gender: "Hombre", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Layton+Exclusif" },
+        { brand: "Marly", name: "Cassili", gender: "Mujer", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Parfums+de+Marly+Cassili" },
+        { brand: "Kilian Paris", name: "Princess", gender: "Mujer", occ: "Día", style: "Seducción", url: "https://www.amazon.com/s?k=Kilian+Princess+Perfume" },
+        { brand: "Kilian Paris", name: "Bamboo Harmony", gender: "Unisex", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Kilian+Bamboo+Harmony" },
+        
+        // TENDENCIA VIRAL (SOCIAL MEDIA)
+        { brand: "Phlur", name: "Father Figure", gender: "Unisex", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Phlur+Father+Figure" },
+        { brand: "Phlur", name: "Strawberry Letter", gender: "Mujer", occ: "Día", style: "Seducción", url: "https://www.amazon.com/s?k=Phlur+Strawberry+Letter" },
+        { brand: "DedCool", name: "Milk (Layering)", gender: "Unisex", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=DedCool+Milk" },
+        { brand: "DedCool", name: "Taunt", gender: "Unisex", occ: "Día", style: "Seducción", url: "https://www.amazon.com/s?k=DedCool+Taunt" },
+        { brand: "Snif", name: "Tart Deco", gender: "Unisex", occ: "Día", style: "Seducción", url: "https://www.amazon.com/s?k=Snif+Tart+Deco" },
+        { brand: "Snif", name: "Sweet Ash", gender: "Unisex", occ: "Noche", style: "Fresco", url: "https://www.amazon.com/s?k=Snif+Sweet+Ash" },
+        { brand: "Boy Smells", name: "Woodphoria", gender: "Unisex", occ: "Día", style: "Poder", url: "https://www.amazon.com/s?k=Boy+Smells+Woodphoria" },
+
+        // DISEÑADOR - EDICIONES ESPECIALES
+        { brand: "Prada", name: "L'Homme Intense", gender: "Hombre", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Prada+L+Homme+Intense" },
+        { brand: "YSL", name: "Tuxedo", gender: "Unisex", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=YSL+Tuxedo+Perfume" },
+        { brand: "Dior", name: "Oud Ispahan", gender: "Unisex", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Dior+Oud+Ispahan" },
+        { brand: "Chanel", name: "Coromandel", gender: "Unisex", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Chanel+Coromandel" },
+        { brand: "Gucci", name: "A Song for the Rose", gender: "Unisex", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Gucci+A+Song+for+the+Rose" },
+        { brand: "Armani Prive", name: "Rose d'Arabie", gender: "Unisex", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Armani+Prive+Rose+d+Arabie" },
+        { brand: "Tom Ford", name: "Plum Japonais", gender: "Unisex", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Tom+Ford+Plum+Japonais" },
+
+        // HOMBRE - DÍA - CLÁSICOS MODERNOS
+        { brand: "Carolina Herrera", name: "212 Men", gender: "Hombre", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=212+Men+Carolina+Herrera" },
+        { brand: "Paco Rabanne", name: "Ultraviolet", gender: "Hombre", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Paco+Rabanne+Ultraviolet+Men" },
+        { brand: "Nikos", name: "Sculpture Homme", gender: "Hombre", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Nikos+Sculpture+Men" },
+        { brand: "Lacoste", name: "Essential", gender: "Hombre", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Lacoste+Essential" },
+        { brand: "Azzaro", name: "Chrome United", gender: "Hombre", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Azzaro+Chrome+United" },
+        { brand: "Joop!", name: "Nightflight", gender: "Hombre", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Joop+Nightflight" },
+
+        // MUJER - SEDUCCIÓN - DULCES
+        { brand: "Prada", name: "Candy Gloss", gender: "Mujer", occ: "Día", style: "Seducción", url: "https://www.amazon.com/s?k=Prada+Candy+Gloss" },
+        { brand: "Jean Paul Gaultier", name: "La Belle Paradise Garden", gender: "Mujer", occ: "Día", style: "Seducción", url: "https://www.amazon.com/s?k=JPG+La+Belle+Paradise" },
+        { brand: "Lancome", name: "Trésor Midnight Rose", gender: "Mujer", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Tresor+Midnight+Rose" },
+        { brand: "Escada", name: "Taj Sunset", gender: "Mujer", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Escada+Taj+Sunset" },
+        { brand: "Dolce & Gabbana", name: "Pour Femme Intense", gender: "Mujer", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=DG+Pour+Femme+Intense" },
+
+        // ÁRABES - NOVEDADES 2024/2025
+        { brand: "Lattafa", name: "Teriaq", gender: "Unisex", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Lattafa+Teriaq" },
+        { brand: "Lattafa", name: "Eclaire", gender: "Mujer", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Lattafa+Eclaire" },
+        { brand: "Maison Alhambra", name: "Baroque Rouge 540", gender: "Unisex", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Maison+Alhambra+Baroque+Rouge" },
+        { brand: "Fragrance World", name: "Liquid Brun", gender: "Hombre", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Fragrance+World+Liquid+Brun" },
+        { brand: "Afnan", name: "9PM Rebel", gender: "Hombre", occ: "Día", style: "Poder", url: "https://www.amazon.com/s?k=Afnan+9PM+Rebel" },
+        { brand: "Khadlaj", name: "Stellar Musk", gender: "Unisex", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Khadlaj+Stellar+Musk" },
+
+        // UNISEX - NATURALEZA Y FRESCO
+        { brand: "Aesop", name: "Hwyl", gender: "Unisex", occ: "Día", style: "Poder", url: "https://www.amazon.com/s?k=Aesop+Hwyl" },
+        { brand: "Aesop", name: "Tacit", gender: "Unisex", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Aesop+Tacit" },
+        { brand: "Vilhelm", name: "Mango Messenger", gender: "Unisex", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Vilhelm+Mango+Messenger" },
+        { brand: "Ellis Brooklyn", name: "Salt", gender: "Mujer", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Ellis+Brooklyn+Salt" },
+        { brand: "Ellis Brooklyn", name: "Bee", gender: "Mujer", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Ellis+Brooklyn+Bee" },
+
+        // HOMBRE - PODER - TRABAJO/OFICINA
+        { brand: "Tumi", name: "Continuum [12:00 GMT]", gender: "Hombre", occ: "Día", style: "Poder", url: "https://www.amazon.com/s?k=Tumi+Continuum" },
+        { brand: "Tumi", name: "Awaken [08:00 GMT]", gender: "Hombre", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Tumi+Awaken" },
+        { brand: "Roja", name: "Scandal Essence", gender: "Mujer", occ: "Día", style: "Poder", url: "https://www.amazon.com/s?k=Roja+Scandal+Essence" },
+        { brand: "Xerjoff", name: "Commandante", gender: "Unisex", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Xerjoff+Commandante" },
+        { brand: "Mancera", name: "Wind Wood", gender: "Hombre", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Mancera+Wind+Wood" },
+        { brand: "Lalique", name: "Encre Noire Sport", gender: "Hombre", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Encre+Noire+Sport" },
+
+        // COMPLEMENTO HASTA 100
+        { brand: "Bond No. 9", name: "New York Nights", gender: "Unisex", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Bond+No+9+New+York+Nights" },
+        { brand: "Bond No. 9", name: "Scent of Peace for Him", gender: "Hombre", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Bond+No+9+Scent+of+Peace" },
+        { brand: "Bond No. 9", name: "Lafayette Street", gender: "Unisex", occ: "Día", style: "Poder", url: "https://www.amazon.com/s?k=Bond+No+9+Lafayette+Street" },
+        { brand: "Initio", name: "High Frequency", gender: "Unisex", occ: "Día", style: "Poder", url: "https://www.amazon.com/s?k=Initio+High+Frequency" },
+        { brand: "Orto Parisi", name: "Megamare", gender: "Unisex", occ: "Día", style: "Poder", url: "https://www.amazon.com/s?k=Orto+Parisi+Megamare" },
+        { brand: "Orto Parisi", name: "Terroni", gender: "Unisex", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Orto+Parisi+Terroni" },
+        { brand: "Nasomatto", name: "Black Afgano", gender: "Unisex", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Nasomatto+Black+Afgano" },
+        { brand: "Nasomatto", name: "Baraonda", gender: "Unisex", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Nasomatto+Baraonda" },
+        { brand: "Xerjoff", name: "Monkey Special", gender: "Unisex", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Xerjoff+Monkey+Special" },
+        { brand: "Nishane", name: "Karagoz", gender: "Unisex", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Nishane+Karagoz" },
+        { brand: "Afnan", name: "Supremacy in Heaven", gender: "Hombre", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Afnan+Supremacy+in+Heaven" },
+        { brand: "Armaf", name: "Voyage Brown", gender: "Hombre", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Armaf+Voyage+Brown" },
+        { brand: "Al Haramain", name: "Amber Oud Tobacco Edition", gender: "Unisex", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Amber+Oud+Tobacco+Edition" },
+        { brand: "Lattafa", name: "Eternal Oud", gender: "Unisex", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Lattafa+Eternal+Oud" },
+        { brand: "Swiss Arabian", name: "Valencia", gender: "Mujer", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Swiss+Arabian+Valencia" },
+        { brand: "Rasasi", name: "La Yuqawam Jasmine Wisp", gender: "Mujer", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=La+Yuqawam+Jasmine+Wisp" },
+        { brand: "Mancera", name: "Soleil d'Italie", gender: "Unisex", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Mancera+Soleil+d+Italie" },
+        { brand: "Montale", name: "Aoud Night", gender: "Unisex", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Montale+Aoud+Night" },
+        { brand: "Byredo", name: "Open Sky", gender: "Unisex", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Byredo+Open+Sky" },
+        { brand: "Diptyque", name: "Eau Duelle", gender: "Mujer", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Diptyque+Eau+Duelle" },
+        { brand: "Le Labo", name: "Tonka 25", gender: "Unisex", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Le+Labo+Tonka+25" },
+        { brand: "Hermes", name: "Un Jardin en Méditerranée", gender: "Unisex", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Hermes+Jardin+Mediterranee" },
+        { brand: "Bvlgari", name: "Tygar Le Gemme", gender: "Hombre", occ: "Día", style: "Poder", url: "https://www.amazon.com/s?k=Bvlgari+Tygar+Le+Gemme" },
+        { brand: "Givenchy", name: "Gentleman Society Extreme", gender: "Hombre", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Gentleman+Society+Extreme" },
+        { brand: "Paco Rabanne", name: "Invictus Victory Elixir", gender: "Hombre", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Invictus+Victory+Elixir" },
+        { brand: "JPG", name: "Gaultier 2", gender: "Unisex", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Gaultier+2+Perfume" },
+        { brand: "Carolina Herrera", name: "Gold Myrrh Absolute", gender: "Unisex", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=CH+Gold+Myrrh+Absolute" },
+        { brand: "Dolce & Gabbana", name: "The One Luminous Night", gender: "Hombre", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=The+One+Luminous+Night" },
+        { brand: "Boss", name: "Bottled Triumph Elixir", gender: "Hombre", occ: "Día", style: "Poder", url: "https://www.amazon.com/s?k=Boss+Bottled+Triumph+Elixir" },
+        { brand: "Versace", name: "Eros Parfum", gender: "Hombre", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Versace+Eros+Parfum" },
+        { brand: "Zegna", name: "Roman Wood", gender: "Hombre", occ: "Día", style: "Poder", url: "https://www.amazon.com/s?k=Zegna+Roman+Wood" },
+        { brand: "Montblanc", name: "Starwalker", gender: "Hombre", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Montblanc+Starwalker" },
+        { brand: "Jimmy Choo", name: "Man Blue", gender: "Hombre", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Jimmy+Choo+Man+Blue" },
+        { brand: "Salvatore Ferragamo", name: "Uomo Signature", gender: "Hombre", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Ferragamo+Uomo+Signature" },
+        { brand: "Coach", name: "Platinum", gender: "Hombre", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Coach+Platinum" },
+        { brand: "Dunhill", name: "Egyptian Smoke", gender: "Hombre", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Dunhill+Egyptian+Smoke" },
+        { brand: "Bottega Veneta", name: "Illusion for Him", gender: "Hombre", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Bottega+Veneta+Illusion+Men" },
+        { brand: "Issey Miyake", name: "Nuit d'Issey Polaris", gender: "Hombre", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Nuit+d+Issey+Polaris" },
+        { brand: "Kenzo", name: "Jungle L'Elephant", gender: "Mujer", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Kenzo+Jungle+Elephant" },
+        { brand: "Mugler", name: "A*Men Pure Malt", gender: "Hombre", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Mugler+Pure+Malt" },
+        { brand: "Valentino", name: "Uomo Born in Roma Green Stravaganza", gender: "Hombre", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Valentino+Green+Stravaganza" },
+        { brand: "Dior", name: "J'adore L'Or", gender: "Mujer", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Dior+Jadore+L+Or" },
+        { brand: "Chanel", name: "Allure Sensuelle", gender: "Mujer", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Chanel+Allure+Sensuelle" },
+        { brand: "YSL", name: "Cinema", gender: "Mujer", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=YSL+Cinema" }
+    // --- BLOQUE FINAL (901-1000) ---
+        
+        // LUJO EXTREMO Y COLECCIONISMO
+        { brand: "Roja Parfums", name: "Diaghilev", gender: "Unisex", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Roja+Parfums+Diaghilev" },
+        { brand: "Spirit of Dubai", name: "Turath", gender: "Unisex", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Spirit+of+Dubai+Turath" },
+        { brand: "Amouage", name: "Royal Tobacco", gender: "Unisex", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Amouage+Royal+Tobacco" },
+        { brand: "Xerjoff", name: "Richwood", gender: "Unisex", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Xerjoff+Richwood" },
+        { brand: "Fragrance Du Bois", name: "Oud Jaune Intense", gender: "Unisex", occ: "Día", style: "Seducción", url: "https://www.amazon.com/s?k=Oud+Jaune+Intense" },
+        { brand: "Fuoco Infernale", name: "Linari", gender: "Unisex", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Linari+Fuoco+Infernale" },
+        
+        // DISEÑADOR - LÍNEAS PRIVADAS
+        { brand: "Celine", name: "Black Tie", gender: "Unisex", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Celine+Black+Tie+Perfume" },
+        { brand: "Celine", name: "Parade", gender: "Unisex", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Celine+Parade+Perfume" },
+        { brand: "Dior", name: "Vanilla Diorama", gender: "Unisex", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Dior+Vanilla+Diorama" },
+        { brand: "Chanel", name: "Misia", gender: "Mujer", occ: "Día", style: "Poder", url: "https://www.amazon.com/s?k=Chanel+Exclusifs+Misia" },
+        { brand: "YSL", name: "Caftan", gender: "Unisex", occ: "Día", style: "Poder", url: "https://www.amazon.com/s?k=YSL+Caftan+Perfume" },
+        { brand: "Givenchy", name: "Foudroyant", gender: "Unisex", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Givenchy+Foudroyant" },
+
+        // INDIE Y NICHO EMERGENTE
+        { brand: "Imaginary Authors", name: "A City On Fire", gender: "Unisex", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Imaginary+Authors+A+City+On+Fire" },
+        { brand: "Imaginary Authors", name: "Saint Julep", gender: "Unisex", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Imaginary+Authors+Saint+Julep" },
+        { brand: "Zoologist", name: "Bee", gender: "Unisex", occ: "Día", style: "Seducción", url: "https://www.amazon.com/s?k=Zoologist+Bee+Perfume" },
+        { brand: "Zoologist", name: "T-Rex", gender: "Unisex", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Zoologist+Tyrannosaurus+Rex" },
+        { brand: "Kerosene", name: "Followed", gender: "Unisex", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Kerosene+Followed+Perfume" },
+        { brand: "Akro", name: "Bake", gender: "Unisex", occ: "Día", style: "Seducción", url: "https://www.amazon.com/s?k=Akro+Bake+Perfume" },
+
+        // ÁRABES - LOS NUEVOS REYES (CLONES Y ORIGINALES)
+        { brand: "Lattafa", name: "Asad Zanzibar", gender: "Hombre", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Lattafa+Asad+Zanzibar" },
+        { brand: "Lattafa", name: "Khamrah Qahwa", gender: "Unisex", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Lattafa+Khamrah+Qahwa" },
+        { brand: "Maison Alhambra", name: "Narissa Ambre", gender: "Mujer", occ: "Día", style: "Seducción", url: "https://www.amazon.com/s?k=Maison+Alhambra+Narissa+Ambre" },
+        { brand: "Afnan", name: "Turathi Red", gender: "Mujer", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Afnan+Turathi+Red" },
+        { brand: "Paris Corner", name: "North Stag Neuf IX", gender: "Unisex", occ: "Día", style: "Poder", url: "https://www.amazon.com/s?k=North+Stag+Neuf+IX" },
+        { brand: "Paris Corner", name: "Khair Pistachio", gender: "Unisex", occ: "Día", style: "Seducción", url: "https://www.amazon.com/s?k=Khair+Pistachio" },
+        { brand: "Khadlaj", name: "Hareem Al Sultan Gold", gender: "Mujer", occ: "Día", style: "Seducción", url: "https://www.amazon.com/s?k=Hareem+Al+Sultan+Gold" },
+        { brand: "Swiss Arabian", name: "Wajeeha", gender: "Unisex", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Swiss+Arabian+Wajeeha" },
+
+        // CLÁSICOS "VINTAGE" E IMPRESCINDIBLES
+        { brand: "Guerlain", name: "Mitsouko", gender: "Mujer", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Guerlain+Mitsouko" },
+        { brand: "Guerlain", name: "L'Heure Bleue", gender: "Mujer", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Guerlain+L+Heure+Bleue" },
+        { brand: "Dior", name: "Fahrenheit", gender: "Hombre", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Dior+Fahrenheit" },
+        { brand: "Dior", name: "Eau Sauvage Parfum", gender: "Hombre", occ: "Día", style: "Poder", url: "https://www.amazon.com/s?k=Eau+Sauvage+Parfum" },
+        { brand: "Chanel", name: "Cristalle", gender: "Mujer", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Chanel+Cristalle" },
+        { brand: "Chanel", name: "Antaeus", gender: "Hombre", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Chanel+Antaeus" },
+        { brand: "YSL", name: "Kouros", gender: "Hombre", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=YSL+Kouros" },
+        { brand: "YSL", name: "Opium (Original)", gender: "Mujer", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=YSL+Opium+Original" },
+        { brand: "Hermes", name: "Bel Ami", gender: "Hombre", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Hermes+Bel+Ami" },
+        { brand: "Cartier", name: "Santos", gender: "Hombre", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Cartier+Santos+Perfume" },
+
+        // HOMBRE - DEPORTIVOS Y FRESCOS
+        { brand: "Chanel", name: "Allure Homme Sport Superleggera", gender: "Hombre", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Allure+Homme+Sport+Superleggera" },
+        { brand: "Dior", name: "Homme Sport (2021)", gender: "Hombre", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Dior+Homme+Sport+2021" },
+        { brand: "Versace", name: "Eros Energy", gender: "Hombre", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Versace+Eros+Energy" },
+        { brand: "Paco Rabanne", name: "Invictus Victory", gender: "Hombre", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Invictus+Victory" },
+        { brand: "Paco Rabanne", name: "Phantom Intense", gender: "Hombre", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Paco+Rabanne+Phantom+Intense" },
+        { brand: "Montblanc", name: "Explorer Ultra Blue", gender: "Hombre", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Montblanc+Explorer+Ultra+Blue" },
+
+        // MUJER - GOURMAND Y DULCES (ESTILO MODERNO)
+        { brand: "Kayali", name: "Vanilla 28", gender: "Mujer", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Kayali+Vanilla+28" },
+        { brand: "Kayali", name: "Eden Sparkling Lychee", gender: "Mujer", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Kayali+Eden+Sparkling+Lychee" },
+        { brand: "Sol de Janeiro", name: "Cheirosa 62", gender: "Mujer", occ: "Día", style: "Seducción", url: "https://www.amazon.com/s?k=Sol+de+Janeiro+Cheirosa+62" },
+        { brand: "Sol de Janeiro", name: "Cheirosa 71", gender: "Mujer", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Sol+de+Janeiro+Cheirosa+71" },
+        { brand: "Billie Eilish", name: "Eilish No. 1", gender: "Mujer", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Billie+Eilish+Perfume" },
+        { brand: "Billie Eilish", name: "Eilish No. 3", gender: "Mujer", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Billie+Eilish+No+3" },
+
+        // UNISEX - JAPÓN Y MINIMALISMO
+        { brand: "Issey Miyake", name: "L'Eau d'Issey Pure", gender: "Mujer", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Issey+Miyake+Pure" },
+        { brand: "Kenzo", name: "Flower Ikebana", gender: "Mujer", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Kenzo+Flower+Ikebana" },
+        { brand: "Shiseido", name: "Zen", gender: "Mujer", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Shiseido+Zen" },
+        { brand: "Comme des Garcons", name: "2", gender: "Unisex", occ: "Día", style: "Poder", url: "https://www.amazon.com/s?k=Comme+des+Garcons+2" },
+        { brand: "Comme des Garcons", name: "Wonderwood", gender: "Unisex", occ: "Día", style: "Poder", url: "https://www.amazon.com/s?k=Comme+des+Garcons+Wonderwood" },
+
+        // NICHO - LOS "GOD TIER" QUE FALTABAN
+        { brand: "Frederic Malle", name: "Portrait of a Lady", gender: "Mujer", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Portrait+of+a+Lady+Perfume" },
+        { brand: "Frederic Malle", name: "Musc Ravageur", gender: "Unisex", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Musc+Ravageur" },
+        { brand: "Tauer", name: "L'Air du Désert Marocain", gender: "Unisex", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Tauer+02+Desert+Marocain" },
+        { brand: "Serge Lutens", name: "Chergui", gender: "Unisex", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Serge+Lutens+Chergui" },
+        { brand: "Serge Lutens", name: "La Fille de Berlin", gender: "Unisex", occ: "Día", style: "Poder", url: "https://www.amazon.com/s?k=La+Fille+de+Berlin" },
+        { brand: "MFK", name: "Grand Soir", gender: "Unisex", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=MFK+Grand+Soir" },
+        { brand: "MFK", name: "724", gender: "Unisex", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=MFK+724+Perfume" },
+        { brand: "Byredo", name: "Bal d'Afrique", gender: "Unisex", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Byredo+Bal+d+Afrique" },
+        { brand: "Le Labo", name: "Another 13", gender: "Unisex", occ: "Día", style: "Poder", url: "https://www.amazon.com/s?k=Le+Labo+Another+13" },
+        { brand: "Le Labo", name: "The Matcha 26", gender: "Unisex", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Le+Labo+The+Matcha" },
+        
+        // REFUERZO DE ÚLTIMO MOMENTO (POPULARES)
+        { brand: "Abercrombie & Fitch", name: "First Instinct", gender: "Hombre", occ: "Día", style: "Seducción", url: "https://www.amazon.com/s?k=Abercrombie+First+Instinct+Men" },
+        { brand: "Hollister", name: "Wave", gender: "Hombre", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Hollister+Wave+Men" },
+        { brand: "Banana Republic", name: "Metal Rain", gender: "Unisex", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Banana+Republic+Metal+Rain" },
+        { brand: "Clean", name: "Warm Cotton", gender: "Unisex", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Clean+Warm+Cotton" },
+        { brand: "Glossier", name: "You Rêve", gender: "Mujer", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Glossier+You+Reve" },
+        { brand: "Victoria's Secret", name: "Bombshell Intense", gender: "Mujer", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Bombshell+Intense" },
+        { brand: "Bath & Body Works", name: "In The Stars", gender: "Mujer", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Bath+and+Body+Works+In+The+Stars" },
+        { brand: "Zara", name: "Vibrant Leather", gender: "Hombre", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Zara+Vibrant+Leather" },
+        { brand: "Zara", name: "Red Temptation", gender: "Mujer", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Zara+Red+Temptation" },
+        { brand: "Juicy Couture", name: "Viva La Juicy Sucre", gender: "Mujer", occ: "Día", style: "Seducción", url: "https://www.amazon.com/s?k=Viva+La+Juicy+Sucre" }
+        // --- FIN DE LA LISTA ---
+    // --- CONTINUACIÓN BLOQUE 13, 14 Y 15 (1301-1600) ---
+
+        // ZARA - LOS BEST SELLERS (Indispensables por su precio/calidad)
+        { brand: "Zara", name: "Tobacco Collection Rich Warm Addictive", gender: "Unisex", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Zara+Rich+Warm+Addictive" },
+        { brand: "Zara", name: "Sunrise on the Red Sand Dunes", gender: "Hombre", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Zara+Sunrise+Red+Sand+Dunes" },
+        { brand: "Zara", name: "Sand Desert At Sunset", gender: "Unisex", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Zara+Sand+Desert+At+Sunset" },
+        { brand: "Zara", name: "Ebony Wood", gender: "Unisex", occ: "Día", style: "Poder", url: "https://www.amazon.com/s?k=Zara+Ebony+Wood" },
+        { brand: "Zara", name: "Amalfi Sunray", gender: "Unisex", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Zara+Amalfi+Sunray" },
+        { brand: "Zara", name: "Fields at Nightfall", gender: "Mujer", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Zara+Fields+at+Nightfall" },
+        { brand: "Zara", name: "Golden Decade", gender: "Mujer", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Zara+Golden+Decade" },
+        { brand: "Zara", name: "Rose Gourmand", gender: "Mujer", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Zara+Rose+Gourmand" },
+
+        // VICTORIA'S SECRET & BATH AND BODY WORKS (Gran volumen de búsqueda)
+        { brand: "Victoria's Secret", name: "Tease", gender: "Mujer", occ: "Día", style: "Seducción", url: "https://www.amazon.com/s?k=Victorias+Secret+Tease" },
+        { brand: "Victoria's Secret", name: "Very Sexy Night", gender: "Mujer", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Very+Sexy+Night+Perfume" },
+        { brand: "Victoria's Secret", name: "Heavenly", gender: "Mujer", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Victorias+Secret+Heavenly" },
+        { brand: "Bath & Body Works", name: "Luminous", gender: "Mujer", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Bath+and+Body+Works+Luminous" },
+        { brand: "Bath & Body Works", name: "Ocean", gender: "Hombre", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Bath+and+Body+Works+Ocean+Men" },
+        { brand: "Bath & Body Works", name: "Noir", gender: "Hombre", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Bath+and+Body+Works+Noir+Men" },
+
+        // NICHO: EL MUNDO DE LAS RESINAS Y CUEROS
+        { brand: "Memo Paris", name: "African Leather", gender: "Unisex", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Memo+Paris+African+Leather" },
+        { brand: "Memo Paris", name: "Marfa", gender: "Unisex", occ: "Día", style: "Seducción", url: "https://www.amazon.com/s?k=Memo+Paris+Marfa" },
+        { brand: "Memo Paris", name: "Irish Leather", gender: "Unisex", occ: "Día", style: "Poder", url: "https://www.amazon.com/s?k=Memo+Paris+Irish+Leather" },
+        { brand: "Orto Parisi", name: "Boccanera", gender: "Unisex", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Orto+Parisi+Boccanera" },
+        { brand: "Orto Parisi", name: "Bergamask", gender: "Unisex", occ: "Día", style: "Poder", url: "https://www.amazon.com/s?k=Orto+Parisi+Bergamask" },
+        { brand: "Nasomatto", name: "Pardon", gender: "Hombre", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Nasomatto+Pardon" },
+        { brand: "Nasomatto", name: "Narcotic V.", gender: "Mujer", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Nasomatto+Narcotic+V" },
+        { brand: "Amouage", name: "Interlude Black Iris", gender: "Hombre", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Amouage+Interlude+Black+Iris" },
+        { brand: "Amouage", name: "Lyric Man", gender: "Hombre", occ: "Día", style: "Poder", url: "https://www.amazon.com/s?k=Amouage+Lyric+Man" },
+        { brand: "Amouage", name: "Epic Woman", gender: "Mujer", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Amouage+Epic+Woman" },
+
+        // FRAGANCIAS DE AUTOR (INDIE/CONCEPTUAL)
+        { brand: "Beaufort London", name: "Terror & Magnificence", gender: "Unisex", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Beaufort+London+Terror+Magnificence" },
+        { brand: "Zoologist", name: "Penguin", gender: "Unisex", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Zoologist+Penguin+Perfume" },
+        { brand: "Zoologist", name: "Cow", gender: "Unisex", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Zoologist+Cow+Perfume" },
+        { brand: "Histoires de Parfums", name: "1740 Marquis de Sade", gender: "Hombre", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Histoires+de+Parfums+1740" },
+        { brand: "Histoires de Parfums", name: "1969", gender: "Unisex", occ: "Día", style: "Seducción", url: "https://www.amazon.com/s?k=Histoires+de+Parfums+1969" },
+        { brand: "Tauer Perfumes", name: "Au Coeur du Désert", gender: "Unisex", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Tauer+Au+Coeur+du+Desert" },
+
+        // MÁS ÁRABES (Clones específicos de tendencia)
+        { brand: "Lattafa", name: "Maahir Black Edition", gender: "Unisex", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Lattafa+Maahir+Black" },
+        { brand: "Lattafa", name: "Vintage Radio", gender: "Unisex", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Lattafa+Vintage+Radio" },
+        { brand: "Al Haramain", name: "L'Aventure Knight", gender: "Hombre", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Al+Haramain+L+Aventure+Knight" },
+        { brand: "Armaf", name: "Club de Nuit Blue Iconic", gender: "Hombre", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Club+de+Nuit+Blue+Iconic" },
+        { brand: "Armaf", name: "Club de Nuit Untold", gender: "Unisex", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Club+de+Nuit+Untold" },
+        { brand: "Rasasi", name: "Sotoor Taa", gender: "Unisex", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Rasasi+Sotoor+Taa" },
+        { brand: "Maison Alhambra", name: "Lovely Cherie", gender: "Mujer", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Maison+Alhambra+Lovely+Cherie" },
+        { brand: "Maison Alhambra", name: "Porto Neroli", gender: "Unisex", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Maison+Alhambra+Porto+Neroli" },
+
+        // DISEÑADOR - RELLENO ESTRATÉGICO
+        { brand: "Hugo Boss", name: "Boss The Scent Magnetic Homme", gender: "Hombre", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Boss+The+Scent+Magnetic+Men" },
+        { brand: "Hugo Boss", name: "Boss The Scent Magnetic Femme", gender: "Mujer", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Boss+The+Scent+Magnetic+Women" },
+        { brand: "Lacoste", name: "L.12.12 Rose Eau Intense", gender: "Mujer", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Lacoste+Rose+Eau+Intense" },
+        { brand: "Valentino", name: "Uomo Born In Roma Coral Fantasy", gender: "Hombre", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Born+In+Roma+Coral+Fantasy+Men" },
+        { brand: "Valentino", name: "Donna Born In Roma Coral Fantasy", gender: "Mujer", occ: "Día", style: "Seducción", url: "https://www.amazon.com/s?k=Donna+Born+In+Roma+Coral+Fantasy" },
+        { brand: "Guerlain", name: "Aqua Allegoria Mandarine Basilic", gender: "Mujer", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Aqua+Allegoria+Mandarine+Basilic" },
+        { brand: "Guerlain", name: "Aqua Allegoria Nerolia Vetiver", gender: "Unisex", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Aqua+Allegoria+Nerolia+Vetiver" },
+        { brand: "Givenchy", name: "L'Interdit Rouge Ultime", gender: "Mujer", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Givenchy+L+Interdit+Rouge+Ultime" },
+        { brand: "Givenchy", name: "Gentleman Reserve Privée", gender: "Hombre", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Gentleman+Reserve+Privée" },
+        { brand: "Dior", name: "Miss Dior Parfum (2024)", gender: "Mujer", occ: "Día", style: "Seducción", url: "https://www.amazon.com/s?k=Miss+Dior+Parfum+2024" },
+        { brand: "Dior", name: "Sauvage Eau Forte", gender: "Hombre", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Dior+Sauvage+Eau+Forte" },
+        { brand: "Burberry", name: "Hero Parfum", gender: "Hombre", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Burberry+Hero+Parfum" },
+        { brand: "YSL", name: "Libre Flowers & Flames", gender: "Mujer", occ: "Día", style: "Poder", url: "https://www.amazon.com/s?k=YSL+Libre+Flowers+Flames" },
+
+        // JOYAS DE BAJO COSTO (Cheapies)
+        { brand: "Nautica", name: "Voyage Heritage", gender: "Hombre", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Nautica+Voyage+Heritage" },
+        { brand: "Coty", name: "Aspen", gender: "Hombre", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Aspen+Coty+Men" },
+        { brand: "Jovan", name: "Musk for Men", gender: "Hombre", occ: "Día", style: "Poder", url: "https://www.amazon.com/s?k=Jovan+Musk+Men" },
+        { brand: "Britney Spears", name: "Fantasy Intense", gender: "Mujer", occ: "Noche", style: "Seducción", url: "https://www.amazon.com/s?k=Britney+Spears+Fantasy+Intense" },
+        { brand: "Guy Laroche", name: "Drakkar Intense", gender: "Hombre", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Drakkar+Intense" },
+
+        // CIERRE DE COLECCIÓN (Más Nicho)
+        { brand: "Kilian Paris", name: "Black Phantom", gender: "Unisex", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Kilian+Black+Phantom" },
+        { brand: "Kilian Paris", name: "Moonlight in Heaven", gender: "Unisex", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Kilian+Moonlight+in+Heaven" },
+        { brand: "Xerjoff", name: "Erba Gold", gender: "Unisex", occ: "Día", style: "Seducción", url: "https://www.amazon.com/s?k=Xerjoff+Erba+Gold" },
+        { brand: "Nishane", name: "Wulong Cha X", gender: "Unisex", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Nishane+Wulong+Cha+X" },
+        { brand: "Parfums de Marly", name: "Percival", gender: "Hombre", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Parfums+de+Marly+Percival" },
+        { brand: "Parfums de Marly", name: "Delina La Rosée", gender: "Mujer", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Delina+La+Rosee" },
+        { brand: "Initio", name: "Rehab", gender: "Unisex", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Initio+Rehab" },
+        { brand: "Roja Parfums", name: "Elysium Pour Femme", gender: "Mujer", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Roja+Elysium+Pour+Femme" },
+        { brand: "Mancera", name: "Fig Extase", gender: "Unisex", occ: "Día", style: "Fresco", url: "https://www.amazon.com/s?k=Mancera+Fig+Extase" },
+        { brand: "Montale", name: "Arabians Tonka", gender: "Unisex", occ: "Noche", style: "Poder", url: "https://www.amazon.com/s?k=Montale+Arabians+Tonka" }
     ];
 
-    function render(data) {
-        const grid = document.getElementById('perfumeGrid');
-        grid.innerHTML = data.map(p => `
-            <div class="card">
-                <div>
-                    <div class="brand">${p.brand}</div>
-                    <div class="name">${p.name}</div>
-                </div>
-                <div>
-                    <div class="vibes-box">
-                        ${p.vibes.map(v => `<span class="vibe-tag">${v}</span>`).join('')}
-                    </div>
-                    <a href="#" class="btn-buy">ADQUIRIR ESENCIA</a>
-                </div>
+    let selections = { gender: "", occ: "", style: "" };
+    const questions = [
+        { id: "gender", text: "¿Para quién es la fragancia?", options: ["Hombre", "Mujer", "Unisex"] },
+        { id: "occ", text: "¿En qué momento se usará?", options: ["Día", "Noche"] },
+        { id: "style", text: "¿Qué impacto deseas causar?", options: ["Poder", "Seducción", "Fresco"] }
+    ];
+
+    let currentStep = 0;
+
+    function renderOptions() {
+        const grid = document.getElementById('optionsGrid');
+        const text = document.getElementById('questionText');
+        const step = questions[currentStep];
+        text.innerText = step.text;
+        grid.innerHTML = step.options.map(opt => `<button class="opt-btn" onclick="select('${step.id}', '${opt}')">${opt}</button>`).join('');
+    }
+
+    function select(id, value) {
+        selections[id] = value;
+        if(currentStep < questions.length - 1) {
+            currentStep++;
+            renderOptions();
+        } else {
+            showResults();
+        }
+    }
+
+    function showResults() {
+        const filtered = perfumes.filter(p => 
+            p.gender === selections.gender && 
+            p.occ === selections.occ && 
+            p.style === selections.style
+        );
+        
+        const grid = document.getElementById('perfumeList');
+        document.getElementById('questionText').innerText = "Perfil Analizado.";
+        document.getElementById('optionsGrid').innerHTML = "<p style='color:var(--gold); font-size:0.8rem;'>Hemos seleccionado las piezas que definen tu identidad. Haz clic en adquirir para ver disponibilidad.</p>";
+        
+        grid.innerHTML = filtered.map(p => `
+            <div class="p-card">
+                <div class="p-brand">${p.brand}</div>
+                <div class="p-name">${p.name}</div>
+                <a href="${p.url}" target="_blank" class="buy-link">ADQUIRIR ESENCIA</a>
             </div>
         `).join('');
+        
+        document.getElementById('counter').innerText = `${filtered.length} Sugerencias`;
     }
 
-    document.getElementById('searchInput').addEventListener('input', (e) => {
-        const val = e.target.value.toLowerCase();
-        const filtered = perfumes.filter(p => 
-            p.name.toLowerCase().includes(val) || 
-            p.brand.toLowerCase().includes(val) || 
-            p.vibes.some(v => v.toLowerCase().includes(val))
-        );
-        render(filtered);
-    });
-
-    function toggleChat() {
-        const win = document.getElementById('chat-window');
-        win.style.display = win.style.display === 'flex' ? 'none' : 'flex';
+    function resetQuiz() {
+        currentStep = 0;
+        selections = { gender: "", occ: "", style: "" };
+        document.getElementById('perfumeList').innerHTML = "";
+        document.getElementById('counter').innerText = "Esperando perfil...";
+        renderOptions();
     }
 
-    function sendMessage() {
-        const input = document.getElementById('chatInput');
-        const content = document.getElementById('chatContent');
-        if(!input.value) return;
-
-        content.innerHTML += `<div class="msg user-msg">${input.value}</div>`;
-        const userVal = input.value.toLowerCase();
-
-        setTimeout(() => {
-            let reply = "Entiendo. He ajustado el catálogo para mostrarte opciones que encajan con ese perfil.";
-            if(userVal.includes("cita")) reply = "Para una cita, la clave es la calidez. Te he seleccionado fragancias con Vainilla y Especias.";
-            if(userVal.includes("poder")) reply = "Poder y autoridad. Mostrando fragancias con cuero, madera y gran proyección.";
-            
-            content.innerHTML += `<div class="msg ai-msg">${reply}</div>`;
-            document.getElementById('searchInput').value = userVal;
-            document.getElementById('searchInput').dispatchEvent(new Event('input'));
-            content.scrollTop = content.scrollHeight;
-        }, 800);
-        input.value = "";
-    }
-
-    render(perfumes);
+    renderOptions();
 </script>
 </body>
 </html>
