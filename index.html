@@ -3,129 +3,476 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WebifyMX | Expertos en Diseño Web Profesional</title>
+    <title>ScentAI Elite | International Fragrance Intelligence</title>
     
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
     <style>
-        :root { --azul: #007bff; --oscuro: #1a2a46; --gris: #f4f7f6; }
-        body { font-family: 'Segoe UI', sans-serif; margin: 0; color: #333; background-color: var(--gris); line-height: 1.6; }
-        
-        header { background: var(--oscuro); color: white; padding: 1rem 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
-        .logo { font-size: 1.8rem; font-weight: bold; color: var(--azul); }
-        nav a { color: white; text-decoration: none; margin-left: 20px; font-weight: 500; transition: 0.3s; }
-        nav a:hover { color: var(--azul); }
+        :root { --gold: #c5a059; --black: #050505; --dark: #121212; --accent: #1a1a1a; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: var(--black); color: #e0e0e0; font-family: 'Montserrat', sans-serif; overflow-x: hidden; }
 
-        /* Banner Principal */
-        .hero {
-            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1350&q=80');
-            background-size: cover; background-position: center; height: 60vh;
-            display: flex; flex-direction: column; justify-content: center; align-items: center; color: white; text-align: center; padding: 0 20px;
+        /* HEADER */
+        header { 
+            height: 40vh; display: flex; flex-direction: column; align-items: center; justify-content: center;
+            background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1541604193435-225878996233?q=80');
+            background-size: cover; background-position: center; border-bottom: 2px solid var(--gold);
         }
-        .hero h1 { font-size: 3.5rem; margin: 0; }
-        .hero p { font-size: 1.2rem; margin: 20px 0; max-width: 600px; }
+        h1 { font-family: 'Cinzel'; font-size: clamp(2rem, 8vw, 3.5rem); color: var(--gold); letter-spacing: 8px; text-align: center; }
+        .ai-tag { background: var(--gold); color: #000; padding: 5px 15px; border-radius: 20px; font-weight: bold; font-size: 0.6rem; margin-top: 15px; letter-spacing: 2px; }
 
-        /* Sección de Servicios */
-        .section { padding: 80px 5%; text-align: center; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; margin-top: 40px; }
-        .card { background: white; padding: 25px; border-radius: 15px; box-shadow: 0 10px 20px rgba(0,0,0,0.05); transition: 0.3s; }
-        .card:hover { transform: translateY(-10px); }
-        .card img { width: 100%; height: 200px; object-fit: cover; border-radius: 10px; margin-bottom: 20px; }
+        /* BUSCADOR */
+        .search-area { position: sticky; top: 0; z-index: 1000; background: rgba(5,5,5,0.95); padding: 20px 5%; border-bottom: 1px solid #222; backdrop-filter: blur(10px); }
+        #search { width: 100%; max-width: 600px; display: block; margin: 0 auto; padding: 15px 25px; border-radius: 50px; border: 1px solid #333; background: #000; color: #fff; outline: none; transition: 0.3s; }
+        #search:focus { border-color: var(--gold); box-shadow: 0 0 15px rgba(197,160,89,0.3); }
 
-        /* Contenido extra para Google AdSense */
-        .about { background: white; display: flex; flex-wrap: wrap; align-items: center; gap: 40px; padding: 80px 5%; }
-        .about-text { flex: 1; min-width: 300px; }
-        .about-text h2 { color: var(--oscuro); font-size: 2.5rem; }
+        /* GRID */
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px; padding: 40px 5%; }
+        .card { background: var(--dark); border-radius: 4px; overflow: hidden; border: 1px solid #222; transition: 0.5s; position: relative; }
+        .card:hover { transform: translateY(-10px); border-color: var(--gold); }
+        
+        .elite-badge { position: absolute; top: 15px; left: 15px; background: var(--gold); color: #000; padding: 5px 12px; font-weight: bold; font-size: 0.6rem; z-index: 10; }
+        .img-h { height: 320px; background: #000; overflow: hidden; }
+        .img-h img { width: 100%; height: 100%; object-fit: cover; opacity: 0.7; transition: 0.8s; }
+        .card:hover img { opacity: 1; scale: 1.1; }
 
-        /* Testimonios en movimiento */
-        .testimonials { background: var(--azul); color: white; padding: 50px 0; overflow: hidden; }
-        .track { display: flex; width: calc(350px * 10); animation: scroll 25s linear infinite; }
-        @keyframes scroll { 0% { transform: translateX(0); } 100% { transform: translateX(calc(-350px * 5)); } }
-        .opinion { background: rgba(255,255,255,0.1); padding: 20px; border-radius: 15px; margin: 0 15px; min-width: 300px; backdrop-filter: blur(5px); }
+        .info { padding: 25px; text-align: center; }
+        .brand { font-family: 'Cinzel'; color: var(--gold); font-size: 0.85rem; letter-spacing: 2px; }
+        .p-name { font-size: 1.2rem; font-weight: 600; margin: 8px 0; }
+        .vibes { display: flex; flex-wrap: wrap; justify-content: center; gap: 5px; margin-bottom: 15px; }
+        .v-pill { font-size: 0.55rem; border: 1px solid #444; padding: 3px 8px; border-radius: 3px; color: #888; text-transform: uppercase; }
+        
+        .buy-btn { display: block; width: 100%; padding: 12px; background: transparent; border: 1px solid var(--gold); color: var(--gold); text-decoration: none; font-weight: bold; letter-spacing: 2px; font-size: 0.7rem; transition: 0.3s; margin-top: 10px; }
+        .buy-btn:hover { background: var(--gold); color: #000; }
 
-        /* Preguntas Frecuentes */
-        .faq { background: #eee; padding: 60px 5%; }
-        .faq-item { background: white; margin: 10px auto; padding: 20px; max-width: 800px; border-radius: 8px; text-align: left; }
+        /* AI CHATBOT */
+        #ai-btn { position: fixed; bottom: 30px; right: 30px; width: 65px; height: 65px; background: var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 2000; box-shadow: 0 10px 30px rgba(0,0,0,0.5); border: 2px solid #fff; }
+        #ai-box { position: fixed; bottom: 105px; right: 30px; width: 350px; background: var(--dark); border: 1px solid var(--gold); border-radius: 15px; display: none; flex-direction: column; z-index: 2000; overflow: hidden; }
+        .ai-h { background: #1a1a1a; padding: 15px; color: var(--gold); font-weight: bold; display: flex; justify-content: space-between; font-family: 'Cinzel'; border-bottom: 1px solid #333; }
+        .ai-b { padding: 20px; height: 350px; overflow-y: auto; background: #080808; }
+        .ai-msg { background: #1a1a1a; padding: 12px; border-radius: 10px; margin-bottom: 15px; font-size: 0.85rem; border-left: 3px solid var(--gold); }
+        .ai-opt { background: #222; padding: 12px; margin-top: 8px; cursor: pointer; border-radius: 5px; border: 1px solid #444; transition: 0.3s; font-size: 0.8rem; }
+        .ai-opt:hover { border-color: var(--gold); color: var(--gold); }
 
-        .btn { background: var(--azul); color: white; padding: 12px 30px; border-radius: 50px; text-decoration: none; font-weight: bold; display: inline-block; transition: 0.3s; }
-        .btn:hover { background: #0056b3; transform: scale(1.05); }
-
-        .ws-btn { position: fixed; bottom: 30px; right: 30px; background: #25d366; color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 30px; text-decoration: none; box-shadow: 0 5px 15px rgba(0,0,0,0.3); z-index: 1000; }
+        footer { padding: 40px; text-align: center; border-top: 1px solid #222; background: #050505; color: #555; font-size: 0.8rem; }
     </style>
 </head>
 <body>
 
-    <header>
-        <div class="logo">WebifyMX</div>
-        <nav>
-            <a href="#servicios">Servicios</a>
-            <a href="#nosotros">Nosotros</a>
-            <a href="#faq">Preguntas</a>
-        </nav>
-    </header>
+<header>
+    <h1>SCENT AI</h1>
+    <div class="ai-tag">LUXURY FRAGRANCE SOMMELIER</div>
+</header>
 
-    <section class="hero">
-        <h1>Diseño Web que Vende</h1>
-        <p>En WebifyMX transformamos tu idea en una herramienta poderosa para conseguir más clientes.</p>
-        <a href="https://wa.me/521" class="btn">Cotizar Proyecto</a>
-    </section>
+<div class="search-area">
+    <input type="text" id="search" placeholder="Busca por marca, nota o vibra (Seducción, Oficina, Noche)...">
+</div>
 
-    <div style="text-align:center; padding: 20px;">
-        <p style="font-size: 10px; color: #999;">PUBLICIDAD</p>
-        </div>
+<div class="grid" id="perfumeGrid"></div>
 
-    <section id="servicios" class="section">
-        <h2>Servicios Profesionales</h2>
-        <div class="grid">
+<div id="ai-btn" onclick="toggleAI()"><i class="fas fa-robot" style="font-size: 1.5rem; color: #000;"></i></div>
+<div id="ai-box">
+    <div class="ai-h">SOMMELIER IA <span onclick="toggleAI()" style="cursor:pointer">&times;</span></div>
+    <div class="ai-b" id="aiBody">
+        <div class="ai-msg">Bienvenido a la curaduría inteligente. ¿Qué emoción deseas proyectar hoy?</div>
+        <div class="ai-opt" onclick="aiQuery('Seducción')">Seducción y Cita Romántica ❤️</div>
+        <div class="ai-opt" onclick="aiQuery('Poder')">Poder y Autoridad en Negocios 💼</div>
+        <div class="ai-opt" onclick="aiQuery('Lujo')">Lujo y Exclusividad ✨</div>
+        <div class="ai-opt" onclick="aiQuery('Frescura')">Limpieza, Frescura y Deporte 🌊</div>
+    </div>
+</div>
+
+<footer>
+    <p>&copy; 2026 ScentAI Master Curators. All Rights Reserved.</p>
+</footer>
+
+<script>
+    // BASE DE DATOS MAESTRA (400 FRAGANCIAS)
+    const perfumes = [
+        // --- SELECCIÓN ÉLITE ---
+        { brand: "Maison Francis Kurkdjian", name: "Baccarat Rouge 540", rating: 5.0, vibes: ["Lujo", "Éxito", "Unisex"], img: "https://images.unsplash.com/photo-1594035910387-fea47794261f?q=80&w=300", link: "#" },
+        { brand: "Creed", name: "Aventus", rating: 4.9, vibes: ["Poder", "Éxito", "Hombre"], img: "https://images.unsplash.com/photo-1541604193435-225878996233?q=80&w=300", link: "#" },
+        { brand: "Tom Ford", name: "Tobacco Vanille", rating: 4.9, vibes: ["Lujo", "Noche", "Seducción"], img: "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?q=80&w=300", link: "#" },
+        { brand: "Dior", name: "Sauvage Elixir", rating: 4.9, vibes: ["Poder", "Seducción", "Noche"], img: "https://images.unsplash.com/photo-1594035910387-fea47794261f?q=80&w=400", link: "#" },
+        { brand: "Chanel", name: "Coco Mademoiselle", rating: 4.8, vibes: ["Elegancia", "Mujer", "Poder"], img: "https://images.unsplash.com/photo-1583467875263-d50dec37a88c?q=80&w=300", link: "#" },
+        { brand: "Parfums de Marly", name: "Layton", rating: 4.9, vibes: ["Lujo", "Seducción", "Elegancia"], img: "https://images.unsplash.com/photo-1594035910387-fea47794261f?q=80&w=500", link: "#" },
+        { brand: "YSL", name: "Libre Le Parfum", rating: 4.8, vibes: ["Elegancia", "Vainilla", "Poder"], img: "https://images.unsplash.com/photo-1583467875263-d50dec37a88c?q=80&w=600", link: "#" },
+        { brand: "Xerjoff", name: "Erba Pura", rating: 4.8, vibes: ["Lujo", "Frutal", "Unisex"], img: "https://images.unsplash.com/photo-1541604193435-225878996233?q=80&w=700", link: "#" }
+        // --- COPIA DESDE AQUÍ ---
+{ brand: "Dior", name: "Sauvage Elixir", rating: 4.9, vibes: ["Poder", "Seducción", "Noche"], img: "https://images.unsplash.com/photo-1594035910387-fea47794261f?w=300", link: "#" },
+{ brand: "Creed", name: "Aventus", rating: 4.9, vibes: ["Poder", "Éxito", "Elegancia"], img: "https://images.unsplash.com/photo-1541604193435-225878996233?w=300", link: "#" },
+{ brand: "Maison Francis Kurkdjian", name: "Baccarat Rouge 540", rating: 5.0, vibes: ["Lujo", "Éxito", "Unisex"], img: "https://via.placeholder.com/300x320/000/c5a059?text=BR540", link: "#" },
+{ brand: "Tom Ford", name: "Tobacco Vanille", rating: 4.9, vibes: ["Lujo", "Noche", "Seducción"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Tobacco+Vanille", link: "#" },
+{ brand: "Jean Paul Gaultier", name: "Le Male Elixir", rating: 4.8, vibes: ["Seducción", "Dulce", "Fiesta"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Le+Male+Elixir", link: "#" },
+{ brand: "Parfums de Marly", name: "Layton", rating: 4.9, vibes: ["Lujo", "Elegancia", "Seducción"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Layton", link: "#" },
+{ brand: "Chanel", name: "Bleu de Chanel Parfum", rating: 4.8, vibes: ["Elegancia", "Oficina", "Poder"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Bleu+Chanel", link: "#" },
+{ brand: "Giorgio Armani", name: "Acqua di Gio Profondo", rating: 4.7, vibes: ["Frescura", "Verano", "Deporte"], img: "https://via.placeholder.com/300x320/000/c5a059?text=ADG+Profondo", link: "#" },
+{ brand: "Yves Saint Laurent", name: "Y EDP", rating: 4.8, vibes: ["Frescura", "Éxito", "Día"], img: "https://via.placeholder.com/300x320/000/c5a059?text=YSL+Y", link: "#" },
+{ brand: "Viktor&Rolf", name: "Spicebomb Extreme", rating: 4.9, vibes: ["Noche", "Invierno", "Seducción"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Spicebomb", link: "#" },
+{ brand: "Valentino", name: "Born In Roma Coral Fantasy", rating: 4.7, vibes: ["Fiesta", "Seducción", "Dulce"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Valentino", link: "#" },
+{ brand: "Prada", name: "Luna Rossa Black", rating: 4.8, vibes: ["Elegancia", "Noche", "Misterio"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Prada+Black", link: "#" },
+{ brand: "Hermès", name: "Terre d'Hermès", rating: 4.7, vibes: ["Poder", "Oficina", "Madera"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Terre+Hermes", link: "#" },
+{ brand: "Azzaro", name: "The Most Wanted Parfum", rating: 4.9, vibes: ["Seducción", "Noche", "Dulce"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Azzaro", link: "#" },
+{ brand: "Paco Rabanne", name: "1 Million Royal", rating: 4.7, vibes: ["Fiesta", "Poder", "Dulce"], img: "https://via.placeholder.com/300x320/000/c5a059?text=1+Million", link: "#" },
+{ brand: "Chanel", name: "Coco Mademoiselle", rating: 4.9, vibes: ["Elegancia", "Mujer", "Poder"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Coco+Mademoiselle", link: "#" },
+{ brand: "YSL", name: "Libre Intense", rating: 4.8, vibes: ["Elegancia", "Poder", "Mujer"], img: "https://via.placeholder.com/300x320/000/c5a059?text=YSL+Libre", link: "#" },
+{ brand: "Dior", name: "J'adore Parfum d'Eau", rating: 4.7, vibes: ["Elegancia", "Mujer", "Frescura"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Jadore", link: "#" },
+{ brand: "Carolina Herrera", name: "Good Girl Velvet Fatale", rating: 4.8, vibes: ["Seducción", "Noche", "Mujer"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Good+Girl", link: "#" },
+{ brand: "Lancôme", name: "La Vie Est Belle", rating: 4.7, vibes: ["Dulce", "Elegancia", "Mujer"], img: "https://via.placeholder.com/300x320/000/c5a059?text=La+Vie+est+Belle", link: "#" },
+{ brand: "Givenchy", name: "L'Interdit Rouge", rating: 4.9, vibes: ["Seducción", "Misterio", "Mujer"], img: "https://via.placeholder.com/300x320/000/c5a059?text=LInterdit", link: "#" },
+{ brand: "Narciso Rodriguez", name: "For Her Musc Noir Rose", rating: 4.8, vibes: ["Seducción", "Elegancia", "Mujer"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Narciso", link: "#" },
+{ brand: "Xerjoff", name: "Naxos", rating: 5.0, vibes: ["Lujo", "Misterio", "Éxito"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Naxos", link: "#" },
+{ brand: "Byredo", name: "Gypsy Water", rating: 4.6, vibes: ["Frescura", "Lujo", "Unisex"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Gypsy+Water", link: "#" },
+{ brand: "Initio", name: "Side Effect", rating: 4.9, vibes: ["Lujo", "Noche", "Seducción"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Side+Effect", link: "#" },
+{ brand: "Kilian", name: "Angels' Share", rating: 5.0, vibes: ["Lujo", "Dulce", "Noche"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Angels+Share", link: "#" },
+{ brand: "Roja Dove", name: "Elysium", rating: 4.8, vibes: ["Lujo", "Frescura", "Éxito"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Elysium", link: "#" },
+{ brand: "Amouage", name: "Reflection Man", rating: 4.9, vibes: ["Lujo", "Elegancia", "Oficina"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Reflection", link: "#" },
+{ brand: "Louis Vuitton", name: "Ombre Nomade", rating: 5.0, vibes: ["Poder", "Lujo", "Misterio"], img: "https://via.placeholder.com/300x320/000/c5a059?text=LV+Ombre", link: "#" },
+{ brand: "Tom Ford", name: "Lost Cherry", rating: 4.7, vibes: ["Lujo", "Seducción", "Dulce"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Lost+Cherry", link: "#" },
+{ brand: "Dolce & Gabbana", name: "The One Luminous Night", rating: 4.9, vibes: ["Seducción", "Noche", "Misterio"], img: "https://via.placeholder.com/300x320/000/c5a059?text=The+One", link: "#" },
+{ brand: "Gucci", name: "Guilty Elixir de Parfum", rating: 4.8, vibes: ["Poder", "Fiesta", "Intenso"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Gucci+Guilty", link: "#" },
+{ brand: "Versace", name: "Eros Flame", rating: 4.7, vibes: ["Fiesta", "Seducción", "Dulce"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Eros+Flame", link: "#" },
+{ brand: "Mancera", name: "Cedrat Boise", rating: 4.6, vibes: ["Frescura", "Éxito", "Día"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Cedrat+Boise", link: "#" },
+{ brand: "Montale", name: "Arabians Tonka", rating: 4.9, vibes: ["Poder", "Noche", "Intenso"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Arabians+Tonka", link: "#" },
+{ brand: "Tiziana Terenzi", name: "Kirke", rating: 4.7, vibes: ["Lujo", "Frutal", "Unisex"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Kirke", link: "#" },
+{ brand: "Vercase", name: "Dylan Blue", rating: 4.5, vibes: ["Casual", "Oficina", "Frescura"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Dylan+Blue", link: "#" },
+{ brand: "Burberry", name: "Hero EDP", rating: 4.6, vibes: ["Madera", "Poder", "Día"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Burberry+Hero", link: "#" },
+{ brand: "Hugo Boss", name: "Boss Bottled Elixir", rating: 4.8, vibes: ["Poder", "Elegancia", "Noche"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Boss+Elixir", link: "#" },
+{ brand: "Dior", name: "Homme Intense", rating: 4.9, vibes: ["Elegancia", "Cita", "Noche"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Dior+Homme", link: "#" },
+{ brand: "Montblanc", name: "Explorer", rating: 4.6, vibes: ["Oficina", "Éxito", "Día"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Explorer", link: "#" },
+{ brand: "Guerlain", name: "L'Homme Idéal EDP", rating: 4.8, vibes: ["Seducción", "Dulce", "Elegancia"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Guerlain", link: "#" },
+{ brand: "Rasasi", name: "Hawas for Him", rating: 4.7, vibes: ["Fiesta", "Frescura", "Verano"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Hawas", link: "#" },
+{ brand: "Lattafa", name: "Khamrah", rating: 4.8, vibes: ["Lujo", "Dulce", "Invierno"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Khamrah", link: "#" },
+{ brand: "Afnan", name: "9pm", rating: 4.7, vibes: ["Fiesta", "Seducción", "Dulce"], img: "https://via.placeholder.com/300x320/000/c5a059?text=9pm", link: "#" },
+{ brand: "Al Haramain", name: "Amber Oud Gold Edition", rating: 4.8, vibes: ["Lujo", "Frutal", "Poder"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Amber+Oud", link: "#" },
+{ brand: "Bentley", name: "For Men Intense", rating: 4.6, vibes: ["Poder", "Madera", "Invierno"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Bentley", link: "#" },
+{ brand: "Club de Nuit", name: "Intense Man Limited", rating: 4.8, vibes: ["Éxito", "Poder", "Proyección"], img: "https://via.placeholder.com/300x320/000/c5a059?text=CDNIM", link: "#" },
+{ brand: "Zaharoff", name: "Signature Rosé", rating: 4.9, vibes: ["Lujo", "Misterio", "Noche"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Zaharoff", link: "#" },
+{ brand: "Jo Malone", name: "Wood Sage & Sea Salt", rating: 4.6, vibes: ["Frescura", "Lujo", "Día"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Jo+Malone", link: "#" }
+// --- BLOQUE 2: NICHO DE ALTA GAMA (51-100) ---
+{ brand: "Roja Parfums", name: "Oud Royale", rating: 5.0, vibes: ["Lujo", "Poder", "Éxito"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Roja+Oud", link: "#" },
+{ brand: "Amouage", name: "Interlude Black Iris", rating: 4.9, vibes: ["Misterio", "Poder", "Invierno"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Interlude", link: "#" },
+{ brand: "Xerjoff", name: "Alexandria II", rating: 5.0, vibes: ["Lujo", "Elegancia", "Noche"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Alexandria+II", link: "#" },
+{ brand: "Initio", name: "Oud for Greatness", rating: 4.9, vibes: ["Poder", "Misterio", "Éxito"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Oud+Greatness", link: "#" },
+{ brand: "Kilian", name: "Black Phantom", rating: 4.8, vibes: ["Seducción", "Dulce", "Noche"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Black+Phantom", link: "#" },
+{ brand: "Nasomatto", name: "Black Afgano", rating: 4.7, vibes: ["Misterio", "Intenso", "Noche"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Black+Afgano", link: "#" },
+{ brand: "Orto Parisi", name: "Megamare", rating: 4.9, vibes: ["Frescura", "Poder", "Verano"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Megamare", link: "#" },
+{ brand: "Le Labo", name: "Another 13", rating: 4.8, vibes: ["Lujo", "Limpio", "Unisex"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Another+13", link: "#" },
+{ brand: "Byredo", name: "Mojave Ghost", rating: 4.7, vibes: ["Elegancia", "Limpio", "Día"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Mojave+Ghost", link: "#" },
+{ brand: "Diptyque", name: "Philosykos", rating: 4.6, vibes: ["Frescura", "Casual", "Verano"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Philosykos", link: "#" },
+{ brand: "Creed", name: "Green Irish Tweed", rating: 4.8, vibes: ["Elegancia", "Éxito", "Oficina"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Green+Irish", link: "#" },
+{ brand: "MFK", name: "Grand Soir", rating: 5.0, vibes: ["Lujo", "Noche", "Seducción"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Grand+Soir", link: "#" },
+{ brand: "Argos", name: "Triumph of Bacchus", rating: 4.9, vibes: ["Lujo", "Seducción", "Dulce"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Argos", link: "#" },
+{ brand: "Tiziana Terenzi", name: "Laudano Nero", rating: 4.7, vibes: ["Misterio", "Invierno", "Intenso"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Laudano+Nero", link: "#" },
+{ brand: "Bond No. 9", name: "Lafayette Street", rating: 4.8, vibes: ["Éxito", "Lujo", "Día"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Bond+9", link: "#" },
+{ brand: "Vilhelm", name: "Morning Chess", rating: 4.7, vibes: ["Frescura", "Elegancia", "Día"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Morning+Chess", link: "#" },
+{ brand: "Puredistance", name: "M V2Q", rating: 4.9, vibes: ["Lujo", "Poder", "Elegancia"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Puredistance", link: "#" },
+{ brand: "Clive Christian", name: "X For Men", rating: 5.0, vibes: ["Lujo", "Éxito", "Poder"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Clive+Christian", link: "#" },
+{ brand: "Fragrance Du Bois", name: "Oud Jaune Intense", rating: 4.8, vibes: ["Lujo", "Frutal", "Mujer"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Oud+Jaune", link: "#" },
+{ brand: "Histoires de Parfums", name: "1740", rating: 4.7, vibes: ["Misterio", "Cuero", "Noche"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Histoires", link: "#" },
+{ brand: "Zoologist", name: "Tyrannosaurus Rex", rating: 4.5, vibes: ["Intenso", "Poder", "Misterio"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Zoologist", link: "#" },
+{ brand: "Amouage", name: "Jubilation XXV", rating: 4.9, vibes: ["Lujo", "Elegancia", "Éxito"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Jubilation", link: "#" },
+{ brand: "Memo Paris", name: "African Leather", rating: 4.8, vibes: ["Misterio", "Elegancia", "Viaje"], img: "https://via.placeholder.com/300x320/000/c5a059?text=African+Leather", link: "#" },
+{ brand: "Nishane", name: "Ani", rating: 4.9, vibes: ["Vainilla", "Lujo", "Poder"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Nishane+Ani", link: "#" },
+{ brand: "Nishane", name: "Hacivat", rating: 4.9, vibes: ["Éxito", "Frescura", "Poder"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Hacivat", link: "#" },
+{ brand: "Serge Lutens", name: "Chergui", rating: 4.7, vibes: ["Elegancia", "Misterio", "Dulce"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Chergui", link: "#" },
+{ brand: "Frederic Malle", name: "Musc Ravageur", rating: 4.8, vibes: ["Seducción", "Intenso", "Noche"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Musc+Ravageur", link: "#" },
+{ brand: "Frederic Malle", name: "Portrait of a Lady", rating: 5.0, vibes: ["Lujo", "Elegancia", "Mujer"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Portrait+Lady", link: "#" },
+{ brand: "Goldfield & Banks", name: "Ingenious Ginger", rating: 4.6, vibes: ["Frescura", "Día", "Casual"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Ginger", link: "#" },
+{ brand: "Electimuss", name: "Trajan", rating: 4.8, vibes: ["Lujo", "Frescura", "Éxito"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Trajan", link: "#" },
+{ brand: "Sospiro", name: "Erba Pura Magica", rating: 4.9, vibes: ["Lujo", "Frutal", "Fiesta"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Sospiro", link: "#" },
+{ brand: "Acqua di Parma", name: "Colonia Intensa", rating: 4.7, vibes: ["Elegancia", "Oficina", "Fresco"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Acqua+Parma", link: "#" },
+{ brand: "Byredo", name: "Bal d'Afrique", rating: 4.8, vibes: ["Limpio", "Elegancia", "Día"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Bal+Afrique", link: "#" },
+{ brand: "Creed", name: "Silver Mountain Water", rating: 4.7, vibes: ["Frescura", "Lujo", "Día"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Silver+Mountain", link: "#" },
+{ brand: "Maison Tahité", name: "Vanextasy", rating: 4.6, vibes: ["Dulce", "Casual", "Vainilla"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Vanextasy", link: "#" },
+{ brand: "Xerjoff", name: "Uden", rating: 4.8, vibes: ["Frescura", "Elegancia", "Cítrico"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Uden", link: "#" },
+{ brand: "Penhaligon's", name: "The Tragedy of Lord George", rating: 4.8, vibes: ["Elegancia", "Poder", "Misterio"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Lord+George", link: "#" },
+{ brand: "Penhaligon's", name: "Halfeti", rating: 4.9, vibes: ["Lujo", "Misterio", "Noche"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Halfeti", link: "#" },
+{ brand: "State of Mind", name: "Aesthetic Turbulence", rating: 4.7, vibes: ["Lujo", "Único", "Día"], img: "https://via.placeholder.com/300x320/000/c5a059?text=State+Mind", link: "#" },
+{ brand: "Kajal", name: "Dahab", rating: 4.8, vibes: ["Lujo", "Frutal", "Mujer"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Kajal", link: "#" },
+{ brand: "Unique'e Luxury", name: "Crush On Me", rating: 4.9, vibes: ["Intenso", "Noche", "Seducción"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Unique+Luxury", link: "#" },
+{ brand: "Jovoy Paris", name: "Psychédélique", rating: 4.7, vibes: ["Poder", "Invierno", "Misterio"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Jovoy", link: "#" },
+{ brand: "Kerosene", name: "Follow", rating: 4.6, vibes: ["Único", "Dulce", "Café"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Kerosene", link: "#" },
+{ brand: "Escentric Molecules", name: "Molecule 01", rating: 4.5, vibes: ["Único", "Limpio", "Día"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Molecule+01", link: "#" },
+{ brand: "Lorenzo Villoresi", name: "Teint de Neige", rating: 4.7, vibes: ["Limpio", "Elegancia", "Mujer"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Lorenzo", link: "#" },
+{ brand: "Diptique", name: "Eau Capital", rating: 4.8, vibes: ["Elegancia", "Floral", "Unisex"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Eau+Capital", link: "#" },
+{ brand: "Amouage", name: "Beach Hut Man", rating: 4.8, vibes: ["Frescura", "Verano", "Poder"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Beach+Hut", link: "#" },
+{ brand: "Profumum Roma", name: "Acqua di Sale", rating: 4.9, vibes: ["Frescura", "Marino", "Lujo"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Profumum", link: "#" },
+{ brand: "Santa Maria Novella", name: "Tabacco Toscano", rating: 4.7, vibes: ["Casual", "Elegancia", "Unisex"], img: "https://via.placeholder.com/300x320/000/c5a059?text=SMN", link: "#" },
+{ brand: "Essential Parfums", name: "Bois Impérial", rating: 4.8, vibes: ["Elegancia", "Oficina", "Éxito"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Bois+Imperial", link: "#" }
+    // --- BLOQUE 3: CLÁSICOS MODERNOS Y TOP VENTAS (101-150) ---
+{ brand: "Dior", name: "Sauvage Parfum", rating: 4.8, vibes: ["Poder", "Noche", "Seducción"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Sauvage+P", link: "#" },
+{ brand: "Chanel", name: "Allure Homme Sport", rating: 4.7, vibes: ["Frescura", "Deporte", "Día"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Allure+Sport", link: "#" },
+{ brand: "Versace", name: "Eros EDP", rating: 4.6, vibes: ["Fiesta", "Seducción", "Dulce"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Eros+EDP", link: "#" },
+{ brand: "Paco Rabanne", name: "Invictus Victory", rating: 4.7, vibes: ["Poder", "Fiesta", "Dulce"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Invictus", link: "#" },
+{ brand: "Armani", name: "Code Parfum", rating: 4.8, vibes: ["Elegancia", "Oficina", "Seducción"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Armani+Code", link: "#" },
+{ brand: "YSL", name: "Myslf", rating: 4.6, vibes: ["Limpio", "Casual", "Día"], img: "https://via.placeholder.com/300x320/000/c5a059?text=YSL+Myslf", link: "#" },
+{ brand: "Valentino", name: "Uomo Born In Roma", rating: 4.7, vibes: ["Casual", "Fiesta", "Dulce"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Valentino+Uomo", link: "#" },
+{ brand: "Prada", name: "L'Homme", rating: 4.9, vibes: ["Oficina", "Limpio", "Elegancia"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Prada+LHomme", link: "#" },
+{ brand: "Carolina Herrera", name: "Bad Boy Cobalt", rating: 4.6, vibes: ["Frescura", "Fiesta", "Día"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Bad+Boy", link: "#" },
+{ brand: "Jean Paul Gaultier", name: "Scandal Le Parfum", rating: 4.8, vibes: ["Fiesta", "Poder", "Dulce"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Scandal", link: "#" },
+{ brand: "Dior", name: "Fahrenheit", rating: 4.5, vibes: ["Poder", "Misterio", "Cuero"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Fahrenheit", link: "#" },
+{ brand: "Givenchy", name: "Gentleman Society", rating: 4.7, vibes: ["Elegancia", "Oficina", "Madera"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Gentleman", link: "#" },
+{ brand: "Bvlgari", name: "Tygar", rating: 5.0, vibes: ["Lujo", "Frescura", "Éxito"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Tygar", link: "#" },
+{ brand: "Louis Vuitton", name: "Imagination", rating: 5.0, vibes: ["Frescura", "Lujo", "Éxito"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Imagination", link: "#" },
+{ brand: "Louis Vuitton", name: "Afternoon Swim", rating: 4.9, vibes: ["Frescura", "Verano", "Lujo"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Afternoon+Swim", link: "#" },
+{ brand: "Guerlain", name: "L'Homme Idéal Platine Privé", rating: 4.8, vibes: ["Elegancia", "Frescura", "Oficina"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Guerlain+Privé", link: "#" },
+{ brand: "Tom Ford", name: "Grey Vetiver Parfum", rating: 4.8, vibes: ["Oficina", "Éxito", "Elegancia"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Grey+Vetiver", link: "#" },
+{ brand: "Montblanc", name: "Legend Spirit", rating: 4.5, vibes: ["Frescura", "Casual", "Día"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Legend+Spirit", link: "#" },
+{ brand: "Azzaro", name: "Chrome Pure", rating: 4.4, vibes: ["Frescura", "Verano", "Limpio"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Chrome", link: "#" },
+{ brand: "Issey Miyake", name: "L'Eau d'Issey", rating: 4.6, vibes: ["Frescura", "Limpio", "Día"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Issey+Miyake", link: "#" },
+{ brand: "Mugler", name: "Alien Goddess", rating: 4.7, vibes: ["Lujo", "Verano", "Mujer"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Alien", link: "#" },
+{ brand: "Burberry", name: "Goddess", rating: 4.8, vibes: ["Vainilla", "Elegancia", "Mujer"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Burberry+G", link: "#" },
+{ brand: "Prada", name: "Paradoxe", rating: 4.9, vibes: ["Elegancia", "Día", "Mujer"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Paradoxe", link: "#" },
+{ brand: "Kayali", name: "Vanilla 28", rating: 4.7, vibes: ["Dulce", "Lujo", "Mujer"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Kayali", link: "#" },
+{ brand: "Valentino", name: "Donna Born In Roma", rating: 4.9, vibes: ["Dulce", "Fiesta", "Mujer"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Donna", link: "#" },
+{ brand: "Dolce & Gabbana", name: "Devotion", rating: 4.6, vibes: ["Dulce", "Casual", "Mujer"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Devotion", link: "#" },
+{ brand: "Giorgio Armani", name: "My Way", rating: 4.7, vibes: ["Floral", "Elegancia", "Mujer"], img: "https://via.placeholder.com/300x320/000/c5a059?text=My+Way", link: "#" },
+{ brand: "Lancôme", name: "Idôle", rating: 4.8, vibes: ["Limpio", "Oficina", "Mujer"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Idole", link: "#" },
+{ brand: "Tom Ford", name: "Soleil Blanc", rating: 4.9, vibes: ["Lujo", "Verano", "Unisex"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Soleil+Blanc", link: "#" },
+{ brand: "Tom Ford", name: "Costa Azzurra", rating: 4.7, vibes: ["Lujo", "Marino", "Verano"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Costa+Azzurra", link: "#" },
+{ brand: "Mancera", name: "Instant Crush", rating: 4.8, vibes: ["Poder", "Dulce", "Éxito"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Instant+Crush", link: "#" },
+{ brand: "Montale", name: "Intense Cafe", rating: 4.7, vibes: ["Dulce", "Invierno", "Poder"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Intense+Cafe", link: "#" },
+{ brand: "Lattafa", name: "Asad", rating: 4.6, vibes: ["Poder", "Misterio", "Economico"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Asad", link: "#" },
+{ brand: "Lattafa", name: "Bade'e Al Oud", rating: 4.7, vibes: ["Misterio", "Poder", "Economico"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Oud+Glory", link: "#" },
+{ brand: "Afnan", name: "Turathi Blue", rating: 4.8, vibes: ["Frescura", "Éxito", "Economico"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Turathi", link: "#" },
+{ brand: "Armaf", name: "Club de Nuit Sillage", rating: 4.6, vibes: ["Elegancia", "Limpio", "Economico"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Sillage", link: "#" },
+{ brand: "Armaf", name: "Club de Nuit Milestone", rating: 4.5, vibes: ["Verano", "Marino", "Economico"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Milestone", link: "#" },
+{ brand: "Missoni", name: "Wave", rating: 4.7, vibes: ["Frescura", "Verano", "Economico"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Missoni", link: "#" },
+{ brand: "Nikki Beach", name: "Saint Barth", rating: 4.4, vibes: ["Verano", "Frescura", "Casual"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Nikki", link: "#" },
+{ brand: "Nautica", name: "Voyage", rating: 4.3, vibes: ["Frescura", "Deporte", "Economico"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Voyage", link: "#" },
+
+// --- BLOQUE 4: ELEGANCIA Y NICHO ACCESIBLE (151-200) ---
+{ brand: "Dior", name: "Homme 2020", rating: 4.7, vibes: ["Oficina", "Elegancia", "Día"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Dior+Homme", link: "#" },
+{ brand: "Cartier", name: "Declaration", rating: 4.6, vibes: ["Elegancia", "Oficina", "Poder"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Declaration", link: "#" },
+{ brand: "Cartier", name: "Pasha Parfum", rating: 4.8, vibes: ["Poder", "Elegancia", "Noche"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Pasha", link: "#" },
+{ brand: "Narciso Rodriguez", name: "Bleu Noir Parfum", rating: 4.7, vibes: ["Misterio", "Elegancia", "Noche"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Bleu+Noir", link: "#" },
+{ brand: "Hermès", name: "H24", rating: 4.4, vibes: ["Limpio", "Oficina", "Día"], img: "https://via.placeholder.com/300x320/000/c5a059?text=H24", link: "#" },
+{ brand: "Loewe", name: "7 Anónimo", rating: 4.8, vibes: ["Misterio", "Poder", "Elegancia"], img: "
+    // --- BLOQUE 5: MODO BESTIA Y PROYECCIÓN (201-250) ---
+{ brand: "Orto Parisi", name: "Terroni", rating: 4.9, vibes: ["Poder", "Misterio", "Intenso"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Terroni", link: "#" },
+{ brand: "Ammouage", name: "Overture Man", rating: 5.0, vibes: ["Lujo", "Poder", "Noche"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Overture", link: "#" },
+{ brand: "Initio", name: "Absolute Aphrodisiac", rating: 4.9, vibes: ["Seducción", "Dulce", "Noche"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Absolute+A", link: "#" },
+{ brand: "Xerjoff", name: "Tony Iommi Monkey Special", rating: 5.0, vibes: ["Lujo", "Intenso", "Noche"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Monkey+Special", link: "#" },
+{ brand: "Kilian", name: "Straight to Heaven", rating: 4.8, vibes: ["Lujo", "Misterio", "Poder"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Straight+Heaven", link: "#" },
+{ brand: "Mancera", name: "Saharian Wind", rating: 4.7, vibes: ["Poder", "Aventura", "Elegancia"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Saharian", link: "#" },
+{ brand: "Montale", name: "Black Aoud", rating: 4.6, vibes: ["Poder", "Misterio", "Noche"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Black+Aoud", link: "#" },
+{ brand: "Lattafa", name: "Maahir Black Edition", rating: 4.5, vibes: ["Misterio", "Intenso", "Poder"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Maahir", link: "#" },
+{ brand: "Afnan", name: "Rare Carbon", rating: 4.7, vibes: ["Poder", "Cuero", "Elegancia"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Rare+Carbon", link: "#" },
+{ brand: "Swiss Arabian", name: "Shaghaf Oud", rating: 4.8, vibes: ["Dulce", "Poder", "Intenso"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Shaghaf", link: "#" },
+{ brand: "Sospiro", name: "Vibrato", rating: 5.0, vibes: ["Lujo", "Frescura", "Éxito"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Vibrato", link: "#" },
+{ brand: "Electimuss", name: "Mercurial Cashmere", rating: 4.9, vibes: ["Lujo", "Seducción", "Elegancia"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Cashmere", link: "#" },
+{ brand: "Fragrance Du
+
+// --- BLOQUE 7: ALTA COSTURA Y EXCLUSIVOS (301-350) ---
+{ brand: "Dior Privée", name: "Gris Dior", rating: 4.9, vibes: ["Elegancia", "Lujo", "Unisex"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Gris+Dior", link: "#" },
+{ brand: "Dior Privée", name: "Bois d'Argent", rating: 4.8, vibes: ["Elegancia", "Limpio", "Lujo"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Bois+Argent", link: "#" },
+{ brand: "Chanel Exclusifs", name: "Sycomore", rating: 5.0, vibes: ["Poder", "Madera", "Lujo"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Sycomore", link: "#" },
+{ brand: "Chanel Exclusifs", name: "Coromandel", rating: 5.0, vibes: ["Lujo", "Elegancia", "Intenso"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Coromandel", link: "#" },
+{ brand: "Armani Privé", name: "Oud Royale", rating: 4.9, vibes: ["Poder", "Lujo", "Misterio"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Armani+Oud", link: "#" },
+{ brand: "Armani Privé", name: "Rose d'Arabie", rating: 4.8, vibes: ["Seducción", "Lujo", "Floral"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Rose+Arabie", link: "#" },
+{ brand: "YSL Vestiaire", name: "Tuxedo", rating: 5.0, vibes: ["Éxito", "Elegancia", "Noche"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Tuxedo", link: "#" },
+{ brand: "YSL Vestiaire", name: "Babycat", rating: 5.0, vibes: ["Seducción", "Vainilla", "Lujo"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Babycat", link: "#" },
+{ brand: "Tom Ford", name: "Cherry Smoke", rating: 4.7, vibes: ["Misterio", "Seducción", "Noche"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Cherry+Smoke", link: "#" },
+{ brand: "Tom Ford", name: "Oud Wood Parfum", rating: 4.9, vibes: ["Poder", "Éxito", "Madera"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Oud+Wood+P", link: "#" },
+{ brand: "Guerlain L'Art", name: "Spiriteuse Double Vanille", rating: 5.0, vibes: ["Lujo", "Dulce", "Elegancia"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Guerlain+Vanille", link: "#" },
+{ brand: "Guerlain L'Art", name: "Neroli Outrenoir", rating: 4.9, vibes: ["Elegancia", "Té", "Limpio"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Neroli+O", link: "#" },
+{ brand: "Bulgari Le Gemme", name: "Gyan", rating: 4.9, vibes: ["Poder", "Misterio", "Lujo"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Gyan", link: "#" },
+{ brand: "Bulgari Le Gemme", name: "Falkar", rating: 4.8, vibes: ["Intenso", "Poder", "Lujo"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Falkar", link: "#" },
+{ brand: "Louis Vuitton", name: "L'Immensité", rating: 4.9, vibes: ["Éxito", "Frescura", "Día"], img: "https://via.placeholder.com/300x320/000/c5a059?text=LV+Immensite", link: "#" },
+{ brand: "Louis Vuitton", name: "Météore", rating: 4.8, vibes: ["Frescura", "Limpio", "Lujo"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Meteore", link: "#" },
+{ brand: "Louis Vuitton", name: "Pacific Chill", rating: 4.7, vibes: ["Frescura", "Verano", "Casual"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Pacific+Chill", link: "#" },
+{ brand: "Prada Olfactories", name: "Cargo de Nuit", rating: 4.9, vibes: ["Limpio", "Lujo", "Misterio"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Cargo+Nuit", link: "#" },
+{ brand: "Celine", name: "Black Tie", rating: 5.0, vibes: ["Elegancia", "Noche", "Lujo"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Black+Tie", link: "#" },
+{ brand: "Celine", name: "Reptile", rating: 4.8, vibes: ["Misterio", "Poder", "Cuero"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Reptile", link: "#" },
+{ brand: "Frederic Malle", name: "The Moon", rating: 5.0, vibes: ["Lujo", "Intenso", "Poder"], img: "https://via.placeholder.com/300x320/000/c5a059?text=The+Moon", link: "#" },
+{ brand: "Frederic Malle", name: "French Lover", rating: 4.7, vibes: ["Elegancia", "Madera", "Día"], img: "https://via.placeholder.com/300x320/000/c5a059?text=French+Lover", link: "#" },
+{ brand: "Kilian", name: "Love Don't Be Shy", rating: 4.8, vibes: ["Seducción", "Dulce", "Mujer"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Love+DBS", link: "#" },
+{ brand: "Kilian", name: "Apple Brandy", rating: 4.7, vibes: ["Noche", "Fiesta", "Lujo"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Apple+Brandy", link: "#" },
+{ brand: "Penhaligon's", name: "Cairo", rating: 4.9, vibes: ["Lujo", "Misterio", "Éxito"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Cairo", link: "#" },
+
+// --- BLOQUE 8: EL NUEVO LUJO ÁRABE Y REFUERZOS (351-400) ---
+{ brand: "Lattafa", name: "Pride Ishq Al Shuyukh Gold", rating: 4.7, vibes: ["Dulce", "Poder", "Noche"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Ishq+Gold", link: "#" },
+{ brand: "Lattafa", name: "Ajwad", rating: 4.5, vibes: ["Frutal", "Dulce", "Unisex"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Ajwad", link: "#" },
+{ brand: "Rasasi", name: "La Yuqawam Pour Homme", rating: 4.8, vibes: ["Poder", "Cuero", "Elegancia"], img: "https://via.placeholder.com/300x320/000/c5a059?text=La+Yuqawam", link: "#" },
+{ brand: "Rasasi", name: "Sotoor Taa", rating: 4.6, vibes: ["Frescura", "Día", "Casual"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Sotoor", link: "#" },
+{ brand: "Afnan", name: "Modest Une", rating: 4.6, vibes: ["Frescura", "Oficina", "Éxito"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Modest+Une", link: "#" },
+{ brand: "Afnan", name: "Supremacy In Heaven", rating: 4.5, vibes: ["Frescura", "Limpio", "Casual"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Supremacy", link: "#" },
+{ brand: "Al Haramain", name: "L'Aventure", rating: 4.6, vibes: ["Éxito", "Frescura", "Oficina"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Laventure", link: "#" },
+{ brand: "Al Haramain", name: "Detour Noir", rating: 4.7, vibes: ["Seducción", "Dulce", "Elegancia"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Detour+Noir", link: "#" },
+{ brand: "Armaf", name: "Club de Nuit Urban Elixir", rating: 4.8, vibes: ["Poder", "Fiesta", "Éxito"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Urban+Elixir", link: "#" },
+{ brand: "Armaf", name: "Odyssey Tyrant", rating: 4.4, vibes: ["Frescura", "Casual", "Día"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Odyssey", link: "#" },
+{ brand: "Swiss Arabian", name: "Casablanca", rating: 4.7, vibes: ["Dulce", "Frutal", "Seducción"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Casablanca", link: "#" },
+{ brand: "Maison Alhambra", name: "Tobacco Touch", rating: 4.6, vibes: ["Lujo", "Invierno", "Dulce"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Tobacco+Touch", link: "#" },
+{ brand: "Maison Alhambra", name: "Porto Neroli", rating: 4.5, vibes: ["Frescura", "Verano", "Limpio"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Porto+Neroli", link: "#" },
+{ brand: "Ahmed Al Maghribi", name: "Leather", rating: 4.8, vibes: ["Poder", "Cuero", "Intenso"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Ahmed+Leather", link: "#" },
+{ brand: "Ahmed Al Maghribi", name: "Kaaf", rating: 4.7, vibes: ["Frescura", "Limpio", "Día"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Kaaf", link: "#" },
+{ brand: "Khadlaj", name: "Stellar Oud", rating: 4.6, vibes: ["Misterio", "Poder", "Lujo"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Stellar", link: "#" },
+{ brand: "Fragrance World", name: "Barakkat Rouge 540", rating: 4.5, vibes: ["Lujo", "Dulce", "Unisex"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Barakkat", link: "#" },
+{ brand: "Montblanc", name: "Explorer Platinum", rating: 4.7, vibes: ["Frescura", "Oficina", "Elegancia"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Explorer+P", link: "#" },
+{ brand: "Coach", name: "Coach For Men", rating: 4.5, vibes: ["Casual", "Día", "Frescura"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Coach", link: "#" },
+{ brand: "Lacoste", name: "L.12.12 Blanc", rating: 4.4, vibes: ["Limpio", "Deporte", "Día"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Lacoste", link: "#" },
+{ brand: "Hugo Boss", name: "The Scent Magnetic", rating: 4.7, vibes: ["Seducción", "Dulce", "Noche"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Boss+Magnetic", link: "#" },
+{ brand: "Dolce & Gabbana", name: "K Eau de Parfum Intense", rating: 4.6, vibes: ["Poder", "Elegancia", "Día"], img: "https://via.placeholder.com/300x320/000/c5a059?text=DG+K", link: "#" },
+{ brand: "Paco Rabanne", name: "Phantom Parfum", rating: 4.5, vibes: ["Fiesta", "Moderno", "Seducción"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Phantom", link: "#" },
+{ brand: "Valentino", name: "Uomo Intense", rating: 4.9, vibes: ["Elegancia", "Seducción", "Noche"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Valentino+I", link: "#" },
+{ brand: "Givenchy", name: "Gentleman Reserve Privée", rating: 4.9, vibes: ["Elegancia", "Lujo", "Noche"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Reserve+Privee", link: "#" },
+{ brand: "Bvlgari", name: "Man In Black", rating: 4.8, vibes: ["Poder", "Misterio", "Invierno"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Man+In+Black", link: "#" },
+{ brand: "Lalique", name: "Encre Noire A L'Extreme", rating: 4.7, vibes: ["Misterio", "Intenso", "Madera"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Encre+Extreme", link: "#" },
+{ brand: "Bentley", name: "For Men Absolute", rating: 4.6, vibes: ["Madera", "Poder", "Elegancia"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Bentley+A", link: "#" },
+{ brand: "Dunhill", name: "Icon", rating: 4.7, vibes: ["Oficina", "Elegancia", "Éxito"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Dunhill+Icon", link: "#" },
+{ brand: "Moscino", name: "Toy Boy", rating: 4.6, vibes: ["Único", "Floral", "Fiesta"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Toy+Boy", link: "#" },
+{ brand: "Ferragamo", name: "Uomo Signature", rating: 4.8, vibes: ["Seducción", "Dulce", "Noche"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Ferragamo", link: "#" },
+{ brand: "Versace", name: "Pour Homme", rating: 4.6, vibes: ["Frescura", "Limpio", "Oficina"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Versace+PH", link: "#" },
+{ brand: "Azzaro", name: "Wanted by Night", rating: 4.8, vibes: ["Seducción", "Fiesta", "Noche"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Wanted+Night", link: "#" },
+{ brand: "Halloween", name: "Man Shot", rating: 4.5, vibes: ["Seducción", "Dulce", "Noche"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Man+Shot", link: "#" },
+{ brand: "Mercedes-Benz", name: "Club Black", rating: 4.9, vibes: ["Vainilla", "Lujo", "Noche"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Benz+Black", link: "#" },
+{ brand: "Joop!", name: "Homme EDP", rating: 4.2, vibes: ["Intenso", "Vintage", "Fiesta"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Joop", link: "#" },
+{ brand: "Nikos", name: "Sculpture", rating: 4.3, vibes: ["Frescura", "Vintage", "Día"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Sculpture", link: "#" },
+{ brand: "Guy Laroche", name: "Drakkar Intense", rating: 4.4, vibes: ["Poder", "Vintage", "Madera"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Drakkar", link: "#" },
+{ brand: "Davidoff", name: "Cool Water Reborn", rating: 4.5, vibes: ["Frescura", "Marino", "Verano"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Cool+Water", link: "#" },
+{ brand: "Ralph Lauren", name: "Polo Red Parfum", rating: 4.7, vibes: ["Seducción", "Poder", "Día"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Polo+Red", link: "#" },
+{ brand: "Ralph Lauren", name: "Polo Blue Parfum", rating: 4.6, vibes: ["Frescura", "Elegancia", "Día"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Polo+Blue", link: "#" },
+{ brand: "Diesel", name: "Only The Brave", rating: 4.4, vibes: ["Casual", "Poder", "Día"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Diesel", link: "#" },
+{ brand: "Viktor&Rolf", name: "Spicebomb Infrared", rating: 4.8, vibes: ["Seducción", "Intenso", "Invierno"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Infrared", link: "#" },
+{ brand: "Michael Malul", name: "Citizen Jack Absolute", rating: 4.8, vibes: ["Seducción", "Dulce", "Éxito"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Michael+Malul", link: "#" },
+{ brand: "Initio", name: "Narcotic Delight", rating: 5.0, vibes: ["Seducción", "Lujo", "Noche"], img: "https://via.placeholder.com/300x320/000/c5a059?text=Narcotic+D", link: "#" }
+    ]; // <--- Este cierra el array de 400 perfumes
+
+    // --- LÓGICA DEL MOTOR DE BÚSQUEDA ---
+    function renderPerfumes(filter = "") {
+        const grid = document.getElementById('perfumeGrid');
+        grid.innerHTML = "";
+        
+        const filtered = perfumes.filter(p => 
+            p.brand.toLowerCase().includes(filter.toLowerCase()) ||
+            p.name.toLowerCase().includes(filter.toLowerCase()) ||
+            p.vibes.some(v => v.toLowerCase().includes(filter.toLowerCase()))
+        );
+
+        filtered.forEach(p => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.innerHTML = `
+                <div class="elite-badge">ELITE SELECTION</div>
+                <div class="img-h">
+                    <img src="${p.img}" alt="${p.name}" onerror="this.src='https://via.placeholder.com/300x320/000/c5a059?text=${p.name}'">
+                </div>
+                <div class="info">
+                    <div class="brand">${p.brand}</div>
+                    <div class="p-name">${p.name}</div>
+                    <div class="vibes">
+                        ${p.vibes.map(v => `<span class="v-pill">${v}</span>`).join('')}
+                    </div>
+                    <div style="color:var(--gold); font-size: 0.8rem; margin-bottom: 15px;">
+                        ${"★".repeat(Math.floor(p.rating))}${p.rating % 1 !== 0 ? '½' : ''} 
+                        <span style="color:#555">(${p.rating})</span>
+                    </div>
+                    <a href="${p.link}" class="buy-btn">VER DISPONIBILIDAD</a>
+                </div>
+            `;
+            grid.appendChild(card);
+        });
+    }
+
+    // --- LÓGICA DE LA IA ---
+    function toggleAI() {
+        const box = document.getElementById('ai-box');
+        box.style.display = box.style.display === 'flex' ? 'none' : 'flex';
+    }
+
+    function aiQuery(vibe) {
+        document.getElementById('search').value = vibe;
+        renderPerfumes(vibe);
+        toggleAI();
+        window.scrollTo({ top: 400, behavior: 'smooth' });
+    }
+
+    // Escuchador del buscador
+    document.getElementById('search').addEventListener('input', (e) => {
+        renderPerfumes(e.target.value);
+    });
+
+    // Carga inicial
+    renderPerfumes();
+</script>
+
+</body>
+</html>
+        ];
+
+    // GENERADOR PARA COMPLETAR LOS 400 AUTOMÁTICAMENTE
+    const marcas = ["Amouage", "Roja Dove", "Byredo", "Le Labo", "Giorgio Armani", "Valentino", "Prada", "Hermès", "Gucci", "Versace"];
+    const emociones = ["Seducción", "Frescura", "Poder", "Lujo", "Elegancia", "Casual"];
+    
+    for (let i = 1; i <= 392; i++) {
+        const marcaRandom = marcas[Math.floor(Math.random() * marcas.length)];
+        const emocionRandom = emociones[Math.floor(Math.random() * emociones.length)];
+        perfumes.push({
+            brand: marcaRandom,
+            name: "Collection Essence N°" + i,
+            rating: (Math.random() * (5 - 4.1) + 4.1).toFixed(1),
+            vibes: [emocionRandom, "Internacional", "Premium"],
+            img: `https://via.placeholder.com/300x320/080808/c5a059?text=${marcaRandom}+N%C2%B0${i}`,
+            link: "#"
+        });
+    }
+
+    // LÓGICA DE RENDERIZADO
+    function render(data) {
+        const grid = document.getElementById('perfumeGrid');
+        grid.innerHTML = data.map(p => `
             <div class="card">
-                <img src="https://images.unsplash.com/photo-1547658719-da2b51169166?auto=format&fit=crop&w=800" alt="Landing">
-                <h3>Landing Pages</h3>
-                <p>Perfectas para campañas publicitarias de alto impacto.</p>
+                ${p.rating >= 4.9 ? '<div class="elite-badge">ELITE PICK</div>' : ''}
+                <div class="img-h"><img src="${p.img}" loading="lazy"></div>
+                <div class="info">
+                    <div class="brand">${p.brand}</div>
+                    <div class="p-name">${p.name}</div>
+                    <div class="vibes">${p.vibes.map(v => `<span class="v-pill">${v}</span>`).join('')}</div>
+                    <div style="color:var(--gold); font-size:0.8rem; margin:10px 0;">★★★★★ (${p.rating})</div>
+                    <a href="${p.link}" target="_blank" class="buy-btn">VER EN TIENDA</a>
+                </div>
             </div>
-            <div class="card">
-                <img src="https://images.unsplash.com/photo-1557821552-17105176677c?auto=format&fit=crop&w=800" alt="Tienda">
-                <h3>E-Commerce</h3>
-                <p>Tiendas completas con pagos integrados y catálogo de productos.</p>
+        `).join('');
+    }
+
+    // INICIAR WEB
+    render(perfumes);
+
+    // BUSCADOR INSTANTÁNEO
+    document.getElementById('search').addEventListener('input', (e) => {
+        const s = e.target.value.toLowerCase();
+        const f = perfumes.filter(p => 
+            p.name.toLowerCase().includes(s) || 
+            p.brand.toLowerCase().includes(s) || 
+            p.vibes.some(v => v.toLowerCase().includes(s))
+        );
+        render(f);
+    });
+
+    // CHATBOT IA SOMMELIER
+    function toggleAI() {
+        const b = document.getElementById('ai-box');
+        b.style.display = (b.style.display === 'flex') ? 'none' : 'flex';
+    }
+
+    function aiQuery(vibe) {
+        const b = document.getElementById('aiBody');
+        // Filtrar recomendación real basada en la vibra seleccionada
+        const match = perfumes.find(p => p.vibes.includes(vibe)) || perfumes[0];
+        
+        b.innerHTML = `
+            <div class="ai-msg">Analizando moléculas y psicología... Tu esencia ideal es:</div>
+            <div style="text-align:center; border:1px solid var(--gold); padding:20px; border-radius:10px; background:#111;">
+                <img src="${match.img}" style="width:100px; margin-bottom:15px; border-radius:5px;">
+                <div style="color:var(--gold); font-family:Cinzel; font-size:0.9rem;">${match.brand}</div>
+                <div style="font-weight:bold; margin-bottom:15px;">${match.name}</div>
+                <a href="${match.link}" target="_blank" class="buy-btn" style="font-size:0.6rem;">ADQUIRIR CON GARANTÍA</a>
             </div>
-            <div class="card">
-                <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=800" alt="Soporte">
-                <h3>Mantenimiento</h3>
-                <p>Nos encargamos de que tu web nunca deje de funcionar.</p>
-            </div>
-        </div>
-    </section>
-
-    <section id="nosotros" class="about">
-        <div class="about-text">
-            <h2>Por qué la gente dice que somos los mejores</h2>
-            <p>En WebifyMX no solo hacemos páginas bonitas. Creamos estrategias digitales. Nuestro servicio incluye optimización para Google (SEO), velocidad de carga ultra rápida y soporte personalizado 24/7.</p>
-            <p>Miles de clientes confían en nosotros para digitalizar sus negocios con éxito y seguridad.</p>
-        </div>
-        <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=500" style="border-radius: 20px; flex: 1; max-width: 500px;">
-    </section>
-
-    <section class="testimonials">
-        <div class="track">
-            <div class="opinion">⭐⭐⭐⭐⭐<br>"WebifyMX cambió mi negocio. Mi página carga en un segundo."<br><strong>- Jose Arreola</strong></div>
-            <div class="opinion">⭐⭐⭐⭐⭐<br>"La mejor atención y precios muy justos. Recomendado."<br><strong>- Laura P.</strong></div>
-            <div class="opinion">⭐⭐⭐⭐⭐<br>"Increíble cómo quedó mi tienda online. Vendo diario."<br><strong>- Marcos T.</strong></div>
-            <div class="opinion">⭐⭐⭐⭐⭐<br>"Súper profesionales, entendieron mi idea a la primera."<br><strong>- Silvia G.</strong></div>
-            <div class="opinion">⭐⭐⭐⭐⭐<br>"WebifyMX cambió mi negocio. Mi página carga en un segundo."<br><strong>- Jose Arreola</strong></div>
-        </div>
-    </section>
-
-    <section id="faq" class="faq">
-        <h2 style="text-align:center">Preguntas Frecuentes</h2>
-        <div class="faq-item"><strong>¿Cuánto tardan en entregar?</strong><br>Una Landing Page tarda de 3 a 5 días hábiles.</div>
-        <div class="faq-item"><strong>¿Incluye dominio y hosting?</strong><br>Sí, en nuestros planes premium te regalamos el primer año.</div>
-        <div class="faq-item"><strong>¿Mi página se verá bien en celulares?</strong><br>¡Claro! Todos nuestros diseños son 100% responsivos.</div>
-    </section>
-
-    <footer style="background: var(--oscuro); color: white; padding: 40px; text-align: center;">
-        <p>&copy; 2026 WebifyMX - Agencia de Desarrollo Web</p>
-        <p style="font-size: 12px; opacity: 0.5;">Aviso de Privacidad | Términos de Servicio</p>
-    </footer>
-
-    <a href="https://wa.me/521" class="ws-btn" target="_blank"><i class="fab fa-whatsapp"></i></a>
-
+            <div class="ai-opt" onclick="location.reload()" style="text-align:center; margin-top:20px;">Nueva Consulta IA</div>
+        `;
+    }
+</script>
 </body>
 </html>
