@@ -1,185 +1,131 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Webify Scent™</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebifyMX | Expertos en Diseño Web Profesional</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root { --azul: #007bff; --oscuro: #1a2a46; --gris: #f4f7f6; }
+        body { font-family: 'Segoe UI', sans-serif; margin: 0; color: #333; background-color: var(--gris); line-height: 1.6; }
+        
+        header { background: var(--oscuro); color: white; padding: 1rem 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
+        .logo { font-size: 1.8rem; font-weight: bold; color: var(--azul); }
+        nav a { color: white; text-decoration: none; margin-left: 20px; font-weight: 500; transition: 0.3s; }
+        nav a:hover { color: var(--azul); }
 
-<style>
-:root{
- --bg:#0b0b0f;
- --card:#15151e;
- --accent:#d4af37;
- --text:#f5f5f5;
- --muted:#9a9a9a;
-}
-*{box-sizing:border-box;font-family:Inter,system-ui}
-body{margin:0;background:var(--bg);color:var(--text)}
-.container{max-width:1100px;margin:auto;padding:20px}
-.card{
- background:var(--card);
- border-radius:18px;
- padding:24px;
- margin-bottom:20px;
- box-shadow:0 15px 40px rgba(0,0,0,.5)
-}
-.hidden{display:none}
-button{
- background:var(--accent);
- border:none;
- padding:12px 18px;
- border-radius:10px;
- font-weight:700;
- cursor:pointer;
- margin-top:10px;
-}
-button.secondary{background:#262633;color:#fff}
-.option{
- border:1px solid #2a2a35;
- padding:14px;
- border-radius:12px;
- margin-bottom:10px;
- cursor:pointer;
-}
-.option.active{
- border-color:var(--accent);
- background:#1d1d28;
-}
-.perfume{
- border-bottom:1px solid #2a2a35;
- padding:12px 0;
-}
-.stars{color:#f5c542}
-a{color:var(--accent);text-decoration:none}
-.footer{font-size:13px;color:var(--muted);line-height:1.6}
-</style>
+        /* Banner Principal */
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1350&q=80');
+            background-size: cover; background-position: center; height: 60vh;
+            display: flex; flex-direction: column; justify-content: center; align-items: center; color: white; text-align: center; padding: 0 20px;
+        }
+        .hero h1 { font-size: 3.5rem; margin: 0; }
+        .hero p { font-size: 1.2rem; margin: 20px 0; max-width: 600px; }
+
+        /* Sección de Servicios */
+        .section { padding: 80px 5%; text-align: center; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; margin-top: 40px; }
+        .card { background: white; padding: 25px; border-radius: 15px; box-shadow: 0 10px 20px rgba(0,0,0,0.05); transition: 0.3s; }
+        .card:hover { transform: translateY(-10px); }
+        .card img { width: 100%; height: 200px; object-fit: cover; border-radius: 10px; margin-bottom: 20px; }
+
+        /* Contenido extra para Google AdSense */
+        .about { background: white; display: flex; flex-wrap: wrap; align-items: center; gap: 40px; padding: 80px 5%; }
+        .about-text { flex: 1; min-width: 300px; }
+        .about-text h2 { color: var(--oscuro); font-size: 2.5rem; }
+
+        /* Testimonios en movimiento */
+        .testimonials { background: var(--azul); color: white; padding: 50px 0; overflow: hidden; }
+        .track { display: flex; width: calc(350px * 10); animation: scroll 25s linear infinite; }
+        @keyframes scroll { 0% { transform: translateX(0); } 100% { transform: translateX(calc(-350px * 5)); } }
+        .opinion { background: rgba(255,255,255,0.1); padding: 20px; border-radius: 15px; margin: 0 15px; min-width: 300px; backdrop-filter: blur(5px); }
+
+        /* Preguntas Frecuentes */
+        .faq { background: #eee; padding: 60px 5%; }
+        .faq-item { background: white; margin: 10px auto; padding: 20px; max-width: 800px; border-radius: 8px; text-align: left; }
+
+        .btn { background: var(--azul); color: white; padding: 12px 30px; border-radius: 50px; text-decoration: none; font-weight: bold; display: inline-block; transition: 0.3s; }
+        .btn:hover { background: #0056b3; transform: scale(1.05); }
+
+        .ws-btn { position: fixed; bottom: 30px; right: 30px; background: #25d366; color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 30px; text-decoration: none; box-shadow: 0 5px 15px rgba(0,0,0,0.3); z-index: 1000; }
+    </style>
 </head>
-
 <body>
-<div class="container">
 
-<div class="card" id="langCard">
-<h2>🌍 Idioma</h2>
-<select id="language" onchange="setLanguage()" style="width:100%;padding:12px;border-radius:10px">
-<option value="">Selecciona</option>
-<option value="es">Español</option>
-<option value="en">English</option>
-</select>
-</div>
+    <header>
+        <div class="logo">WebifyMX</div>
+        <nav>
+            <a href="#servicios">Servicios</a>
+            <a href="#nosotros">Nosotros</a>
+            <a href="#faq">Preguntas</a>
+        </nav>
+    </header>
 
-<div class="card hidden" id="genderCard">
-<h2>¿Para quién es?</h2>
-<div class="option" onclick="pickGender('men',this)">👔 Hombre</div>
-<div class="option" onclick="pickGender('women',this)">👗 Mujer</div>
-<div class="option" onclick="pickGender('unisex',this)">⚧ Unisex</div>
-</div>
+    <section class="hero">
+        <h1>Diseño Web que Vende</h1>
+        <p>En WebifyMX transformamos tu idea en una herramienta poderosa para conseguir más clientes.</p>
+        <a href="https://wa.me/521" class="btn">Cotizar Proyecto</a>
+    </section>
 
-<div class="card hidden" id="useCard">
-<h2>¿Cuándo lo usarás?</h2>
-<div class="option" onclick="toggleUse('daily',this)">🌞 Diario</div>
-<div class="option" onclick="toggleUse('party',this)">🎉 Fiesta</div>
-<div class="option" onclick="toggleUse('date',this)">❤️ Cita</div>
-<div class="option" onclick="toggleUse('night',this)">🌙 Noche</div>
-<button onclick="showResults()">Ver resultados</button>
-</div>
+    <div style="text-align:center; padding: 20px;">
+        <p style="font-size: 10px; color: #999;">PUBLICIDAD</p>
+        </div>
 
-<div class="card hidden" id="resultCard">
-<h2>✨ Recomendaciones</h2>
-<div id="results"></div>
-<button id="moreBtn" onclick="more()">Otras 10 opciones</button>
-<button class="secondary" onclick="location.reload()">Inicio</button>
-</div>
+    <section id="servicios" class="section">
+        <h2>Servicios Profesionales</h2>
+        <div class="grid">
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1547658719-da2b51169166?auto=format&fit=crop&w=800" alt="Landing">
+                <h3>Landing Pages</h3>
+                <p>Perfectas para campañas publicitarias de alto impacto.</p>
+            </div>
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1557821552-17105176677c?auto=format&fit=crop&w=800" alt="Tienda">
+                <h3>E-Commerce</h3>
+                <p>Tiendas completas con pagos integrados y catálogo de productos.</p>
+            </div>
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=800" alt="Soporte">
+                <h3>Mantenimiento</h3>
+                <p>Nos encargamos de que tu web nunca deje de funcionar.</p>
+            </div>
+        </div>
+    </section>
 
-<div class="card">
-<h3>⚠️ Aviso legal</h3>
-<div class="footer">
-Sitio de uso informativo. No vendemos perfumes ni recopilamos datos.
-</div>
-</div>
+    <section id="nosotros" class="about">
+        <div class="about-text">
+            <h2>Por qué la gente dice que somos los mejores</h2>
+            <p>En WebifyMX no solo hacemos páginas bonitas. Creamos estrategias digitales. Nuestro servicio incluye optimización para Google (SEO), velocidad de carga ultra rápida y soporte personalizado 24/7.</p>
+            <p>Miles de clientes confían en nosotros para digitalizar sus negocios con éxito y seguridad.</p>
+        </div>
+        <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=500" style="border-radius: 20px; flex: 1; max-width: 500px;">
+    </section>
 
-</div>
+    <section class="testimonials">
+        <div class="track">
+            <div class="opinion">⭐⭐⭐⭐⭐<br>"WebifyMX cambió mi negocio. Mi página carga en un segundo."<br><strong>- Jose Arreola</strong></div>
+            <div class="opinion">⭐⭐⭐⭐⭐<br>"La mejor atención y precios muy justos. Recomendado."<br><strong>- Laura P.</strong></div>
+            <div class="opinion">⭐⭐⭐⭐⭐<br>"Increíble cómo quedó mi tienda online. Vendo diario."<br><strong>- Marcos T.</strong></div>
+            <div class="opinion">⭐⭐⭐⭐⭐<br>"Súper profesionales, entendieron mi idea a la primera."<br><strong>- Silvia G.</strong></div>
+            <div class="opinion">⭐⭐⭐⭐⭐<br>"WebifyMX cambió mi negocio. Mi página carga en un segundo."<br><strong>- Jose Arreola</strong></div>
+        </div>
+    </section>
 
-<script>
-let gender="";
-let uses=[];
-let index=0;
-let filtered=[];
+    <section id="faq" class="faq">
+        <h2 style="text-align:center">Preguntas Frecuentes</h2>
+        <div class="faq-item"><strong>¿Cuánto tardan en entregar?</strong><br>Una Landing Page tarda de 3 a 5 días hábiles.</div>
+        <div class="faq-item"><strong>¿Incluye dominio y hosting?</strong><br>Sí, en nuestros planes premium te regalamos el primer año.</div>
+        <div class="faq-item"><strong>¿Mi página se verá bien en celulares?</strong><br>¡Claro! Todos nuestros diseños son 100% responsivos.</div>
+    </section>
 
-/* DATASET (puedes meter 200+ aquí sin tocar lógica) */
-const perfumes=[
-{g:"men",u:"party",n:"Dior Sauvage Elixir",s:5},
-{g:"men",u:"party",n:"Eros Flame",s:4},
-{g:"men",u:"date",n:"Y EDP",s:5},
-{g:"men",u:"date",n:"Stronger With You Intensely",s:5},
-{g:"men",u:"night",n:"Lattafa Asad",s:4},
-{g:"men",u:"daily",n:"Acqua di Giò Profumo",s:4},
-{g:"men",u:"formal",n:"Bleu de Chanel Parfum",s:5},
-{g:"men",u:"night",n:"Le Male Elixir",s:5},
-{g:"women",u:"party",n:"Good Girl",s:5},
-{g:"women",u:"party",n:"Black Opium",s:5},
-{g:"women",u:"date",n:"YSL Libre Intense",s:5},
-{g:"women",u:"date",n:"Delina",s:5},
-{g:"women",u:"daily",n:"My Way",s:4},
-{g:"women",u:"night",n:"Kayali Vanilla 28",s:5},
-{g:"unisex",u:"party",n:"Baccarat Rouge 540",s:5},
-{g:"unisex",u:"night",n:"Oud for Greatness",s:5},
-{g:"unisex",u:"daily",n:"Gypsy Water",s:4},
-{g:"unisex",u:"formal",n:"Oud Wood",s:5}
-];
+    <footer style="background: var(--oscuro); color: white; padding: 40px; text-align: center;">
+        <p>&copy; 2026 WebifyMX - Agencia de Desarrollo Web</p>
+        <p style="font-size: 12px; opacity: 0.5;">Aviso de Privacidad | Términos de Servicio</p>
+    </footer>
 
-function setLanguage(){
- document.getElementById("langCard").classList.add("hidden");
- document.getElementById("genderCard").classList.remove("hidden");
-}
-
-function pickGender(g,el){
- gender=g;
- document.getElementById("genderCard").classList.add("hidden");
- document.getElementById("useCard").classList.remove("hidden");
-}
-
-function toggleUse(u,el){
- if(uses.includes(u)){
-  uses=uses.filter(x=>x!==u);
-  el.classList.remove("active");
- }else{
-  uses.push(u);
-  el.classList.add("active");
- }
-}
-
-function showResults(){
- filtered = perfumes.filter(p=>{
-  if(gender==="men") return (p.g==="men"||p.g==="unisex") && uses.includes(p.u);
-  if(gender==="women") return (p.g==="women"||p.g==="unisex") && uses.includes(p.u);
-  if(gender==="unisex") return p.g==="unisex" && uses.includes(p.u);
- });
- index=0;
- document.getElementById("useCard").classList.add("hidden");
- document.getElementById("resultCard").classList.remove("hidden");
- document.getElementById("results").innerHTML="";
- render();
-}
-
-function render(){
- let slice = filtered.slice(index,index+10);
- slice.forEach(p=>{
-  document.getElementById("results").innerHTML+=`
-  <div class="perfume">
-   <b>${p.n}</b><br>
-   <span class="stars">${"★".repeat(p.s)}</span>
-  </div>`;
- });
- if(index+10 >= filtered.length){
-  document.getElementById("moreBtn").style.display="none";
- }
-}
-
-function more(){
- index+=10;
- render();
-}
-</script>
+    <a href="https://wa.me/521" class="ws-btn" target="_blank"><i class="fab fa-whatsapp"></i></a>
 
 </body>
 </html>
